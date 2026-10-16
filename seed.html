@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inicializador de Base de Datos - Create Your Glow</title>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;800&display=swap" rel="stylesheet">
+    
+    <!-- SDKs de Firebase -->
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
+
+    <script>
+        const firebaseConfig = {
+            apiKey: "AIzaSyCR724EP9rNkKtETG1xM_CGSQ1ZIHhbOhc",
+            authDomain: "create-your-glow.firebaseapp.com",
+            projectId: "create-your-glow",
+            storageBucket: "create-your-glow.firebasestorage.app",
+            messagingSenderId: "917183846981",
+            appId: "1:917183846981:web:214a14dbefdbdcc017612c"
+        };
+
+        firebase.initializeApp(firebaseConfig);
+        const db = firebase.firestore();
+    </script>
+
+    <style>
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background-color: #FFF8F9;
+            color: #18181B;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+        .card {
+            background: #FFFFFF;
+            padding: 3rem;
+            border-radius: 24px;
+            box-shadow: 0 15px 35px rgba(24,24,27,0.08);
+            text-align: center;
+            max-width: 500px;
+            border: 2px solid #FCE8EC;
+        }
+        h2 { font-weight: 800; margin-bottom: 1rem; color: #E91E63; }
+        p { color: #52525B; margin-bottom: 2rem; font-size: 0.95rem; }
+        button {
+            background: linear-gradient(135deg, #FF6B8B 0%, #8B5CF6 100%);
+            color: white;
+            border: none;
+            padding: 1rem 2rem;
+            border-radius: 50px;
+            font-weight: 800;
+            font-size: 1rem;
+            cursor: pointer;
+            box-shadow: 0 10px 25px rgba(139, 92, 246, 0.4);
+            transition: transform 0.2s;
+        }
+        button:hover { transform: translateY(-2px); }
+        #log { margin-top: 1.5rem; font-size: 0.9rem; font-weight: 600; color: #7C3AED; }
+    </style>
+</head>
+<body>
+
+    <div class="card">
+        <h2>🚀 Carga Masiva de Contenido</h2>
+        <p>Haz clic en el botón para poblar automáticamente tus colecciones <b>courses</b>, <b>modules</b> y <b>lessons</b> en Firestore.</p>
+        <button onclick="poblarBaseDeDatos()">Llenar Firebase Ahora ✨</button>
+        <div id="log"></div>
+    </div>
+
+    <script>
+        async function poblarBaseDeDatos() {
+            const logDiv = document.getElementById('log');
+            logDiv.innerText = "⏳ Creando curso principal...";
+
+            try {
+                // 1. Crear el Curso Principal
+                const courseRef = await db.collection("courses").add({
+                    title: "Marca Personal para Artistas",
+                    category: "Maquillaje",
+                    level: "Principiante a Avanzado",
+                    price: 50000,
+                    published: true,
+                    imageUrl: "https://images.unsplash.com/photo-1522337360788-8b13dee7a37e?auto=format&fit=crop&w=600&q=80",
+                    description: "Estrategias digitales paso a paso para posicionarte como la referente de belleza número uno en tu ciudad."
+                });
+
+                const courseId = courseRef.id;
+                logDiv.innerText = `✅ Curso creado con ID: ${courseId}\n⏳ Creando módulos y lecciones...`;
+
+                // 2. Crear Módulo 1 y sus lecciones
+                const mod1Ref = await db.collection("modules").add({
+                    courseId: courseId,
+                    title: "Módulo 1: Fundamentos de Marca Personal",
+                    order: 1
+                });
+
+                await db.collection("lessons").add({
+                    moduleId: mod1Ref.id,
+                    title: "Clase 1: Introducción al Mundo Digital",
+                    videoUrl: "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
+                    description: "En esta lección descubriremos por qué tu talento necesita una estrategia digital sólida para destacar.",
+                    order: 1
+                });
+
+                await db.collection("lessons").add({
+                    moduleId: mod1Ref.id,
+                    title: "Clase 2: Definiendo tu Estilo y Nicho",
+                    videoUrl: "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
+                    description: "Aprende a identificar qué tipo de contenido atrae a tus clientas ideales de maquillaje.",
+                    order: 2
+                });
+
+                // 3. Crear Módulo 2 y sus lecciones
+                const mod2Ref = await db.collection("modules").add({
+                    courseId: courseId,
+                    title: "Módulo 2: Creación de Videos y Reels Virales",
+                    order: 2
+                });
+
+                await db.collection("lessons").add({
+                    moduleId: mod2Ref.id,
+                    title: "Clase 1: Iluminación y Ángulos Perfectos",
+                    videoUrl: "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
+                    description: "Domina el uso de aros de luz y la posición de la cámara para que los difuminados y pieles se vean impecables.",
+                    order: 1
+                });
+
+                await db.collection("lessons").add({
+                    moduleId: mod2Ref.id,
+                    title: "Clase 2: Edición Rápida en Celular",
+                    videoUrl: "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
+                    description: "Técnicas de corte y transiciones dinámicas para retener la atención en los primeros 3 segundos.",
+                    order: 2
+                });
+
+                logDiv.innerHTML = "✨ ¡Listo! Base de datos poblada con éxito.<br>Ya puedes ir a tus páginas y probar el sistema.";
+                console.log("Base de datos poblada correctamente.");
+
+            } catch (error) {
+                console.error("Error al poblar base de datos:", error);
+                logDiv.innerText = "❌ Error: " + error.message;
+            }
+        }
+    </script>
+</body>
+</html>

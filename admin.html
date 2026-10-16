@@ -1,0 +1,499 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Panel de Administración — Create Your Glow</title>
+    
+    <!-- Google Fonts & FontAwesome -->
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- SDKs de Firebase (Versión Compat) -->
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
+
+    <!-- Inicialización de Firebase con tus credenciales reales -->
+    <script>
+        const firebaseConfig = {
+            apiKey: "AIzaSyCR724EP9rNkKtETG1xM_CGSQ1ZIHhbOhc",
+            authDomain: "create-your-glow.firebaseapp.com",
+            projectId: "create-your-glow",
+            storageBucket: "create-your-glow.firebasestorage.app",
+            messagingSenderId: "917183846981",
+            appId: "1:917183846981:web:214a14dbefdbdcc017612c"
+        };
+
+        firebase.initializeApp(firebaseConfig);
+        const auth = firebase.auth();
+        const db = firebase.firestore();
+    </script>
+
+    <style>
+        :root {
+            --bg-light: #FFF8F9;
+            --bg-surface: #FFFFFF;
+            --bg-blush: #FCE8EC;
+            --text-dark: #18181B;
+            --text-muted: #52525B;
+            --pink-primary: #E91E63;
+            --pink-dark: #C2185B;
+            --violet-glow: #8B5CF6;
+            --success-green: #10B981;
+            --card-shadow: 0 12px 35px rgba(24, 24, 27, 0.08);
+            --transition: all 0.3s ease;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-light);
+            color: var(--text-dark);
+            padding: 2rem;
+            max-width: 1100px;
+            margin: 0 auto;
+        }
+
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: var(--bg-surface);
+            padding: 1.5rem 2rem;
+            border-radius: 20px;
+            box-shadow: var(--card-shadow);
+            border: 2px solid var(--bg-blush);
+            margin-bottom: 2rem;
+        }
+
+        header h1 {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 1.5rem;
+            color: var(--pink-dark);
+        }
+
+        header a {
+            text-decoration: none;
+            color: var(--text-muted);
+            font-weight: 700;
+            font-size: 0.9rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            transition: var(--transition);
+        }
+
+        header a:hover {
+            color: var(--pink-primary);
+        }
+
+        .admin-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+        }
+
+        .admin-card {
+            background: var(--bg-surface);
+            padding: 2rem;
+            border-radius: 20px;
+            box-shadow: var(--card-shadow);
+            border: 2px solid var(--bg-blush);
+        }
+
+        .admin-card h2 {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 1.2rem;
+            font-weight: 800;
+            margin-bottom: 1.5rem;
+            color: var(--text-dark);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .form-group {
+            margin-bottom: 1.2rem;
+        }
+
+        label {
+            display: block;
+            font-size: 0.85rem;
+            font-weight: 700;
+            color: var(--text-muted);
+            margin-bottom: 6px;
+        }
+
+        select, input, textarea {
+            width: 100%;
+            padding: 0.8rem 1rem;
+            border: 2px solid var(--bg-blush);
+            border-radius: 12px;
+            outline: none;
+            font-size: 0.95rem;
+            background: var(--bg-light);
+            transition: var(--transition);
+        }
+
+        select:focus, input:focus, textarea:focus {
+            border-color: var(--pink-primary);
+            background: #FFFFFF;
+        }
+
+        .btn-admin {
+            background: var(--pink-primary);
+            color: white;
+            border: none;
+            padding: 0.9rem 1.8rem;
+            border-radius: 12px;
+            font-weight: 800;
+            font-size: 0.95rem;
+            cursor: pointer;
+            width: 100%;
+            transition: var(--transition);
+            box-shadow: 0 8px 20px rgba(233, 30, 99, 0.25);
+        }
+
+        .btn-admin:hover {
+            background: var(--pink-dark);
+            transform: translateY(-2px);
+        }
+
+        .full-width {
+            grid-column: 1 / -1;
+        }
+
+        .lessons-management-list {
+            margin-top: 1.5rem;
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .lesson-admin-item {
+            background: var(--bg-light);
+            padding: 1rem 1.2rem;
+            border-radius: 12px;
+            border: 1px solid var(--bg-blush);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .lesson-admin-info h4 {
+            font-size: 0.95rem;
+            font-weight: 700;
+            color: var(--text-dark);
+            margin-bottom: 4px;
+        }
+
+        .lesson-admin-info p {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+        }
+
+        .btn-action-group {
+            display: flex;
+            gap: 8px;
+        }
+
+        .btn-sm {
+            padding: 0.5rem 0.9rem;
+            border-radius: 8px;
+            font-size: 0.8rem;
+            font-weight: 700;
+            cursor: pointer;
+            border: none;
+        }
+
+        .btn-edit { background: var(--violet-glow); color: white; }
+        .btn-delete { background: #EF4444; color: white; }
+
+        @media (max-width: 768px) {
+            .admin-grid { grid-template-columns: 1fr; }
+            body { padding: 1rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1><i class="fa-solid fa-gauge-high"></i> Panel de Administración ✨</h1>
+        <a href="mis-cursos.html"><i class="fa-solid fa-arrow-left"></i> Volver a la Academia</a>
+    </header>
+
+    <div class="admin-grid">
+        
+        <!-- SECCIÓN 1: CREAR MÓDULO -->
+        <div class="admin-card">
+            <h2><i class="fa-solid fa-folder-plus" style="color: var(--violet-glow);"></i> 1. Añadir Módulo</h2>
+            <div class="form-group">
+                <label>Seleccionar Curso</label>
+                <select id="selectCourseForModule">
+                    <option value="">Cargando cursos...</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label>Título del Módulo</label>
+                <input type="text" id="moduleTitleInput" placeholder="Ej: Módulo 3: Técnicas Avanzadas">
+            </div>
+            <button class="btn-admin" onclick="crearModulo()">Crear Módulo 🚀</button>
+        </div>
+
+        <!-- SECCIÓN 2: CREAR LECCIÓN -->
+        <div class="admin-card">
+            <h2><i class="fa-solid fa-video" style="color: var(--pink-primary);"></i> 2. Añadir Lección</h2>
+            <div class="form-group">
+                <label>Seleccionar Curso</label>
+                <select id="selectCourseForLesson" onchange="cargarModulosSelect(this.value)">
+                    <option value="">Primero selecciona un curso</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label>Seleccionar Módulo</label>
+                <select id="selectModuleForLesson">
+                    <option value="">Primero selecciona un curso</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label>Título de la Lección</label>
+                <input type="text" id="lessonTitleInput" placeholder="Ej: Clase 1: Smokey Eyes Profesional">
+            </div>
+            <div class="form-group">
+                <label>URL del Video (YouTube)</label>
+                <input type="text" id="lessonVideoInput" placeholder="https://www.youtube.com/watch?v=...">
+            </div>
+            <div class="form-group">
+                <label>Descripción / Apuntes</label>
+                <textarea id="lessonDescInput" rows="2" placeholder="Detalles o resumen de la clase..."></textarea>
+            </div>
+            <button class="btn-admin" onclick="crearLeccion()">Guardar Lección ✨</button>
+        </div>
+
+        <!-- SECCIÓN 3: MODIFICAR Y MODERAR CONTENIDO EXISTENTE -->
+        <div class="admin-card full-width">
+            <h2><i class="fa-solid fa-list-check" style="color: var(--success-green);"></i> 3. Moderar y Modificar Lecciones</h2>
+            <div class="form-group">
+                <label>Selecciona un curso para ver sus lecciones</label>
+                <select id="selectCourseForModList" onchange="cargarLeccionesModeracion(this.value)">
+                    <option value="">Selecciona un curso...</option>
+                </select>
+            </div>
+
+            <div class="lessons-management-list" id="modListContainer">
+                <p style="color: var(--text-muted); font-size: 0.9rem;">Selecciona un curso arriba para listar sus clases y modificarlas.</p>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- SCRIPT DE GESTIÓN Y VALIDACIÓN DE ROL ADMIN -->
+    <script>
+        auth.onAuthStateChanged(async (user) => {
+            if (!user) {
+                // Si no ha iniciado sesión, enviar a login
+                window.location.href = "auth.html";
+                return;
+            }
+
+            try {
+                // Verificar en Firestore el rol del usuario actual
+                const userDoc = await db.collection("users").doc(user.uid).get();
+                
+                if (!userDoc.exists || userDoc.data().role !== "admin") {
+                    alert("Acceso denegado: No tienes permisos de administrador.");
+                    window.location.href = "mis-cursos.html";
+                    return;
+                }
+
+                // Si es admin, cargamos los selectores del panel
+                await cargarSelectorCursos();
+
+            } catch (error) {
+                console.error("Error al verificar permisos de administrador:", error);
+                window.location.href = "mis-cursos.html";
+            }
+        });
+
+        async function cargarSelectorCursos() {
+            try {
+                const snap = await db.collection("courses").get();
+                const selModule = document.getElementById('selectCourseForModule');
+                const selLesson = document.getElementById('selectCourseForLesson');
+                const selModList = document.getElementById('selectCourseForModList');
+
+                let optionsHtml = '<option value="">-- Selecciona un curso --</option>';
+                snap.forEach(doc => {
+                    const data = doc.data();
+                    optionsHtml += `<option value="${doc.id}">${data.title}</option>`;
+                });
+
+                selModule.innerHTML = optionsHtml;
+                selLesson.innerHTML = optionsHtml;
+                selModList.innerHTML = optionsHtml;
+            } catch (error) {
+                console.error("Error al cargar selector de cursos:", error);
+            }
+        }
+
+        async function crearModulo() {
+            const courseId = document.getElementById('selectCourseForModule').value;
+            const title = document.getElementById('moduleTitleInput').value.trim();
+
+            if (!courseId || !title) {
+                alert("Por favor completa todos los campos del módulo.");
+                return;
+            }
+
+            try {
+                await db.collection("modules").add({
+                    courseId: courseId,
+                    title: title,
+                    createdAt: firebase.firestore.FieldValue.serverTimestamp()
+                });
+                alert("¡Módulo creado con éxito! ✨");
+                document.getElementById('moduleTitleInput').value = '';
+            } catch (error) {
+                alert("Error al crear módulo: " + error.message);
+            }
+        }
+
+        async function cargarModulosSelect(courseId) {
+            const selectModule = document.getElementById('selectModuleForLesson');
+            if (!courseId) {
+                selectModule.innerHTML = '<option value="">Primero selecciona un curso</option>';
+                return;
+            }
+
+            try {
+                const snap = await db.collection("modules").where("courseId", "==", courseId).get();
+                let html = '<option value="">-- Selecciona un módulo --</option>';
+                snap.forEach(doc => {
+                    html += `<option value="${doc.id}">${doc.data().title}</option>`;
+                });
+                selectModule.innerHTML = html;
+            } catch (error) {
+                console.error("Error al cargar módulos:", error);
+            }
+        }
+
+        async function crearLeccion() {
+            const moduleId = document.getElementById('selectModuleForLesson').value;
+            const title = document.getElementById('lessonTitleInput').value.trim();
+            const videoUrl = document.getElementById('lessonVideoInput').value.trim();
+            const description = document.getElementById('lessonDescInput').value.trim();
+
+            if (!moduleId || !title) {
+                alert("Por favor selecciona el módulo y escribe un título para la lección.");
+                return;
+            }
+
+            try {
+                await db.collection("lessons").add({
+                    moduleId: moduleId,
+                    title: title,
+                    videoUrl: videoUrl,
+                    description: description,
+                    createdAt: firebase.firestore.FieldValue.serverTimestamp()
+                });
+                alert("¡Lección creada con éxito! 🚀");
+                document.getElementById('lessonTitleInput').value = '';
+                document.getElementById('lessonVideoInput').value = '';
+                document.getElementById('lessonDescInput').value = '';
+            } catch (error) {
+                alert("Error al crear lección: " + error.message);
+            }
+        }
+
+        async function cargarLeccionesModeracion(courseId) {
+            const container = document.getElementById('modListContainer');
+            if (!courseId) {
+                container.innerHTML = '<p style="color: var(--text-muted); font-size: 0.9rem;">Selecciona un curso arriba para listar sus clases.</p>';
+                return;
+            }
+
+            container.innerHTML = '<p style="color: var(--text-muted); font-size: 0.9rem;">Cargando lecciones...</p>';
+
+            try {
+                const modSnap = await db.collection("modules").where("courseId", "==", courseId).get();
+                let moduleIds = [];
+                modSnap.forEach(doc => moduleIds.push(doc.id));
+
+                if (moduleIds.length === 0) {
+                    container.innerHTML = '<p style="color: var(--text-muted); font-size: 0.9rem;">Este curso aún no tiene módulos registrados.</p>';
+                    return;
+                }
+
+                const lessonsSnap = await db.collection("lessons").where("moduleId", "in", moduleIds).get();
+
+                if (lessonsSnap.empty) {
+                    container.innerHTML = '<p style="color: var(--text-muted); font-size: 0.9rem;">No hay lecciones registradas en este curso.</p>';
+                    return;
+                }
+
+                container.innerHTML = '';
+                lessonsSnap.forEach(doc => {
+                    const l = doc.data();
+                    const item = document.createElement('div');
+                    item.className = 'lesson-admin-item';
+                    item.innerHTML = `
+                        <div class="lesson-admin-info">
+                            <h4>${l.title}</h4>
+                            <p>${l.videoUrl ? '📹 Video configurado' : '⚠️ Sin video'} — ${l.description ? l.description.substring(0, 50) + '...' : 'Sin descripción'}</p>
+                        </div>
+                        <div class="btn-action-group">
+                            <button class="btn-sm btn-edit" onclick="editarLeccion('${doc.id}', '${encodeURIComponent(l.title)}', '${encodeURIComponent(l.videoUrl || '')}', '${encodeURIComponent(l.description || '')}')">Editar</button>
+                            <button class="btn-sm btn-delete" onclick="eliminarLeccion('${doc.id}')">Eliminar</button>
+                        </div>
+                    `;
+                    container.appendChild(item);
+                });
+
+            } catch (error) {
+                console.error("Error al cargar moderación:", error);
+            }
+        }
+
+        async function editarLeccion(id, oldTitle, oldVideo, oldDesc) {
+            const nuevoTitulo = prompt("Modificar Título de la Lección:", decodeURIComponent(oldTitle));
+            if (nuevoTitulo === null) return;
+
+            const nuevoVideo = prompt("Modificar URL del Video (YouTube):", decodeURIComponent(oldVideo));
+            if (nuevoVideo === null) return;
+
+            const nuevaDesc = prompt("Modificar Descripción o Apuntes:", decodeURIComponent(oldDesc));
+            if (nuevaDesc === null) return;
+
+            try {
+                await db.collection("lessons").doc(id).update({
+                    title: nuevoTitulo,
+                    videoUrl: nuevoVideo,
+                    description: nuevaDesc
+                });
+                alert("¡Lección actualizada correctamente! ✨");
+                location.reload();
+            } catch (error) {
+                alert("Error al actualizar: " + error.message);
+            }
+        }
+
+        async function eliminarLeccion(id) {
+            if (!confirm("¿Estás segura de eliminar esta lección?")) return;
+
+            try {
+                await db.collection("lessons").doc(id).delete();
+                alert("Lección eliminada con éxito.");
+                location.reload();
+            } catch (error) {
+                alert("Error al eliminar: " + error.message);
+            }
+        }
+    </script>
+</body>
+</html>

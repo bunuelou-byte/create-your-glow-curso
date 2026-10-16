@@ -1,0 +1,463 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Acceso y Registro | CREATE YOUR GLOW</title>
+    
+    <!-- Fuentes Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700;800;900&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- 1. Carga los SDKs de Firebase (Versión Compat) primero -->
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-analytics-compat.js"></script>
+
+    <!-- 2. Inicializa Firebase con tus credenciales reales de inmediato -->
+    <script>
+        const firebaseConfig = {
+            apiKey: "AIzaSyCR724EP9rNkKtETG1xM_CGSQ1ZIHhbOhc",
+            authDomain: "create-your-glow.firebaseapp.com",
+            projectId: "create-your-glow",
+            storageBucket: "create-your-glow.firebasestorage.app",
+            messagingSenderId: "917183846981",
+            appId: "1:917183846981:web:214a14dbefdbdcc017612c",
+            measurementId: "G-65CL4G4DK7"
+        };
+
+        // Inicializar la aplicación y los servicios
+        firebase.initializeApp(firebaseConfig);
+        const auth = firebase.auth();
+        const db = firebase.firestore();
+        const analytics = firebase.analytics();
+
+        console.log("🔥 ¡Firebase conectado exitosamente a Create Your Glow!");
+    </script>
+    
+    <style>
+        :root {
+            --bg-light: #FFF8F9;
+            --bg-surface: #FFFFFF;
+            --bg-blush: #FCE8EC;
+            --text-dark: #18181B;
+            --text-muted: #52525B;
+            --violet-glow: #8B5CF6;
+            --violet-glow-dark: #7C3AED;
+            --grad-glam: linear-gradient(135deg, #FF6B8B 0%, #8B5CF6 100%);
+            --grad-dark-luxe: linear-gradient(135deg, #18181B 0%, #2D1B36 100%);
+            --glow-violet: 0 10px 30px rgba(139, 92, 246, 0.35);
+            --card-shadow: 0 15px 40px rgba(24, 24, 27, 0.08);
+            --transition: all 0.35s cubic-bezier(0.25, 1, 0.5, 1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background: radial-gradient(circle at 50% 10%, rgba(232, 141, 147, 0.15), transparent 60%),
+                        var(--bg-light);
+            color: var(--text-dark);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 480px;
+            margin: 0 auto;
+            padding: 2rem 1.5rem;
+        }
+
+        header {
+            padding: 1.5rem 0;
+            text-align: center;
+        }
+
+        .logo {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 1.5rem;
+            font-weight: 900;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .logo span {
+            background: var(--grad-glam);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .auth-card {
+            background: var(--bg-surface);
+            border-radius: 28px;
+            padding: 2.5rem 2rem;
+            box-shadow: var(--card-shadow);
+            border: 2px solid var(--bg-blush);
+            margin-bottom: 2rem;
+        }
+
+        .auth-tabs {
+            display: flex;
+            background: var(--bg-light);
+            border-radius: 14px;
+            padding: 4px;
+            margin-bottom: 2rem;
+            border: 2px solid var(--bg-blush);
+        }
+
+        .tab-btn {
+            flex: 1;
+            background: transparent;
+            border: none;
+            padding: 0.8rem;
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 700;
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            cursor: pointer;
+            border-radius: 10px;
+            transition: var(--transition);
+        }
+
+        .tab-btn.active {
+            background: #FFFFFF;
+            color: var(--violet-glow);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+        }
+
+        .form-panel {
+            display: none;
+        }
+
+        .form-panel.active {
+            display: block;
+            animation: fadeIn 0.4s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(5px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .form-group {
+            margin-bottom: 1.2rem;
+        }
+
+        .form-label {
+            display: block;
+            font-size: 0.85rem;
+            font-weight: 700;
+            margin-bottom: 0.4rem;
+            color: var(--text-dark);
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 1.1rem 1.2rem;
+            border-radius: 14px;
+            border: 2px solid var(--bg-blush);
+            background-color: var(--bg-light);
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            font-size: 0.95rem;
+            color: var(--text-dark);
+            outline: none;
+            transition: var(--transition);
+        }
+
+        .form-input:focus {
+            border-color: var(--violet-glow);
+            background-color: #FFFFFF;
+            box-shadow: 0 0 15px rgba(139, 92, 246, 0.15);
+        }
+
+        .forgot-pass {
+            display: block;
+            text-align: right;
+            font-size: 0.85rem;
+            color: var(--violet-glow);
+            font-weight: 700;
+            margin-top: -0.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .forgot-pass:hover {
+            text-decoration: underline;
+        }
+
+        .btn-submit {
+            width: 100%;
+            background: var(--grad-glam);
+            color: #FFFFFF;
+            padding: 1.1rem;
+            border: none;
+            border-radius: 50px;
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 800;
+            font-size: 1rem;
+            cursor: pointer;
+            box-shadow: var(--glow-violet);
+            transition: var(--transition);
+        }
+
+        .btn-submit:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 15px 30px rgba(139, 92, 246, 0.4);
+        }
+
+        .divider {
+            display: flex;
+            align-items: center;
+            text-align: center;
+            margin: 1.8rem 0;
+            color: var(--text-muted);
+            font-size: 0.85rem;
+        }
+
+        .divider::before, .divider::after {
+            content: '';
+            flex: 1;
+            border-bottom: 2px solid var(--bg-blush);
+        }
+
+        .divider::before { margin-right: .75em; }
+        .divider::after { margin-left: .75em; }
+
+        .btn-google {
+            width: 100%;
+            background: #FFFFFF;
+            color: var(--text-dark);
+            border: 2px solid var(--bg-blush);
+            padding: 0.95rem;
+            border-radius: 50px;
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 700;
+            font-size: 0.95rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            transition: var(--transition);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.03);
+        }
+
+        .btn-google:hover {
+            border-color: var(--violet-glow);
+            background-color: var(--bg-light);
+            transform: translateY(-2px);
+        }
+
+        footer {
+            text-align: center;
+            padding: 1.5rem;
+            font-size: 0.8rem;
+            color: var(--text-muted);
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="container" style="max-width: 1200px;">
+            <a href="index.html" class="logo">CREATE YOUR <span>GLOW</span> ✨</a>
+        </div>
+    </header>
+
+    <main class="container">
+        <div class="auth-card">
+            
+            <!-- PESTAÑAS -->
+            <div class="auth-tabs">
+                <button class="tab-btn active" id="tabLogin" onclick="switchTab('login')">Iniciar Sesión</button>
+                <button class="tab-btn" id="tabRegister" onclick="switchTab('register')">Crear Cuenta</button>
+            </div>
+
+            <!-- LOGIN -->
+            <div class="form-panel active" id="panelLogin">
+                <form id="loginForm" onsubmit="handleLogin(event)">
+                    <div class="form-group">
+                        <label class="form-label">Correo electrónico</label>
+                        <input type="email" id="loginEmail" class="form-input" placeholder="tucorreo@gmail.com" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Contraseña</label>
+                        <input type="password" id="loginPassword" class="form-input" placeholder="••••••••" required>
+                    </div>
+                    <a href="#" class="forgot-pass" onclick="recuperarPassword(event)">¿Olvidaste tu contraseña?</a>
+                    <button type="submit" class="btn-submit">Ingresar a mi Cuenta ✨</button>
+                </form>
+            </div>
+
+            <!-- REGISTRO -->
+            <div class="form-panel" id="panelRegister">
+                <form id="registerForm" onsubmit="handleRegister(event)">
+                    <div class="form-group">
+                        <label class="form-label">Nombre completo</label>
+                        <input type="text" id="regName" class="form-input" placeholder="Ej. Camila Rojas" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Correo electrónico</label>
+                        <input type="email" id="regEmail" class="form-input" placeholder="tucorreo@gmail.com" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Crea una contraseña</label>
+                        <input type="password" id="regPassword" class="form-input" placeholder="Mínimo 6 caracteres" required>
+                    </div>
+                    <button type="submit" class="btn-submit" style="margin-top: 1rem;">Registrarme Ahora 🚀</button>
+                </form>
+            </div>
+
+            <!-- DIVISOR -->
+            <div class="divider">o continúa con</div>
+
+            <!-- GOOGLE AUTH -->
+            <button class="btn-google" onclick="loginWithGoogle()">
+                <svg width="18" height="18" viewBox="0 0 24 24"><path fill="#4285F4" d="M23.745 12.27c0-.7-.06-1.4-.19-2.07H12v4.51h6.6c-.29 1.52-1.14 2.82-2.4 3.68v3.05h3.88c2.27-2.09 3.66-5.17 3.66-9.17z"/><path fill="#34A853" d="M12 24c3.24 0 5.95-1.08 7.93-2.91l-3.88-3.05c-1.08.72-2.45 1.16-4.05 1.16-3.13 0-5.78-2.11-6.73-4.96H1.19v3.15C3.17 21.31 7.24 24 12 24z"/><path fill="#FBBC05" d="M5.27 14.24c-.25-.72-.38-1.5-.38-2.24s.13-1.52.38-2.24V6.61H1.19C.43 8.14 0 9.87 0 12s.43 3.86 1.19 5.39l4.08-3.15z"/><path fill="#EA4335" d="M12 4.75c1.77 0 3.35.61 4.6 1.8l3.42-3.42C17.95 1.19 15.24 0 12 0 7.24 0 3.17 2.69 1.19 6.61l4.08 3.15c.95-2.85 3.6-4.96 6.73-4.96z"/></svg>
+                Entrar con Google
+            </button>
+        </div>
+    </main>
+
+    <footer>
+        <p>© 2026 CREATE YOUR GLOW. Todos los derechos reservados.</p>
+    </footer>
+
+    <!-- LÓGICA DE USUARIOS Y AUTENTICACIÓN -->
+    <script>
+        // Control de pestañas
+        function switchTab(tab) {
+            const tabLogin = document.getElementById('tabLogin');
+            const tabRegister = document.getElementById('tabRegister');
+            const panelLogin = document.getElementById('panelLogin');
+            const panelRegister = document.getElementById('panelRegister');
+
+            if (tab === 'login') {
+                tabLogin.classList.add('active');
+                tabRegister.classList.remove('active');
+                panelLogin.classList.add('active');
+                panelRegister.classList.remove('active');
+            } else {
+                tabRegister.classList.add('active');
+                tabLogin.classList.remove('active');
+                panelRegister.classList.add('active');
+                panelLogin.classList.remove('active');
+            }
+        }
+
+        // Función inteligente para redirigir según el rol del usuario en Firestore
+        async function redirigirSegunRol(uid) {
+            try {
+                const userDoc = await db.collection("users").doc(uid).get();
+                if (userDoc.exists) {
+                    const role = userDoc.data().role;
+                    if (role === "admin") {
+                        window.location.href = "admin.html"; // Redirige al panel de administración
+                    } else {
+                        window.location.href = "mis-cursos.html"; // Redirige al panel de estudiante
+                    }
+                } else {
+                    window.location.href = "mis-cursos.html";
+                }
+            } catch (error) {
+                console.error("Error al consultar el rol:", error);
+                window.location.href = "mis-cursos.html";
+            }
+        }
+
+        // 1. REGISTRO
+        async function handleRegister(event) {
+            event.preventDefault();
+            const name = document.getElementById('regName').value;
+            const email = document.getElementById('regEmail').value;
+            const password = document.getElementById('regPassword').value;
+
+            try {
+                const userCredential = await auth.createUserWithEmailAndPassword(email, password);
+                const user = userCredential.user;
+
+                await db.collection("users").doc(user.uid).set({
+                    name: name,
+                    email: email,
+                    role: "student", // Por defecto se registran como estudiantes
+                    createdAt: firebase.firestore.FieldValue.serverTimestamp()
+                });
+
+                alert("🚀 ¡Cuenta creada con éxito! Bienvenida a Create Your Glow.");
+                await redirigirSegunRol(user.uid);
+            } catch (error) {
+                alert("Error al registrarse: " + error.message);
+            }
+        }
+
+        // 2. INICIO DE SESIÓN
+        async function handleLogin(event) {
+            event.preventDefault();
+            const email = document.getElementById('loginEmail').value;
+            const password = document.getElementById('loginPassword').value;
+
+            try {
+                const userCredential = await auth.signInWithEmailAndPassword(email, password);
+                alert("✨ ¡Bienvenida de nuevo!");
+                await redirigirSegunRol(userCredential.user.uid);
+            } catch (error) {
+                alert("Error al iniciar sesión: Verifica bien tus datos. " + error.message);
+            }
+        }
+
+        // 3. INICIO DE SESIÓN CON GOOGLE
+        async function loginWithGoogle() {
+            const provider = new firebase.auth.GoogleAuthProvider();
+            try {
+                const result = await auth.signInWithPopup(provider);
+                const user = result.user;
+
+                const userRef = db.collection("users").doc(user.uid);
+                const doc = await userRef.get();
+
+                if (!doc.exists) {
+                    await userRef.set({
+                        name: user.displayName || "Usuario Google",
+                        email: user.email,
+                        role: "student", // Los nuevos por Google entran como student por defecto
+                        createdAt: firebase.firestore.FieldValue.serverTimestamp()
+                    });
+                }
+
+                alert("🌐 ¡Acceso con Google exitoso!");
+                await redirigirSegunRol(user.uid);
+            } catch (error) {
+                alert("Error con Google Auth: " + error.message);
+            }
+        }
+
+        // 4. RECUPERAR CONTRASEÑA
+        async function recuperarPassword(event) {
+            event.preventDefault();
+            const email = prompt('Ingresa tu correo electrónico registrado:');
+            if (email) {
+                try {
+                    await auth.sendPasswordResetEmail(email);
+                    alert(`📩 Se ha enviado un enlace de recuperación a: ${email}`);
+                } catch (error) {
+                    alert("Error: " + error.message);
+                }
+            }
+        }
+    </script>
+</body>
+</html>

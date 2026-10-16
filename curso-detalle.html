@@ -1,0 +1,480 @@
+<!DOCTYPE html>
+<html lang="es">
+    <!-- SDKs de Firebase (Versión Compat) -->
+<script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Detalle del Curso | CREATE YOUR GLOW</title>
+    
+    <!-- Fuentes Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700;800;900&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        /* ==========================================================================
+           1. VARIABLES Y ESTILOS BASE
+           ========================================================================== */
+        :root {
+            --bg-light: #FFF8F9;
+            --bg-surface: #FFFFFF;
+            --bg-blush: #FCE8EC;
+            --text-dark: #18181B;
+            --text-muted: #52525B;
+            --rose-gold: #E88D93;
+            --violet-glow: #8B5CF6;
+            --violet-glow-dark: #7C3AED;
+            --grad-glam: linear-gradient(135deg, #FF6B8B 0%, #8B5CF6 100%);
+            --grad-dark-luxe: linear-gradient(135deg, #18181B 0%, #2D1B36 100%);
+            --glow-violet: 0 10px 30px rgba(139, 92, 246, 0.35);
+            --card-shadow: 0 12px 35px rgba(24, 24, 27, 0.08);
+            --transition: all 0.35s cubic-bezier(0.25, 1, 0.5, 1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background-color: var(--bg-light);
+            color: var(--text-dark);
+            line-height: 1.6;
+        }
+
+        h1, h2, h3, h4 {
+            font-family: 'Montserrat', sans-serif;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 1.5rem;
+        }
+
+        /* ==========================================================================
+           2. HEADER
+           ========================================================================== */
+        header {
+            background-color: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(14px);
+            border-bottom: 2px solid rgba(232, 141, 147, 0.2);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .nav-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1.1rem 1.5rem;
+        }
+
+        .logo {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 1.4rem;
+            font-weight: 900;
+            color: var(--text-dark);
+            text-decoration: none;
+            text-transform: uppercase;
+        }
+
+        .logo span {
+            background: var(--grad-glam);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .btn-back {
+            color: var(--text-dark);
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 0.95rem;
+            transition: var(--transition);
+        }
+
+        .btn-back:hover {
+            color: var(--violet-glow);
+        }
+
+        /* ==========================================================================
+           3. HERO DETALLE CURSO
+           ========================================================================== */
+        .course-hero {
+            background: var(--grad-dark-luxe);
+            color: #FFFFFF;
+            padding: 4rem 0;
+            position: relative;
+        }
+
+        .hero-layout {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 2.5rem;
+            align-items: center;
+        }
+
+        .course-tag {
+            display: inline-block;
+            background: var(--grad-glam);
+            color: #FFFFFF;
+            padding: 0.4rem 1.2rem;
+            border-radius: 50px;
+            font-size: 0.85rem;
+            font-weight: 800;
+            text-transform: uppercase;
+            margin-bottom: 1rem;
+        }
+
+        .course-main-title {
+            font-size: 2.4rem;
+            font-weight: 900;
+            line-height: 1.2;
+            margin-bottom: 1rem;
+        }
+
+        .course-meta {
+            display: flex;
+            gap: 1.5rem;
+            flex-wrap: wrap;
+            font-size: 0.95rem;
+            color: #D4D4D8;
+            margin-bottom: 1.5rem;
+        }
+
+        .course-meta span {
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+        }
+
+        /* Tarjeta de Compra Flotante */
+        .purchase-box {
+            background: #FFFFFF;
+            color: var(--text-dark);
+            border-radius: 28px;
+            padding: 2rem;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+            border: 2px solid var(--bg-blush);
+        }
+
+        .course-banner-img {
+            width: 100%;
+            height: 220px;
+            object-fit: cover;
+            border-radius: 18px;
+            margin-bottom: 1.2rem;
+        }
+
+        .price-tag {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 2.2rem;
+            font-weight: 900;
+            color: var(--violet-glow);
+            margin-bottom: 1.2rem;
+        }
+
+        .btn-buy-now {
+            display: block;
+            width: 100%;
+            background: var(--grad-glam);
+            color: #FFFFFF;
+            text-align: center;
+            padding: 1.1rem;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 800;
+            font-size: 1.1rem;
+            box-shadow: var(--glow-violet);
+            transition: var(--transition);
+            border: none;
+            cursor: pointer;
+        }
+
+        .btn-buy-now:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 35px rgba(224, 82, 151, 0.4);
+        }
+
+        /* ==========================================================================
+           4. CONTENIDO PRINCIPAL (SECCIONES)
+           ========================================================================== */
+        .main-content {
+            padding: 4rem 0;
+        }
+
+        .content-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 3rem;
+        }
+
+        .section-block {
+            background: #FFFFFF;
+            padding: 2.2rem;
+            border-radius: 24px;
+            border: 2px solid var(--bg-blush);
+            box-shadow: var(--card-shadow);
+            margin-bottom: 2rem;
+        }
+
+        .block-title {
+            font-size: 1.6rem;
+            font-weight: 800;
+            color: var(--text-dark);
+            margin-bottom: 1.2rem;
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+        }
+
+        /* Temario / Módulos */
+        .module-item {
+            border: 2px solid var(--bg-blush);
+            border-radius: 16px;
+            margin-bottom: 1rem;
+            overflow: hidden;
+        }
+
+        .module-header {
+            background: var(--bg-light);
+            padding: 1.2rem 1.5rem;
+            font-weight: 800;
+            font-size: 1.05rem;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .module-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.35s ease;
+            background: #FFFFFF;
+            padding: 0 1.5rem;
+        }
+
+        .module-item.active .module-content {
+            max-height: 300px;
+            padding: 1rem 1.5rem 1.5rem 1.5rem;
+        }
+
+        .lesson-list {
+            list-style: none;
+        }
+
+        .lesson-list li {
+            padding: 0.6rem 0;
+            border-bottom: 1px solid var(--bg-blush);
+            font-size: 0.95rem;
+            color: var(--text-muted);
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+        }
+
+        .lesson-list li:last-child {
+            border-bottom: none;
+        }
+
+        /* Perfil Instructor */
+        .instructor-card {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+            align-items: center;
+            text-align: center;
+        }
+
+        .instructor-avatar {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 4px solid var(--rose-gold);
+        }
+
+        /* Requisitos */
+        .requirements-list {
+            list-style: none;
+        }
+
+        .requirements-list li {
+            position: relative;
+            padding-left: 1.8rem;
+            margin-bottom: 0.8rem;
+            color: var(--text-muted);
+        }
+
+        .requirements-list li::before {
+            content: '✓';
+            position: absolute;
+            left: 0;
+            color: var(--violet-glow);
+            font-weight: bold;
+        }
+
+        /* Responsive Breakpoints */
+        @media (min-width: 768px) {
+            .hero-layout {
+                grid-template-columns: 1.4fr 1fr;
+            }
+            .course-main-title {
+                font-size: 3.2rem;
+            }
+            .instructor-card {
+                flex-direction: row;
+                text-align: left;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- HEADER -->
+    <header>
+        <div class="container nav-container">
+            <a href="index.html" class="logo">CREATE YOUR <span>GLOW</span> ✨</a>
+            <a href="cursos.html" class="btn-back">← Volver al Catálogo</a>
+        </div>
+    </header>
+
+    <!-- HERO SECCIÓN -->
+    <section class="course-hero">
+        <div class="container hero-layout">
+            <div>
+                <span class="course-tag" id="courseCategory">Estrategia Digital</span>
+                <h1 class="course-main-title" id="courseTitle">Marca Personal para Artistas</h1>
+                <p style="color: #E2E8F0; font-size: 1.1rem; margin-bottom: 1.5rem;" id="courseSubtitle">
+                    Estrategias digitales paso a paso para posicionarte como la referente de belleza número uno en tu ciudad.
+                </p>
+                <div class="course-meta">
+                    <span>⏱️ <strong id="courseDuration">4 Semanas</strong></span>
+                    <span>📊 <strong id="courseLevel">Principiante</strong></span>
+                    <span>⭐ <strong>4.9 / 5.0 (Alumnas)</strong></span>
+                </div>
+            </div>
+
+            <!-- TARJETA DE COMPRA CONECTADA A auth.html -->
+            <div class="purchase-box">
+                <!-- 📸 CAMBIAR IMAGEN DEL CURSO -->
+                <img src="https://images.unsplash.com/photo-1522337360788-8b13dee7a37e?auto=format&fit=crop&w=800&q=80" 
+                     alt="Portada del curso" class="course-banner-img" id="courseImage">
+                <div class="price-tag" id="coursePrice">$50.000 COP</div>
+                <!-- AQUí REDIRIGE A auth.html -->
+                <button class="btn-buy-now" onclick="irARegistro()">Comprar Curso Ahora 🔥</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- CONTENIDO DETALLADO -->
+    <main class="main-content">
+        <div class="container content-grid">
+            
+            <!-- DESCRIPCIÓN -->
+            <section class="section-block">
+                <h2 class="block-title">📖 Descripción del Programa</h2>
+                <p style="color: var(--text-muted); line-height: 1.8;" id="courseDescription">
+                    Este curso está diseñado exclusivamente para maquillistas que desean convertir su perfil de Instagram en un imán de clientes. Aprenderás a estructurar tu propuesta de valor, definir tu estilo visual, iluminar correctamente tus contenidos y hablar con autoridad para que las clientas te elijan a ti por encima de la competencia.
+                </p>
+            </section>
+
+            <!-- TEMARIO (MÓDULOS) -->
+            <section class="section-block">
+                <h2 class="block-title">📚 Temario del Curso</h2>
+                <div id="temarioContainer">
+                    <div class="module-item active">
+                        <div class="module-header" onclick="toggleModulo(this)">
+                            <span>Módulo 1: Fundamentos de tu Marca Personal</span>
+                            <span>▼</span>
+                        </div>
+                        <div class="module-content">
+                            <ul class="lesson-list">
+                                <li>▶️ Lección 1: Definición de tu propuesta de valor única</li>
+                                <li>▶️ Lección 2: Optimización de tu biografía de Instagram</li>
+                                <li>▶️ Lección 3: Creación de paleta de colores e identidad visual</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="module-item">
+                        <div class="module-header" onclick="toggleModulo(this)">
+                            <span>Módulo 2: Fotografía y Video de Alto Impacto</span>
+                            <span>▼</span>
+                        </div>
+                        <div class="module-content">
+                            <ul class="lesson-list">
+                                <li>▶️ Lección 1: Tipos de luz (Aro de luz vs. Softbox)</li>
+                                <li>▶️ Lección 2: Ángulos para resaltar difuminados y pieles</li>
+                                <li>▶️ Lección 3: Edición profesional desde CapCut móvil</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- INSTRUCTOR -->
+            <section class="section-block">
+                <h2 class="block-title">👑 Tu Mentora</h2>
+                <div class="instructor-card">
+                    <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=400&q=80" 
+                         alt="Foto de la Instructora" class="instructor-avatar">
+                    <div>
+                        <h3 style="font-size: 1.3rem; margin-bottom: 0.4rem;">Sharon Ramos</h3>
+                        <p style="color: var(--violet-glow); font-weight: 700; margin-bottom: 0.8rem;">Especialista en Marketing para Artistas del Maquillaje</p>
+                        <p style="color: var(--text-muted); font-size: 0.95rem;">
+                            Con más de 6 años de experiencia impulsando a más de 500 artistas del maquillaje en Colombia y Latinoamérica para escalar sus negocios independientes.
+                        </p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- REQUISITOS -->
+            <section class="section-block">
+                <h2 class="block-title">📋 Requisitos</h2>
+                <ul class="requirements-list">
+                    <li>Un teléfono inteligente con cámara funcional (Android o iPhone).</li>
+                    <li>Ganas de aprender y aplicar las estrategias diariamente.</li>
+                    <li>No necesitas conocimientos previos de edición o diseño.</li>
+                </ul>
+            </section>
+
+        </div>
+    </main>
+
+    <!-- JAVASCRIPT DINÁMICO -->
+    <script>
+        // Acordeón de Módulos
+        function toggleModulo(element) {
+            const moduleItem = element.parentElement;
+            moduleItem.classList.toggle('active');
+        }
+
+        // Conexión hacia la pantalla de autenticación y registro
+        function irARegistro() {
+            const tituloCurso = document.getElementById('courseTitle').innerText;
+            // Redirige a auth.html enviando el curso seleccionado para asociarlo al usuario
+            window.location.href = `auth.html?curso=${encodeURIComponent(tituloCurso)}`;
+        }
+
+        // Cargar datos dinámicos si provienen de la URL
+        document.addEventListener('DOMContentLoaded', () => {
+            const urlParams = new URLSearchParams(window.location.search);
+            const nombreCurso = urlParams.get('nombre');
+
+            if (nombreCurso) {
+                document.getElementById('courseTitle').innerText = nombreCurso;
+            }
+        });
+    </script>
+</body>
+</html>

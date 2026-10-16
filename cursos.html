@@ -1,0 +1,433 @@
+<!DOCTYPE html>
+<html lang="es">
+    <!-- SDKs de Firebase (Versión Compat) -->
+<script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Catálogo de Cursos | CREATE YOUR GLOW</title>
+    <!-- Fuentes Google Fonts para máxima legibilidad y toque glam -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        /* ==========================================
+           1. VARIABLES Y ESTILOS BASE (BRAND GLOW)
+           ========================================== */
+        :root {
+            --rosa-fuerte: #E05297;
+            --rosa-glow: #FF75C3;
+            --violeta: #8F00FF;
+            --violeta-oscuro: #120A2A;
+            --furia-glow: #FF2A85;
+            --blanco: #FFFFFF;
+            --negro-suave: #1A1A1A;
+            --gris-claro: #F8F9FA;
+            --gris-borde: #E2E8F0;
+            --fuente-titulo: 'Montserrat', sans-serif;
+            --fuente-cuerpo: 'Plus Jakarta Sans', sans-serif;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: var(--fuente-cuerpo);
+            background-color: var(--gris-claro);
+            color: var(--negro-suave);
+            line-height: 1.6;
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        /* ==========================================
+           2. HEADER & NAVEGACIÓN
+           ========================================== */
+        .header {
+            background-color: var(--violeta-oscuro);
+            padding: 1rem 0;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+        }
+
+        .nav-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-family: var(--fuente-titulo);
+            font-size: 1.5rem;
+            font-weight: 800;
+            color: var(--blanco);
+            letter-spacing: 1px;
+        }
+
+        .logo span {
+            color: var(--rosa-glow);
+        }
+
+        .nav-link {
+            color: var(--blanco);
+            font-weight: 600;
+            font-size: 0.95rem;
+            transition: color 0.3s ease;
+        }
+
+        .nav-link:hover {
+            color: var(--rosa-glow);
+        }
+
+        /* ==========================================
+           3. HERO CATALOGO
+           ========================================== */
+        .hero-catalog {
+            background: linear-gradient(135deg, var(--violeta-oscuro) 0%, #2A085C 100%);
+            color: var(--blanco);
+            padding: 4rem 0 3rem;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero-catalog::after {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255, 117, 195, 0.15) 0%, transparent 60%);
+            pointer-events: none;
+        }
+
+        .catalog-title {
+            font-family: var(--fuente-titulo);
+            font-size: 2.2rem;
+            font-weight: 800;
+            margin-bottom: 0.8rem;
+            background: linear-gradient(90deg, #FFFFFF, var(--rosa-glow));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .catalog-subtitle {
+            font-size: 1.05rem;
+            color: #E2E8F0;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        /* ==========================================
+           4. FILTROS POR CATEGORÍA
+           ========================================== */
+        .filters-section {
+            padding: 2rem 0;
+        }
+
+        .filters-container {
+            display: flex;
+            justify-content: center;
+            gap: 0.8rem;
+            flex-wrap: wrap;
+        }
+
+        .btn-filter {
+            background: var(--blanco);
+            border: 2px solid var(--gris-borde);
+            padding: 0.6rem 1.4rem;
+            border-radius: 50px;
+            font-family: var(--fuente-titulo);
+            font-weight: 700;
+            font-size: 0.85rem;
+            color: var(--negro-suave);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .btn-filter:hover, .btn-filter.active {
+            background: linear-gradient(135deg, var(--furia-glow), var(--violeta));
+            color: var(--blanco);
+            border-color: transparent;
+            box-shadow: 0 4px 15px rgba(224, 82, 151, 0.35);
+        }
+
+        /* ==========================================
+           5. GRID DE TARJETAS DE CURSOS
+           ========================================== */
+        .courses-section {
+            padding-bottom: 5rem;
+        }
+
+        .courses-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 2rem;
+        }
+
+        .course-card {
+            background: var(--blanco);
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            display: flex;
+            flex-direction: column;
+            border: 1px solid rgba(0,0,0,0.05);
+        }
+
+        .course-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 15px 35px rgba(143, 0, 255, 0.15);
+        }
+
+        .card-image-wrapper {
+            position: relative;
+            width: 100%;
+            height: 220px;
+            overflow: hidden;
+        }
+
+        .card-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+
+        .course-card:hover .card-image {
+            transform: scale(1.06);
+        }
+
+        .badge-category {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background: rgba(18, 10, 42, 0.85);
+            backdrop-filter: blur(5px);
+            color: var(--rosa-glow);
+            padding: 0.3rem 0.8rem;
+            border-radius: 50px;
+            font-size: 0.75rem;
+            font-weight: 700;
+            text-transform: uppercase;
+        }
+
+        .card-content {
+            padding: 1.5rem;
+            display: flex;
+            flex-direction: column;
+            flex-grow: 1;
+        }
+
+        .course-title {
+            font-family: var(--fuente-titulo);
+            font-size: 1.25rem;
+            font-weight: 800;
+            color: var(--violeta-oscuro);
+            margin-bottom: 0.8rem;
+        }
+
+        .course-details {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 1rem;
+            font-size: 0.85rem;
+            color: #64748B;
+            font-weight: 600;
+        }
+
+        .detail-item {
+            display: flex;
+            align-items: center;
+            gap: 0.3rem;
+        }
+
+        .course-price {
+            font-family: var(--fuente-titulo);
+            font-size: 1.6rem;
+            font-weight: 800;
+            color: var(--furia-glow);
+            margin-top: auto;
+            margin-bottom: 1.2rem;
+        }
+
+        .btn-interest {
+            background: linear-gradient(135deg, var(--rosa-fuerte), var(--violeta));
+            color: var(--blanco);
+            text-align: center;
+            padding: 0.85rem;
+            border-radius: 12px;
+            font-family: var(--fuente-titulo);
+            font-weight: 700;
+            font-size: 0.95rem;
+            transition: all 0.3s ease;
+            display: block;
+        }
+
+        .btn-interest:hover {
+            opacity: 0.95;
+            box-shadow: 0 6px 20px rgba(224, 82, 151, 0.4);
+        }
+
+        /* ==========================================
+           6. RESPONSIVE BREAKPOINTS (MOBILE FIRST)
+           ========================================== */
+        @media (min-width: 640px) {
+            .courses-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (min-width: 1024px) {
+            .courses-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
+            .catalog-title {
+                font-size: 2.8rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- HEADER -->
+    <header class="header">
+        <div class="container nav-container">
+            <a href="index.html" class="logo">CREATE YOUR <span>GLOW</span></a>
+            <a href="index.html" class="nav-link">← Volver al Inicio</a>
+        </div>
+    </header>
+
+    <!-- HERO CATALOGO -->
+    <section class="hero-catalog">
+        <div class="container">
+            <h1 class="catalog-title">Catálogo Oficial de Cursos</h1>
+            <p class="catalog-subtitle">Estrategias digitales probadas para hacer brillar tu talento y multiplicar tus clientes en el mundo del maquillaje.</p>
+        </div>
+    </section>
+
+    <!-- FILTROS POR CATEGORÍA -->
+    <section class="filters-section">
+        <div class="container filters-container">
+            <button class="btn-filter active" onclick="filtrarCursos('todos', this)">Todos los cursos</button>
+            <button class="btn-filter" onclick="filtrarCursos('marca', this)">Marca Personal</button>
+            <button class="btn-filter" onclick="filtrarCursos('contenido', this)">Contenido Digital</button>
+            <button class="btn-filter" onclick="filtrarCursos('marketing', this)">Marketing & Ventas</button>
+        </div>
+    </section>
+
+    <!-- GRID DE CURSOS -->
+    <section class="courses-section">
+        <div class="container">
+            <div class="courses-grid" id="contenedor-cursos">
+                <!-- Se renderiza dinámicamente con JavaScript -->
+            </div>
+        </div>
+    </section>
+
+    <!-- JAVASCRIPT DINÁMICO -->
+    <script>
+        // DATOS DE LOS CURSOS
+        const cursosData = [
+            {
+                id: "marca-personal",
+                titulo: "Marca Personal para Artistas",
+                categoria: "marca",
+                categoriaEtiqueta: "Marca Personal",
+                duracion: "4 Semanas",
+                nivel: "Principiante",
+                precio: "$50.000 COP",
+                imagen: "https://images.unsplash.com/photo-1522337360788-8b13dee7a37e?auto=format&fit=crop&w=800&q=80"
+            },
+            {
+                id: "contenido-vende",
+                titulo: "Contenido que Vende",
+                categoria: "contenido",
+                categoriaEtiqueta: "Contenido Digital",
+                duracion: "5 Semanas",
+                nivel: "Intermedio",
+                precio: "$70.000 COP",
+                imagen: "https://images.unsplash.com/photo-1512496015851-a90fb38ba796?auto=format&fit=crop&w=800&q=80"
+            },
+            {
+                id: "marketing-maquillistas",
+                titulo: "Marketing para Maquillistas",
+                categoria: "marketing",
+                categoriaEtiqueta: "Marketing & Ventas",
+                duracion: "6 Semanas",
+                nivel: "Todos los niveles",
+                precio: "$60.000 COP",
+                imagen: "https://images.unsplash.com/photo-1487412720507-e7ab37603c6f?auto=format&fit=crop&w=800&q=80"
+            }
+        ];
+
+        // Función para renderizar las tarjetas
+        function renderizarCursos(lista) {
+            const contenedor = document.getElementById('contenedor-cursos');
+            contenedor.innerHTML = '';
+
+            lista.forEach(curso => {
+                const card = document.createElement('article');
+                card.className = 'course-card';
+                card.innerHTML = `
+                    <div class="card-image-wrapper">
+                        <img src="${curso.imagen}" alt="${curso.titulo}" class="card-image">
+                        <span class="badge-category">${curso.categoriaEtiqueta}</span>
+                    </div>
+                    <div class="card-content">
+                        <h3 class="course-title">${curso.titulo}</h3>
+                        <div class="course-details">
+                            <span class="detail-item">⏱️ ${curso.duracion}</span>
+                            <span class="detail-item">📊 ${curso.nivel}</span>
+                        </div>
+                        <div class="course-price">${curso.precio}</div>
+                        <!-- AQUÍ ESTÁ LA CONEXIÓN DIRECTA A curso-detalle.html -->
+                        <a href="curso-detalle.html?nombre=${encodeURIComponent(curso.titulo)}" class="btn-interest">
+                            Me interesa este curso
+                        </a>
+                    </div>
+                `;
+                contenedor.appendChild(card);
+            });
+        }
+
+        // Función para filtrar por categoría
+        function filtrarCursos(categoria, elementoBoton) {
+            const botones = document.querySelectorAll('.btn-filter');
+            botones.forEach(btn => btn.classList.remove('active'));
+            elementoBoton.classList.add('active');
+
+            if (categoria === 'todos') {
+                renderizarCursos(cursosData);
+            } else {
+                const filtrados = cursosData.filter(c => c.categoria === categoria);
+                renderizarCursos(filtrados);
+            }
+        }
+
+        // Cargar todos los cursos al iniciar la página
+        document.addEventListener('DOMContentLoaded', () => {
+            renderizarCursos(cursosData);
+        });
+    </script>
+</body>
+</html>
