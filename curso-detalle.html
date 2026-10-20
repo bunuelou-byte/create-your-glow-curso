@@ -597,4 +597,37 @@
         }
     </script>
 </body>
-</html>
+</html>async function iniciarCompra(cursoActual, usuarioActual) {
+    // Reemplaza con la URL /exec que te dio Google Apps Script al implementar tu Web App
+    const urlAppsScript = "TU_URL_DE_APLICACION_WEB_DE_APPS_SCRIPT";
+
+    try {
+        const respuesta = await fetch(urlAppsScript + "?action=crearPago", {
+            method: "POST",
+            body: JSON.stringify({
+                curso: {
+                    id: cursoActual.id,         // ID del documento del curso en Firestore
+                    title: cursoActual.title,   // Título del curso
+                    price: cursoActual.price    // Precio del curso (ej: 49.90)
+                },
+                usuario: {
+                    uid: usuarioActual.uid,     // UID del usuario autenticado en Firebase Auth
+                    email: usuarioActual.email  // Correo del usuario
+                }
+            })
+        });
+
+        const resultado = await respuesta.json();
+
+        if (resultado.status === "success") {
+            // Te redirige automáticamente a la pasarela de pagos de Mercado Pago
+            window.location.href = resultado.init_point; 
+        } else {
+            alert("No se pudo iniciar el pago: " + (resultado.error || "Error desconocido"));
+        }
+
+    } catch (error) {
+        console.error("Error de red al intentar comprar:", error);
+        alert("Ocurrió un error de conexión con la pasarela de pagos.");
+    }
+}
