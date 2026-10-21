@@ -1,4 +1,19 @@
 export default async function handler(req, res) {
+  // Configurar cabeceras CORS
+  res.setHeader('Access-Control-Allow-Credentials', true);
+  res.setHeader('Access-Control-Allow-Origin', '*');
+  res.setHeader('Access-Control-Allow-Methods', 'GET,OPTIONS,PATCH,DELETE,POST,PUT');
+  res.setHeader(
+    'Access-Control-Allow-Headers',
+    'X-CSRF-Token, X-Requested-With, Accept, Accept-Version, Content-Length, Content-MD5, Content-Type, Date, X-Api-Version'
+  );
+
+  // Manejar solicitud preflight de CORS
+  if (req.method === 'OPTIONS') {
+    res.status(200).end();
+    return;
+  }
+
   // Solo permitir solicitudes POST
   if (req.method !== 'POST') {
     return res.status(405).json({ error: 'Método no permitido' });
@@ -14,7 +29,7 @@ export default async function handler(req, res) {
 
     const referenciaExterna = `${usuario.uid}_${curso.id}`;
 
-    // Tu URL actual de GitHub Pages
+    // Base URL de GitHub Pages
     const baseUrl = "https://bunuelou-byte.github.io/create-your-glow"; 
     const urlExito = `${baseUrl}/pago-exitoso.html?ref=${referenciaExterna}`;
     const urlPendiente = `${baseUrl}/pago-pendiente.html?ref=${referenciaExterna}`;
