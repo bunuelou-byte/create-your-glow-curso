@@ -560,7 +560,7 @@
             moduleItem.classList.toggle('active');
         }
 
-        // Integración con Google Apps Script y Mercado Pago
+        // Integración con Vercel Serverless Functions y Mercado Pago
         async function iniciarCompraPasarela() {
             const user = auth.currentUser;
 
@@ -570,21 +570,19 @@
                 return;
             }
 
-            // REEMPLAZA ESTA URL CON TU URL DE LA APLICACIÓN WEB DE APPS SCRIPT QUE TERMINA EN /exec
-            const urlAppsScript = "https://script.google.com/macros/s/AKfycbx5GnTpEXw4EoeyB8DjclpmjEflTdsQg7y1Zw2OMX31yuUHC2A_4F4J-DR2XscsKYyI/exec";
-
-            if (urlAppsScript.includes("TU_URL_")) {
-                alert("Por favor configura la URL de tu Apps Script en el código JavaScript de esta página.");
-                return;
-            }
+            // NUEVA URL DE VERCEL CONFIGURADA
+            const urlVercel = "https://create-your-glow-curso-ma2tydlrz-bunuelou-7835.vercel.app/api/crear-pago";
 
             const btnComprar = document.querySelector('.btn-buy-now');
             btnComprar.innerText = "Generando pago...";
             btnComprar.disabled = true;
 
             try {
-                const respuesta = await fetch(urlAppsScript + "?action=crearPago", {
+                const respuesta = await fetch(urlVercel, {
                     method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
                     body: JSON.stringify({
                         curso: {
                             id: currentCourseId,
@@ -618,4 +616,4 @@
     </script>
 </body>
 </html>
-            
+```
