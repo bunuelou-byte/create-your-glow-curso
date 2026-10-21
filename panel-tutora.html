@@ -1,139 +1,372 @@
+```html
 <!DOCTYPE html>
 <html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Panel de Administración - Create Your Glow</title>
-    <link rel="stylesheet" href="css/estilos.css">
+    <title>Panel de Tutora | CREATE YOUR GLOW</title>
+    
+    <!-- SDKs de Firebase (Versión Compat - Idéntica al resto de tus páginas) -->
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
+
+    <!-- Google Fonts & FontAwesome -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@500;700&family=DM+Sans:wght@400;500;700&family=Fraunces:ital,opsz,wght@0,9..144,600;0,9..144,800;1,9..144,600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <script>
+        const firebaseConfig = {
+            apiKey: "AIzaSyCR724EP9rNkKtETG1xM_CGSQ1ZIHhbOhc",
+            authDomain: "create-your-glow.firebaseapp.com",
+            projectId: "create-your-glow",
+            storageBucket: "create-your-glow.firebasestorage.app",
+            messagingSenderId: "917183846981",
+            appId: "1:917183846981:web:214a14dbefdbdcc017612c"
+        };
+        firebase.initializeApp(firebaseConfig);
+        const auth = firebase.auth();
+        const db = firebase.firestore();
+    </script>
+
+    <style>
+        :root {
+            --lavender: #C5B3F2;
+            --pink: #F7A8D0;
+            --pink-soft: #FBD3E6;
+            --coral: #F7704F;
+            --burgundy: #6B0F2E;
+            --olive: #A7A83B;
+            --yellow: #FFF08A;
+            --cream: #FBF3E8;
+            --ink: #261B2B;
+            --muted: #6A5870;
+
+            --grad-hero: linear-gradient(160deg, #F7A8D0 0%, #E9B4E8 35%, #C5B3F2 65%, #F9B08C 100%);
+            --hard: 5px 5px 0 var(--ink);
+            --hard-sm: 3px 3px 0 var(--ink);
+            --transition: all 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+            --grain: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.55'/%3E%3C/svg%3E");
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; scroll-behavior: smooth; }
+
+        body {
+            font-family: 'DM Sans', sans-serif;
+            background-color: var(--cream);
+            color: var(--ink);
+            line-height: 1.65;
+            overflow-x: hidden;
+        }
+
+        h1, h2, h3 { font-family: 'Fraunces', serif; letter-spacing: -0.02em; }
+        .container { width: 90%; max-width: 900px; margin: 0 auto; }
+
+        /* HEADER */
+        .topbar {
+            background: var(--pink);
+            color: var(--burgundy);
+            text-align: center;
+            font-size: 0.8rem;
+            font-weight: 700;
+            padding: 0.4rem 1rem;
+            letter-spacing: 0.3px;
+        }
+
+        header {
+            background-color: var(--burgundy);
+            border-bottom: 3px solid var(--ink);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .nav-container { display: flex; justify-content: space-between; align-items: center; padding: 0.9rem 1.5rem; }
+
+        .logo {
+            font-family: 'Fraunces', serif;
+            font-size: 1.3rem;
+            font-weight: 800;
+            color: var(--cream);
+            text-decoration: none;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+        }
+
+        .logo span { color: var(--pink); font-style: italic; }
+
+        .btn-back {
+            background: var(--olive);
+            color: var(--cream);
+            border: 2px solid var(--ink);
+            padding: 0.6rem 1.4rem;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 0.82rem;
+            text-transform: uppercase;
+            letter-spacing: 0.8px;
+            box-shadow: var(--hard-sm);
+            transition: var(--transition);
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn-back:hover { transform: translate(-2px, -2px); box-shadow: 5px 5px 0 var(--ink); background: var(--yellow); color: var(--ink); }
+
+        /* MAIN */
+        .main-panel {
+            padding: 4rem 1.5rem 6rem;
+        }
+
+        .panel-card {
+            background: #FFFFFF;
+            border-radius: 28px;
+            border: 2.5px solid var(--ink);
+            box-shadow: var(--hard);
+            padding: 3rem 2.5rem;
+            position: relative;
+        }
+
+        .panel-title {
+            font-size: 2.2rem;
+            font-weight: 800;
+            color: var(--burgundy);
+            margin-bottom: 0.5rem;
+            text-align: center;
+        }
+
+        .panel-subtitle {
+            text-align: center;
+            color: var(--muted);
+            font-size: 1rem;
+            margin-bottom: 2.5rem;
+            font-weight: 500;
+        }
+
+        /* FORMULARIO */
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-label {
+            display: block;
+            font-size: 0.85rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.8px;
+            color: var(--burgundy);
+            margin-bottom: 0.5rem;
+        }
+
+        .form-input, .form-textarea {
+            width: 100%;
+            padding: 0.9rem 1.2rem;
+            border-radius: 16px;
+            border: 2px solid var(--ink);
+            background: var(--cream);
+            color: var(--ink);
+            font-family: 'DM Sans', sans-serif;
+            font-size: 1rem;
+            outline: none;
+            transition: var(--transition);
+        }
+
+        .form-input:focus, .form-textarea:focus {
+            border-color: var(--coral);
+            box-shadow: 4px 4px 0 var(--ink);
+            background: #FFFFFF;
+        }
+
+        .btn-submit {
+            width: 100%;
+            background: var(--yellow);
+            color: var(--ink);
+            padding: 1.1rem;
+            border: 2.5px solid var(--ink);
+            border-radius: 50px;
+            font-family: 'DM Sans', sans-serif;
+            font-weight: 700;
+            font-size: 0.95rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            cursor: pointer;
+            box-shadow: var(--hard);
+            transition: var(--transition);
+            margin-top: 1rem;
+        }
+
+        .btn-submit:hover {
+            transform: translate(-3px, -3px);
+            box-shadow: 8px 8px 0 var(--ink);
+            background: var(--olive);
+            color: var(--cream);
+        }
+
+        /* ESTADOS DE CARGA / ACCESO */
+        .status-box {
+            text-align: center;
+            padding: 3rem;
+            background: var(--cream);
+            border: 2.5px solid var(--ink);
+            border-radius: 22px;
+            box-shadow: var(--hard-sm);
+            font-weight: 700;
+            font-size: 1.1rem;
+            color: var(--burgundy);
+        }
+    </style>
 </head>
 <body>
+
+    <div class="topbar">✨ Panel Exclusivo para Gestión Académica ✨</div>
+
     <header>
-        <h1>Panel de Tutora - Subir Clase 💖</h1>
-        <nav>
-            <a href="index.html">Volver al Inicio</a>
-        </nav>
+        <div class="container nav-container">
+            <a href="index.html" class="logo">CREATE YOUR <span>GLOW</span> ✨</a>
+            <a href="index.html" class="btn-back"><i class="fa-solid fa-arrow-left"></i> Volver al Inicio</a>
+        </div>
     </header>
 
-    <main style="max-width: 600px; margin: 40px auto; padding: 20px;">
-        <div id="loading-auth" style="text-align: center;">
-            <p>Verificando permisos de tutora...</p>
-        </div>
-
-        <!-- El formulario se oculta inicialmente hasta verificar que eres admin -->
-        <form id="form-leccion" style="display: none; background: #f9f9f9; padding: 20px; border-radius: 8px;">
-            <h2>Agregar Nueva Lección</h2>
+    <main class="container main-panel">
+        <div class="panel-card">
             
-            <label>ID del Curso (ej. curso-arte):</label><br>
-            <input type="text" id="courseId" required style="width: 100%; margin-bottom: 15px; padding: 8px;"><br>
+            <!-- VERIFICANDO PERMISOS -->
+            <div id="loading-auth" class="status-box">
+                <i class="fa-solid fa-spinner fa-spin" style="font-size: 2rem; margin-bottom: 1rem; display: block;"></i>
+                Verificando permisos de tutora en la plataforma...
+            </div>
 
-            <label>Número de Módulo:</label><br>
-            <input type="number" id="moduleNumber" value="1" required style="width: 100%; margin-bottom: 15px; padding: 8px;"><br>
+            <!-- FORMULARIO DE LECCIÓN (OCULTO HASTA VALIDAR) -->
+            <form id="form-leccion" style="display: none;">
+                <h1 class="panel-title">Subir Nueva Clase 💖</h1>
+                <p class="panel-subtitle">Agrega contenido interactivo, videos y materiales para tus alumnas.</p>
 
-            <label>Nombre del Módulo:</label><br>
-            <input type="text" id="moduleName" placeholder="Ej. Fundamentos" required style="width: 100%; margin-bottom: 15px; padding: 8px;"><br>
+                <div class="form-group">
+                    <label class="form-label">ID del Curso (ej. marca-personal o ID de Firestore):</label>
+                    <input type="text" id="courseId" class="form-input" placeholder="Ej. curso-marca-personal" required>
+                </div>
 
-            <label>Número de Orden de la Lección:</label><br>
-            <input type="number" id="order" value="1" required style="width: 100%; margin-bottom: 15px; padding: 8px;"><br>
+                <div class="form-group">
+                    <label class="form-label">Número de Módulo:</label>
+                    <input type="number" id="moduleNumber" class="form-input" value="1" required>
+                </div>
 
-            <label>Título de la Clase:</label><br>
-            <input type="text" id="title" placeholder="Ej. Clase 1: Materiales básicos" required style="width: 100%; margin-bottom: 15px; padding: 8px;"><br>
+                <div class="form-group">
+                    <label class="form-label">Nombre del Módulo:</label>
+                    <input type="text" id="moduleName" class="form-input" placeholder="Ej. Módulo 1: Fundamentos de Marca" required>
+                </div>
 
-            <label>URL del Video de YouTube (No listado):</label><br>
-            <input type="url" id="videoUrl" placeholder="https://www.youtube.com/watch?v=..." required style="width: 100%; margin-bottom: 15px; padding: 8px;"><br>
+                <div class="form-group">
+                    <label class="form-label">Número de Orden de la Lección:</label>
+                    <input type="number" id="order" class="form-input" value="1" required>
+                </div>
 
-            <label>URL del Material (Google Drive opcional):</label><br>
-            <url id="materialUrl" style="width: 100%; margin-bottom: 15px; padding: 8px;"></url>
-            <input type="url" id="materialUrl" placeholder="https://drive.google.com/..." style="width: 100%; margin-bottom: 15px; padding: 8px;"><br>
+                <div class="form-group">
+                    <label class="form-label">Título de la Clase:</label>
+                    <input type="text" id="title" class="form-input" placeholder="Ej. Clase 1: Tu Propuesta Única de Valor" required>
+                </div>
 
-            <label>Contenido o Descripción:</label><br>
-            <textarea id="content" rows="4" placeholder="Escribe un breve resumen de la clase..." style="width: 100%; margin-bottom: 15px; padding: 8px;"></textarea><br>
+                <div class="form-group">
+                    <label class="form-label">URL del Video de YouTube:</label>
+                    <input type="url" id="videoUrl" class="form-input" placeholder="https://www.youtube.com/watch?v=..." required>
+                </div>
 
-            <button type="submit" style="background: #ff4b72; color: white; padding: 10px 20px; border: none; border-radius: 5px; cursor: pointer; font-weight: bold; width: 100%;">Publicar Lección</button>
-        </form>
+                <div class="form-group">
+                    <label class="form-label">URL del Material (Google Drive / PDF Opcional):</label>
+                    <input type="url" id="materialUrl" class="form-input" placeholder="https://drive.google.com/...">
+                </div>
 
-        <div id="unauthorized" style="display: none; text-align: center; color: red;">
-            <h3>Acceso Denegado</h3>
-            <p>Esta sección es exclusiva para la tutora de la plataforma.</p>
+                <div class="form-group">
+                    <label class="form-label">Contenido o Resumen:</label>
+                    <textarea id="content" class="form-textarea" rows="4" placeholder="Escribe un breve resumen de lo que aprenderán en esta clase..."></textarea>
+                </div>
+
+                <button type="submit" class="btn-submit">Publicar Lección Ahora ✨</button>
+            </form>
+
+            <!-- ACCESO DENEGADO -->
+            <div id="unauthorized" class="status-box" style="display: none; background: var(--pink-soft); color: var(--burgundy);">
+                <i class="fa-solid fa-triangle-exclamation" style="font-size: 2.5rem; margin-bottom: 1rem; display: block;"></i>
+                <h3>Acceso Restringido</h3>
+                <p style="margin-top: 0.5rem; font-weight: 500;">Esta sección es exclusiva para la tutora de Create Your Glow. Por favor inicia sesión con tu cuenta de administradora.</p>
+                <a href="auth.html" class="btn-submit" style="display: inline-block; width: auto; padding: 0.8rem 2rem; margin-top: 1.5rem; text-decoration: none;">Iniciar Sesión ✨</a>
+            </div>
+
         </div>
     </main>
 
-    <!-- Scripts de Firebase y tu lógica -->
-    <script type="module" src="js/admin.js"></script>
+    <!-- SCRIPT DE VALIDACIÓN Y ENVÍO (COMPAT) -->
+    <script>
+        const loadingAuth = document.getElementById("loading-auth");
+        const formLeccion = document.getElementById("form-leccion");
+        const unauthorized = document.getElementById("unauthorized");
+
+        // Verificamos sesión con Firebase Auth
+        auth.onAuthStateChanged(async (user) => {
+            if (user) {
+                try {
+                    // Consultamos el documento de la usuaria en la colección 'users'
+                    const userDoc = await db.collection("users").doc(user.uid).get();
+
+                    if (userDoc.exists && userDoc.data().role === "admin") {
+                        // ¡Permiso concedido! Mostramos el formulario
+                        loadingAuth.style.display = "none";
+                        formLeccion.style.display = "block";
+                    } else {
+                        // Si no es admin, permitimos acceso temporal o bloqueamos según tu preferencia. 
+                        // (Si estás probando y quieres forzar el acceso mientras configuras tu rol en Firestore, puedes comentar este bloque).
+                        loadingAuth.style.display = "none";
+                        unauthorized.style.display = "block";
+                    }
+                } catch (error) {
+                    console.error("Error al verificar permisos:", error);
+                    loadingAuth.style.display = "none";
+                    unauthorized.style.display = "block";
+                }
+            } else {
+                // Si no hay sesión iniciada, redirigimos al login
+                window.location.href = "auth.html";
+            }
+        });
+
+        // Enviar formulario a Firestore
+        formLeccion.addEventListener("submit", async (e) => {
+            e.preventDefault();
+
+            const btnSubmit = document.querySelector('.btn-submit');
+            btnSubmit.innerText = "Publicando clase...";
+            btnSubmit.disabled = true;
+
+            const nuevaLeccion = {
+                courseId: document.getElementById("courseId").value,
+                moduleNumber: Number(document.getElementById("moduleNumber").value),
+                moduleName: document.getElementById("moduleName").value,
+                order: Number(document.getElementById("order").value),
+                title: document.getElementById("title").value,
+                videoUrl: document.getElementById("videoUrl").value,
+                materialUrl: document.getElementById("materialUrl").value,
+                content: document.getElementById("content").value,
+                createdAt: firebase.firestore.FieldValue.serverTimestamp()
+            };
+
+            try {
+                await db.collection("lessons").add(nuevaLeccion);
+                alert("¡Clase subida y publicada con éxito en Firestore! 🎉");
+                formLeccion.reset();
+                btnSubmit.innerText = "Publicar Lección Ahora ✨";
+                btnSubmit.disabled = false;
+            } catch (error) {
+                console.error("Error al guardar la lección:", error);
+                alert("Hubo un error al guardar la lección en la base de datos.");
+                btnSubmit.innerText = "Publicar Lección Ahora ✨";
+                btnSubmit.disabled = false;
+            }
+        });
+    </script>
 </body>
 </html>
-```
-
----
-
-### Paso 2: Crear el archivo de lógica JavaScript (`js/admin.js`)
-Crea una carpeta llamada `js` (si no la tienes) y dentro un archivo llamado **`admin.js`**. 
-
-Este script se encargará de comprobar que tu cuenta sea la tutora (rol `admin`) y de guardar la clase en tu base de datos de Firestore:
-
-```javascript
-import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
-import { getFirestore, doc, getDoc, collection, addTimestamp, addDoc } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
-
-// Configuración de Firebase (asegúrate de usar tu archivo de config o pegarla aquí)
-import { firebaseConfig } from "./firebase-config.js";
-
-const app = initializeApp(firebaseConfig);
-const auth = getAuth(app);
-const db = getFirestore(app);
-
-const loadingAuth = document.getElementById("loading-auth");
-const formLeccion = document.getElementById("form-leccion");
-const unauthorized = document.getElementById("unauthorized");
-
-// 1. Verificar autenticación y rol de administrador
-onAuthStateChanged(auth, async (user) => {
-    if (user) {
-        try {
-            // Buscar el documento del usuario en Firestore para ver su rol
-            const userDocRef = doc(db, "users", user.uid);
-            const userSnap = await getDoc(userDocRef);
-
-            if (userSnap.exists() && userSnap.data().role === "admin") {
-                // ¡Eres tú, la tutora! Mostramos el formulario
-                loadingAuth.style.display = "none";
-                formLeccion.style.display = "block";
-            } else {
-                // Es un estudiante normal, se le niega el acceso
-                loadingAuth.style.display = "none";
-                unauthorized.style.display = "block";
-            }
-        } catch (error) {
-            console.error("Error verificando rol:", error);
-        }
-    } else {
-        // No ha iniciado sesión
-        window.location.href = "login.html";
-    }
-});
-
-// 2. Procesar el envío del formulario para guardar la lección en Firestore
-formLeccion.addEventListener("submit", async (e) => {
-    e.preventDefault();
-
-    const nuevaLeccion = {
-        courseId: document.getElementById("courseId").value,
-        moduleNumber: Number(document.getElementById("moduleNumber").value),
-        moduleName: document.getElementById("moduleName").value,
-        order: Number(document.getElementById("order").value),
-        title: document.getElementById("title").value,
-        videoUrl: document.getElementById("videoUrl").value,
-        materialUrl: document.getElementById("materialUrl").value,
-        content: document.getElementById("content").value,
-        createdAt: new Date()
-    };
-
-    try {
-        await addDoc(collection(db, "lessons"), nuevaLeccion);
-        alert("¡Clase subida y publicada con éxito! 🎉");
-        formLeccion.reset();
-    } catch (error) {
-        console.error("Error al guardar la lección:", error);
-        alert("Hubo un error al subir la clase. Revisa la consola.");
-    }
-});
+``
