@@ -1,3 +1,4 @@
+```html
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -13,132 +14,116 @@
     <!-- Google Fonts & FontAwesome -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;800&family=Montserrat:wght@500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@500;700&family=DM+Sans:wght@400;500;700&family=Fraunces:ital,opsz,wght@0,9..144,600;0,9..144,800;1,9..144,600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
     <style>
-        /* ==========================================
-           1. PALETA DE COLORES CLARA & LUXE GLOW
-           ========================================== */
         :root {
-            --bg-body: #FFFDFD;
-            --bg-surface: #FFFFFF;
-            --bg-blush-soft: #FFF0F3;
-            --bg-cream: #FFF7F8;
-            --pink-accent: #FF5388;
-            --pink-soft: #FF85A2;
-            --violet-soft: #9B51E0;
-            --gold-accent: #D4AF37;
-            --text-main: #1C1917;
-            --text-sub: #57534E;
-            --text-muted: #8C857B;
-            --border-subtle: #FFE4E8;
-            
-            --shadow-soft: 0 10px 30px rgba(255, 83, 136, 0.06);
-            --shadow-hover: 0 20px 40px rgba(255, 83, 136, 0.15);
-            --grad-pink-gold: linear-gradient(135deg, #FF5388 0%, #FF85A2 50%, #E8B962 100%);
-            --grad-bg-hero: linear-gradient(180deg, #FFF0F3 0%, #FFFDFD 100%);
-            --transition: all 0.35s cubic-bezier(0.25, 1, 0.5, 1);
+            --lavender: #C5B3F2;
+            --pink: #F7A8D0;
+            --pink-soft: #FBD3E6;
+            --coral: #F7704F;
+            --burgundy: #6B0F2E;
+            --olive: #A7A83B;
+            --yellow: #FFF08A;
+            --cream: #FBF3E8;
+            --ink: #261B2B;
+            --muted: #6A5870;
+
+            --grad-hero: linear-gradient(160deg, #F7A8D0 0%, #E9B4E8 35%, #C5B3F2 65%, #F9B08C 100%);
+            --grad-courses: linear-gradient(180deg, #F7704F 0%, #E86FA6 45%, #8C2E6B 100%);
+            --hard: 5px 5px 0 var(--ink);
+            --hard-sm: 3px 3px 0 var(--ink);
+            --transition: all 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+            --grain: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.55'/%3E%3C/svg%3E");
+            --wave: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 80 28' preserveAspectRatio='none'%3E%3Cpath d='M0 0H80V10Q60 28 40 10T0 10Z'/%3E%3C/svg%3E");
         }
 
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; scroll-behavior: smooth; }
 
         body {
-            font-family: 'Plus Jakarta Sans', sans-serif;
-            background-color: var(--bg-body);
-            color: var(--text-main);
-            line-height: 1.6;
+            font-family: 'DM Sans', sans-serif;
+            background-color: var(--cream);
+            color: var(--ink);
+            line-height: 1.65;
             overflow-x: hidden;
         }
 
-        a {
-            text-decoration: none;
-            color: inherit;
+        h1, h2, h3, .heading-font { font-family: 'Fraunces', serif; letter-spacing: -0.02em; }
+        .container { width: 100%; max-width: 1240px; margin: 0 auto; padding: 0 1.5rem; }
+        ::selection { background: var(--yellow); color: var(--ink); }
+
+        /* HEADER */
+        .topbar {
+            background: var(--pink);
+            color: var(--burgundy);
+            text-align: center;
+            font-size: 0.8rem;
+            font-weight: 700;
+            padding: 0.4rem 1rem;
+            letter-spacing: 0.3px;
         }
 
-        .container {
-            width: 90%;
-            max-width: 1200px;
-            margin: 0 auto;
-        }
-
-        /* ==========================================
-           2. HEADER MINIMALISTA & CLARO
-           ========================================== */
-        .header {
-            background-color: rgba(255, 255, 255, 0.85);
-            backdrop-filter: blur(15px);
-            padding: 1.2rem 0;
+        header {
+            background-color: var(--burgundy);
+            border-bottom: 3px solid var(--ink);
             position: sticky;
             top: 0;
             z-index: 1000;
-            border-bottom: 1px solid var(--border-subtle);
         }
 
-        .nav-container {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
+        .nav-container { display: flex; justify-content: space-between; align-items: center; padding: 0.9rem 1.5rem; }
 
         .logo {
-            font-family: 'Cinzel', serif;
-            font-size: 1.4rem;
+            font-family: 'Fraunces', serif;
+            font-size: 1.3rem;
             font-weight: 800;
-            color: var(--text-main);
-            letter-spacing: 2px;
+            color: var(--cream);
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 6px;
         }
 
-        .logo span {
-            background: var(--grad-pink-gold);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
+        .logo span { color: var(--pink); font-style: italic; }
 
-        .nav-link {
-            color: var(--text-sub);
+        .btn-cta-nav {
+            background: var(--olive);
+            color: var(--cream);
+            border: 2px solid var(--ink);
+            padding: 0.6rem 1.4rem;
+            border-radius: 50px;
+            text-decoration: none;
             font-weight: 700;
-            font-size: 0.88rem;
+            font-size: 0.82rem;
+            text-transform: uppercase;
+            letter-spacing: 0.8px;
+            box-shadow: var(--hard-sm);
+            transition: var(--transition);
             display: inline-flex;
             align-items: center;
             gap: 8px;
-            padding: 0.6rem 1.4rem;
-            border-radius: 50px;
-            background: var(--bg-blush-soft);
-            border: 1px solid var(--border-subtle);
-            transition: var(--transition);
         }
 
-        .nav-link:hover {
-            background: var(--pink-accent);
-            color: #FFFFFF;
-            border-color: transparent;
-            transform: translateX(-3px);
-        }
+        .btn-cta-nav:hover { transform: translate(-2px, -2px); box-shadow: 5px 5px 0 var(--ink); background: var(--yellow); color: var(--ink); }
 
-        /* ==========================================
-           3. HERO GLAM LUMINOSO
-           ========================================== */
+        /* HERO CATALOGO */
         .hero-catalog {
-            background: var(--grad-bg-hero);
-            padding: 4.5rem 0 3.5rem;
-            text-align: center;
+            padding: 4.5rem 1.5rem 5rem;
+            background: var(--grad-hero);
             position: relative;
+            overflow: hidden;
+            text-align: center;
         }
 
-        .hero-catalog::before {
+        .hero-catalog::after {
             content: '';
-            position: absolute;
-            top: 10%;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 600px;
-            height: 300px;
-            background: radial-gradient(circle, rgba(255, 133, 162, 0.25) 0%, transparent 70%);
+            position: absolute; inset: 0;
+            background-image: var(--grain);
+            mix-blend-mode: multiply;
+            opacity: 0.22;
             pointer-events: none;
         }
 
@@ -146,289 +131,233 @@
             display: inline-flex;
             align-items: center;
             gap: 8px;
-            background: #FFFFFF;
-            border: 1px solid var(--border-subtle);
+            background: var(--burgundy);
+            color: var(--cream);
+            border: 2px solid var(--ink);
             padding: 0.5rem 1.3rem;
-            border-radius: 50px;
-            font-size: 0.82rem;
+            border-radius: 50%/100%;
+            font-size: 0.78rem;
             font-weight: 700;
-            color: var(--pink-accent);
-            box-shadow: var(--shadow-soft);
+            letter-spacing: 1px;
+            text-transform: uppercase;
             margin-bottom: 1.5rem;
+            transform: rotate(-2deg);
+            box-shadow: var(--hard-sm);
+            position: relative;
+            z-index: 1;
         }
 
         .catalog-title {
-            font-family: 'Montserrat', sans-serif;
-            font-size: 3rem;
-            font-weight: 900;
-            color: var(--text-main);
+            font-size: 2.8rem;
+            font-weight: 800;
+            color: var(--burgundy);
             margin-bottom: 1rem;
-            letter-spacing: -0.5px;
+            position: relative;
+            z-index: 1;
         }
 
-        .catalog-title span {
-            background: var(--grad-pink-gold);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
+        .catalog-title span { color: var(--cream); font-style: italic; text-shadow: 3px 3px 0 var(--burgundy); }
 
         .catalog-subtitle {
             font-size: 1.1rem;
-            color: var(--text-sub);
+            color: var(--ink);
             max-width: 620px;
             margin: 0 auto 2.5rem;
             font-weight: 500;
+            position: relative;
+            z-index: 1;
         }
 
-        /* BARRA DE BÚSQUEDA FLOTANTE */
+        /* BUSCADOR FLOTANTE */
         .search-box {
             max-width: 580px;
             margin: 0 auto 2rem;
             position: relative;
+            z-index: 1;
         }
 
         .search-input {
             width: 100%;
             padding: 1.1rem 1.5rem 1.1rem 3.4rem;
             border-radius: 50px;
-            border: 2px solid var(--border-subtle);
-            background: #FFFFFF;
-            color: var(--text-main);
-            font-size: 0.98rem;
+            border: 2.5px solid var(--ink);
+            background: var(--cream);
+            color: var(--ink);
+            font-family: 'DM Sans', sans-serif;
+            font-size: 1rem;
             outline: none;
-            box-shadow: 0 10px 25px rgba(255, 83, 136, 0.08);
+            box-shadow: var(--hard);
             transition: var(--transition);
         }
 
-        .search-input::placeholder {
-            color: var(--text-muted);
-        }
-
-        .search-input:focus {
-            border-color: var(--pink-soft);
-            box-shadow: 0 12px 30px rgba(255, 83, 136, 0.18);
-        }
+        .search-input::placeholder { color: #9A8AA0; }
+        .search-input:focus { border-color: var(--burgundy); box-shadow: 7px 7px 0 var(--ink); }
 
         .search-icon {
             position: absolute;
             left: 1.4rem;
             top: 50%;
             transform: translateY(-50%);
-            color: var(--pink-accent);
+            color: var(--burgundy);
             font-size: 1.1rem;
         }
 
-        /* ESTADÍSTICAS RÁPIDAS */
+        /* ESTADÍSTICAS */
         .stats-strip {
             display: flex;
             justify-content: center;
-            gap: 2.5rem;
+            gap: 2rem;
             margin-top: 2rem;
             flex-wrap: wrap;
+            position: relative;
+            z-index: 1;
         }
 
         .stat-item {
+            background: #fff;
+            padding: 0.5rem 1.2rem;
+            border-radius: 50px;
+            border: 2px solid var(--ink);
+            font-size: 0.85rem;
+            font-weight: 700;
+            color: var(--ink);
+            box-shadow: var(--hard-sm);
             display: flex;
             align-items: center;
             gap: 8px;
-            font-size: 0.88rem;
-            font-weight: 700;
-            color: var(--text-sub);
         }
 
-        .stat-item i {
-            color: var(--gold-accent);
-            font-size: 1rem;
-        }
+        .stat-item i { color: var(--coral); }
 
-        /* ==========================================
-           4. FILTROS ELEGANTES POR CATEGORÍA
-           ========================================== */
-        .filters-section {
-            padding: 2rem 0 1.5rem;
-        }
-
-        .filters-container {
-            display: flex;
-            justify-content: center;
-            gap: 0.8rem;
-            flex-wrap: wrap;
-        }
+        /* FILTROS */
+        .filters-section { padding: 2.5rem 0 1.5rem; background-color: var(--cream); }
+        .filters-container { display: flex; justify-content: center; gap: 0.9rem; flex-wrap: wrap; }
 
         .btn-filter {
-            background: var(--bg-surface);
-            border: 1.5px solid var(--border-subtle);
-            padding: 0.75rem 1.6rem;
+            background: #fff;
+            border: 2.5px solid var(--ink);
+            padding: 0.7rem 1.5rem;
             border-radius: 50px;
-            font-family: 'Montserrat', sans-serif;
+            font-family: 'DM Sans', sans-serif;
             font-weight: 700;
             font-size: 0.85rem;
-            color: var(--text-sub);
+            color: var(--ink);
             cursor: pointer;
             transition: var(--transition);
-            box-shadow: 0 4px 12px rgba(0,0,0,0.02);
+            box-shadow: var(--hard-sm);
             display: inline-flex;
             align-items: center;
             gap: 8px;
         }
 
         .btn-filter:hover, .btn-filter.active {
-            background: var(--pink-accent);
-            color: #FFFFFF;
-            border-color: transparent;
-            box-shadow: 0 8px 25px rgba(255, 83, 136, 0.3);
-            transform: translateY(-2px);
+            background: var(--yellow);
+            color: var(--ink);
+            transform: translate(-2px, -2px);
+            box-shadow: 6px 6px 0 var(--ink);
         }
 
-        /* ==========================================
-           5. TARJETAS DE CURSO CLARAS & PREMIUM
-           ========================================== */
-        .courses-section {
-            padding-bottom: 5rem;
-        }
-
-        .courses-grid {
-            display: grid;
-            grid-template-columns: 1fr;
-            gap: 2.2rem;
-        }
+        /* CURSOS GRID */
+        .courses-section { padding: 2rem 0 6rem; background-color: var(--cream); }
+        .courses-grid { display: grid; grid-template-columns: 1fr; gap: 2.8rem; }
 
         .course-card {
-            background: var(--bg-surface);
-            border-radius: 28px;
-            overflow: hidden;
-            box-shadow: var(--shadow-soft);
-            transition: var(--transition);
+            background: var(--cream);
+            border-radius: 26px;
+            border: 2.5px solid var(--ink);
+            box-shadow: var(--hard);
             display: flex;
             flex-direction: column;
-            border: 1px solid var(--border-subtle);
+            transition: var(--transition);
             position: relative;
         }
 
-        .course-card:hover {
-            transform: translateY(-10px);
-            box-shadow: var(--shadow-hover);
-            border-color: var(--pink-soft);
-        }
+        .course-card:hover { transform: translate(-4px, -8px); box-shadow: 9px 12px 0 var(--ink); }
 
         .card-image-wrapper {
             position: relative;
+            height: 230px;
             width: 100%;
-            height: 240px;
             overflow: hidden;
-            background: var(--bg-blush-soft);
+            border-radius: 23px 23px 0 0;
+            border-bottom: 2.5px solid var(--ink);
+            background: var(--pink-soft);
         }
 
-        .card-image {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            transition: transform 0.6s cubic-bezier(0.25, 1, 0.5, 1);
-        }
-
-        .course-card:hover .card-image {
-            transform: scale(1.08);
-        }
+        .card-image { width: 100%; height: 100%; object-fit: cover; transition: var(--transition); }
+        .course-card:hover .card-image { transform: scale(1.08); }
 
         .badge-category {
             position: absolute;
-            top: 15px;
-            left: 15px;
-            background: rgba(255, 255, 255, 0.92);
-            backdrop-filter: blur(10px);
-            color: var(--pink-accent);
-            padding: 0.4rem 1rem;
-            border-radius: 50px;
+            top: 14px; left: 14px;
+            background: var(--yellow);
+            color: var(--ink);
+            border: 2px solid var(--ink);
+            padding: 0.35rem 1rem;
+            border-radius: 12px;
             font-size: 0.75rem;
             font-weight: 800;
             text-transform: uppercase;
-            letter-spacing: 0.5px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.06);
-            border: 1px solid var(--border-subtle);
+            box-shadow: var(--hard-sm);
+            transform: rotate(-2deg);
         }
 
-        .card-content {
-            padding: 2rem;
-            display: flex;
-            flex-direction: column;
-            flex-grow: 1;
-        }
+        .card-content { padding: 1.8rem; display: flex; flex-direction: column; flex-grow: 1; }
 
         .course-title {
-            font-family: 'Montserrat', sans-serif;
-            font-size: 1.35rem;
+            font-family: 'Fraunces', serif;
+            font-size: 1.45rem;
             font-weight: 800;
-            color: var(--text-main);
-            margin-bottom: 0.8rem;
-            line-height: 1.3;
+            color: var(--burgundy);
+            margin-bottom: 0.7rem;
         }
 
         .course-details {
             display: flex;
             gap: 1.2rem;
             margin-bottom: 1.5rem;
-            font-size: 0.85rem;
-            color: var(--text-sub);
+            font-size: 0.88rem;
+            color: var(--muted);
             font-weight: 600;
         }
 
-        .detail-item {
-            display: flex;
-            align-items: center;
-            gap: 6px;
-        }
-
-        .detail-item i {
-            color: var(--pink-accent);
-        }
+        .detail-item { display: flex; align-items: center; gap: 6px; }
+        .detail-item i { color: var(--coral); }
 
         .price-container {
             display: flex;
             align-items: baseline;
             justify-content: space-between;
             margin-top: auto;
-            margin-bottom: 1.4rem;
+            margin-bottom: 1.5rem;
             padding-top: 1rem;
-            border-top: 1px dashed var(--border-subtle);
+            border-top: 2px dashed rgba(38, 27, 43, 0.15);
         }
 
-        .price-label {
-            font-size: 0.8rem;
-            color: var(--text-muted);
-            font-weight: 700;
-            text-transform: uppercase;
-        }
-
-        .course-price {
-            font-family: 'Montserrat', sans-serif;
-            font-size: 1.6rem;
-            font-weight: 900;
-            color: var(--text-main);
-        }
+        .price-label { font-size: 0.78rem; color: var(--muted); font-weight: 700; text-transform: uppercase; }
+        .course-price { font-family: 'Fraunces', serif; font-size: 1.6rem; font-weight: 800; color: var(--burgundy); }
 
         .btn-interest {
-            background: var(--bg-blush-soft);
-            color: var(--pink-accent);
-            border: 1.5px solid var(--border-subtle);
+            background: var(--pink);
+            border: 2.5px solid var(--ink);
+            color: var(--ink);
+            padding: 0.85rem;
+            border-radius: 50px;
             text-align: center;
-            padding: 1rem;
-            border-radius: 16px;
-            font-family: 'Montserrat', sans-serif;
-            font-weight: 800;
-            font-size: 0.92rem;
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
             transition: var(--transition);
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 10px;
+            gap: 8px;
+            box-shadow: var(--hard-sm);
         }
 
-        .course-card:hover .btn-interest {
-            background: var(--pink-accent);
-            color: #FFFFFF;
-            border-color: transparent;
-            box-shadow: 0 8px 20px rgba(255, 83, 136, 0.3);
-        }
+        .btn-interest:hover { background: var(--olive); color: var(--cream); box-shadow: var(--hard); transform: translate(-2px, -2px); }
 
         /* NO RESULTADOS */
         .no-results {
@@ -436,62 +365,54 @@
             padding: 4rem 2rem;
             background: #FFFFFF;
             border-radius: 28px;
-            border: 2px dashed var(--border-subtle);
+            border: 2.5px solid var(--ink);
+            box-shadow: var(--hard);
             grid-column: 1 / -1;
         }
 
-        .no-results i {
-            font-size: 3.5rem;
-            color: var(--pink-soft);
-            margin-bottom: 1rem;
-        }
+        .no-results i { font-size: 3.5rem; color: var(--coral); margin-bottom: 1rem; }
 
         /* BANNER INSPIRACIONAL */
         .banner-inspiration {
-            background: var(--bg-cream);
+            background: var(--burgundy);
             border-radius: 32px;
             padding: 3rem 2rem;
             text-align: center;
-            border: 1px solid var(--border-subtle);
-            margin-top: 2rem;
-            box-shadow: var(--shadow-soft);
+            border: 2.5px solid var(--pink);
+            box-shadow: 8px 8px 0 var(--pink);
+            margin-top: 3rem;
+            color: var(--cream);
         }
 
-        .banner-inspiration h3 {
-            font-family: 'Montserrat', sans-serif;
-            font-size: 1.6rem;
-            font-weight: 800;
-            margin-bottom: 0.8rem;
-            color: var(--text-main);
-        }
+        .banner-inspiration h3 { font-size: 2rem; font-weight: 800; margin-bottom: 0.8rem; color: var(--cream); }
+        .banner-inspiration p { color: var(--pink-soft); max-width: 600px; margin: 0 auto 1.8rem; }
 
-        /* RESPONSIVO */
-        @media (min-width: 640px) {
-            .courses-grid { grid-template-columns: repeat(2, 1fr); }
-        }
+        footer { background-color: var(--ink); color: #B9A9C4; padding: 3.5rem 1.5rem 2rem; text-align: center; border-top: 3px solid var(--pink); }
+        .footer-logo { font-size: 1.6rem; font-weight: 800; color: var(--cream); margin-bottom: 1rem; font-family: 'Fraunces', serif; text-transform: uppercase; }
+        .footer-logo span { color: var(--pink); font-style: italic; }
 
-        @media (min-width: 1024px) {
+        @media (min-width: 768px) {
             .courses-grid { grid-template-columns: repeat(3, 1fr); }
-            .catalog-title { font-size: 3.2rem; }
+            .catalog-title { font-size: 3.5rem; }
         }
     </style>
 </head>
 <body>
 
+    <div class="topbar">✨ Estrategias digitales hechas para maquillistas ✨</div>
+
     <!-- HEADER -->
-    <header class="header">
+    <header>
         <div class="container nav-container">
             <a href="index.html" class="logo">CREATE YOUR <span>GLOW</span> ✨</a>
-            <a href="index.html" class="nav-link"><i class="fa-solid fa-arrow-left"></i> Volver al Inicio</a>
+            <a href="index.html" class="btn-cta-nav"><i class="fa-solid fa-arrow-left"></i> Volver al Inicio</a>
         </div>
     </header>
 
     <!-- HERO CATALOGO -->
     <section class="hero-catalog">
         <div class="container">
-            <div class="hero-badge">
-                <i class="fa-solid fa-sparkles"></i> Formación Digital Exclusiva
-            </div>
+            <div class="hero-badge">💄 Formación Digital Exclusiva</div>
             <h1 class="catalog-title">Aprende, Destaca y <span>Haz Brillar</span> tu Marca</h1>
             <p class="catalog-subtitle">Programas creados especialmente para maquillistas y artistas de la belleza que buscan dominar sus redes, atraer más clientas y cobrar lo justo por su talento.</p>
             
@@ -501,7 +422,7 @@
                 <input type="text" id="searchInput" class="search-input" placeholder="¿Qué habilidad quieres potenciar hoy?..." oninput="filtrarPorBusqueda()">
             </div>
 
-            <!-- TIEMPO REAL & GARANTÍAS -->
+            <!-- ESTADÍSTICAS -->
             <div class="stats-strip">
                 <div class="stat-item"><i class="fa-solid fa-circle-check"></i> 100% Online & A tu Ritmo</div>
                 <div class="stat-item"><i class="fa-solid fa-award"></i> Certificado Oficial</div>
@@ -538,17 +459,21 @@
             <!-- BANNER FINAL INSPIRACIONAL -->
             <div class="banner-inspiration">
                 <h3>✨ ¿No sabes por dónde empezar tu transformación?</h3>
-                <p style="color: var(--text-sub); max-width: 600px; margin: 0 auto 1.5rem;">Te recomendamos iniciar por nuestro programa estelar de <b>Marca Personal</b> para cimentar las bases de tu negocio digital.</p>
-                <a href="curso-detalle.html?nombre=Marca%20Personal%20para%20Artistas" class="btn-filter active" style="padding: 0.9rem 2rem; display: inline-flex;">
+                <p>Te recomendamos iniciar por nuestro programa estelar de <b>Marca Personal</b> para cimentar las bases de tu negocio digital.</p>
+                <a href="curso-detalle.html?nombre=Marca%20Personal%20para%20Artistas" class="btn-interest" style="background: var(--yellow); max-width: 320px; margin: 0 auto; color: var(--ink);">
                     Ver Curso Recomendado <i class="fa-solid fa-arrow-right"></i>
                 </a>
             </div>
         </div>
     </section>
 
-    <!-- JAVASCRIPT DINÁMICO CONECTADO CON TU BASE DE DATOS -->
+    <footer>
+        <div class="footer-logo">CREATE YOUR <span>GLOW</span> ✨</div>
+        <p>&copy; 2026 Create Your Glow. Todos los derechos reservados.</p>
+    </footer>
+
+    <!-- JAVASCRIPT DINÁMICO -->
     <script>
-        // DATOS DE LOS CURSOS
         const cursosData = [
             {
                 id: "marca-personal",
@@ -558,7 +483,7 @@
                 duracion: "4 Semanas",
                 nivel: "Principiante",
                 precio: "$50.000 COP",
-                imagen: "https://images.unsplash.com/photo-1522337360788-8b13dee7a37e?auto=format&fit=crop&w=800&q=80"
+                imagen: "img/descarga (64).jpg"
             },
             {
                 id: "contenido-vende",
@@ -567,18 +492,18 @@
                 categoriaEtiqueta: "Contenido Digital",
                 duracion: "5 Semanas",
                 nivel: "Intermedio",
-                precio: "$70.000 COP",
-                imagen: "https://images.unsplash.com/photo-1512496015851-a90fb38ba796?auto=format&fit=crop&w=800&q=80"
+                precio: "$75.000 COP",
+                imagen: "img/descarga (65).jpg"
             },
             {
                 id: "marketing-maquillistas",
-                titulo: "Marketing para Maquillistas",
+                titulo: "Agenda Llena para Maquillistas",
                 categoria: "marketing",
                 categoriaEtiqueta: "Marketing & Ventas",
                 duracion: "6 Semanas",
                 nivel: "Todos los niveles",
-                precio: "$60.000 COP",
-                imagen: "https://images.unsplash.com/photo-1487412720507-e7ab37603c6f?auto=format&fit=crop&w=800&q=80"
+                precio: "$90.000 COP",
+                imagen: "img/942519028278826069.jpg"
             }
         ];
 
@@ -592,8 +517,8 @@
                 contenedor.innerHTML = `
                     <div class="no-results">
                         <i class="fa-regular fa-face-smile-wink"></i>
-                        <h3 style="font-family: 'Montserrat'; font-weight: 800;">No encontramos coincidencias</h3>
-                        <p style="color: var(--text-sub); margin-top: 5px;">Intenta buscar con otra palabra clave o selecciona otra categoría arriba.</p>
+                        <h3 style="font-family: 'Fraunces'; font-weight: 800; color: var(--burgundy); font-size: 1.5rem;">No encontramos coincidencias</h3>
+                        <p style="color: var(--muted); margin-top: 8px;">Intenta buscar con otra palabra clave o selecciona otra categoría arriba.</p>
                     </div>
                 `;
                 return;
@@ -663,3 +588,594 @@
     </script>
 </body>
 </html>
+``````html
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Catálogo Oficial | CREATE YOUR GLOW</title>
+    
+    <!-- SDKs de Firebase (Versión Compat) -->
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
+
+    <!-- Google Fonts & FontAwesome -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@500;700&family=DM+Sans:wght@400;500;700&family=Fraunces:ital,opsz,wght@0,9..144,600;0,9..144,800;1,9..144,600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        :root {
+            --lavender: #C5B3F2;
+            --pink: #F7A8D0;
+            --pink-soft: #FBD3E6;
+            --coral: #F7704F;
+            --burgundy: #6B0F2E;
+            --olive: #A7A83B;
+            --yellow: #FFF08A;
+            --cream: #FBF3E8;
+            --ink: #261B2B;
+            --muted: #6A5870;
+
+            --grad-hero: linear-gradient(160deg, #F7A8D0 0%, #E9B4E8 35%, #C5B3F2 65%, #F9B08C 100%);
+            --grad-courses: linear-gradient(180deg, #F7704F 0%, #E86FA6 45%, #8C2E6B 100%);
+            --hard: 5px 5px 0 var(--ink);
+            --hard-sm: 3px 3px 0 var(--ink);
+            --transition: all 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+            --grain: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.55'/%3E%3C/svg%3E");
+            --wave: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 80 28' preserveAspectRatio='none'%3E%3Cpath d='M0 0H80V10Q60 28 40 10T0 10Z'/%3E%3C/svg%3E");
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; scroll-behavior: smooth; }
+
+        body {
+            font-family: 'DM Sans', sans-serif;
+            background-color: var(--cream);
+            color: var(--ink);
+            line-height: 1.65;
+            overflow-x: hidden;
+        }
+
+        h1, h2, h3, .heading-font { font-family: 'Fraunces', serif; letter-spacing: -0.02em; }
+        .container { width: 100%; max-width: 1240px; margin: 0 auto; padding: 0 1.5rem; }
+        ::selection { background: var(--yellow); color: var(--ink); }
+
+        /* HEADER */
+        .topbar {
+            background: var(--pink);
+            color: var(--burgundy);
+            text-align: center;
+            font-size: 0.8rem;
+            font-weight: 700;
+            padding: 0.4rem 1rem;
+            letter-spacing: 0.3px;
+        }
+
+        header {
+            background-color: var(--burgundy);
+            border-bottom: 3px solid var(--ink);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .nav-container { display: flex; justify-content: space-between; align-items: center; padding: 0.9rem 1.5rem; }
+
+        .logo {
+            font-family: 'Fraunces', serif;
+            font-size: 1.3rem;
+            font-weight: 800;
+            color: var(--cream);
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .logo span { color: var(--pink); font-style: italic; }
+
+        .btn-cta-nav {
+            background: var(--olive);
+            color: var(--cream);
+            border: 2px solid var(--ink);
+            padding: 0.6rem 1.4rem;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 0.82rem;
+            text-transform: uppercase;
+            letter-spacing: 0.8px;
+            box-shadow: var(--hard-sm);
+            transition: var(--transition);
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn-cta-nav:hover { transform: translate(-2px, -2px); box-shadow: 5px 5px 0 var(--ink); background: var(--yellow); color: var(--ink); }
+
+        /* HERO CATALOGO */
+        .hero-catalog {
+            padding: 4.5rem 1.5rem 5rem;
+            background: var(--grad-hero);
+            position: relative;
+            overflow: hidden;
+            text-align: center;
+        }
+
+        .hero-catalog::after {
+            content: '';
+            position: absolute; inset: 0;
+            background-image: var(--grain);
+            mix-blend-mode: multiply;
+            opacity: 0.22;
+            pointer-events: none;
+        }
+
+        .hero-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: var(--burgundy);
+            color: var(--cream);
+            border: 2px solid var(--ink);
+            padding: 0.5rem 1.3rem;
+            border-radius: 50%/100%;
+            font-size: 0.78rem;
+            font-weight: 700;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            margin-bottom: 1.5rem;
+            transform: rotate(-2deg);
+            box-shadow: var(--hard-sm);
+            position: relative;
+            z-index: 1;
+        }
+
+        .catalog-title {
+            font-size: 2.8rem;
+            font-weight: 800;
+            color: var(--burgundy);
+            margin-bottom: 1rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        .catalog-title span { color: var(--cream); font-style: italic; text-shadow: 3px 3px 0 var(--burgundy); }
+
+        .catalog-subtitle {
+            font-size: 1.1rem;
+            color: var(--ink);
+            max-width: 620px;
+            margin: 0 auto 2.5rem;
+            font-weight: 500;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* BUSCADOR FLOTANTE */
+        .search-box {
+            max-width: 580px;
+            margin: 0 auto 2rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        .search-input {
+            width: 100%;
+            padding: 1.1rem 1.5rem 1.1rem 3.4rem;
+            border-radius: 50px;
+            border: 2.5px solid var(--ink);
+            background: var(--cream);
+            color: var(--ink);
+            font-family: 'DM Sans', sans-serif;
+            font-size: 1rem;
+            outline: none;
+            box-shadow: var(--hard);
+            transition: var(--transition);
+        }
+
+        .search-input::placeholder { color: #9A8AA0; }
+        .search-input:focus { border-color: var(--burgundy); box-shadow: 7px 7px 0 var(--ink); }
+
+        .search-icon {
+            position: absolute;
+            left: 1.4rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--burgundy);
+            font-size: 1.1rem;
+        }
+
+        /* ESTADÍSTICAS */
+        .stats-strip {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin-top: 2rem;
+            flex-wrap: wrap;
+            position: relative;
+            z-index: 1;
+        }
+
+        .stat-item {
+            background: #fff;
+            padding: 0.5rem 1.2rem;
+            border-radius: 50px;
+            border: 2px solid var(--ink);
+            font-size: 0.85rem;
+            font-weight: 700;
+            color: var(--ink);
+            box-shadow: var(--hard-sm);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .stat-item i { color: var(--coral); }
+
+        /* FILTROS */
+        .filters-section { padding: 2.5rem 0 1.5rem; background-color: var(--cream); }
+        .filters-container { display: flex; justify-content: center; gap: 0.9rem; flex-wrap: wrap; }
+
+        .btn-filter {
+            background: #fff;
+            border: 2.5px solid var(--ink);
+            padding: 0.7rem 1.5rem;
+            border-radius: 50px;
+            font-family: 'DM Sans', sans-serif;
+            font-weight: 700;
+            font-size: 0.85rem;
+            color: var(--ink);
+            cursor: pointer;
+            transition: var(--transition);
+            box-shadow: var(--hard-sm);
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn-filter:hover, .btn-filter.active {
+            background: var(--yellow);
+            color: var(--ink);
+            transform: translate(-2px, -2px);
+            box-shadow: 6px 6px 0 var(--ink);
+        }
+
+        /* CURSOS GRID */
+        .courses-section { padding: 2rem 0 6rem; background-color: var(--cream); }
+        .courses-grid { display: grid; grid-template-columns: 1fr; gap: 2.8rem; }
+
+        .course-card {
+            background: var(--cream);
+            border-radius: 26px;
+            border: 2.5px solid var(--ink);
+            box-shadow: var(--hard);
+            display: flex;
+            flex-direction: column;
+            transition: var(--transition);
+            position: relative;
+        }
+
+        .course-card:hover { transform: translate(-4px, -8px); box-shadow: 9px 12px 0 var(--ink); }
+
+        .card-image-wrapper {
+            position: relative;
+            height: 230px;
+            width: 100%;
+            overflow: hidden;
+            border-radius: 23px 23px 0 0;
+            border-bottom: 2.5px solid var(--ink);
+            background: var(--pink-soft);
+        }
+
+        .card-image { width: 100%; height: 100%; object-fit: cover; transition: var(--transition); }
+        .course-card:hover .card-image { transform: scale(1.08); }
+
+        .badge-category {
+            position: absolute;
+            top: 14px; left: 14px;
+            background: var(--yellow);
+            color: var(--ink);
+            border: 2px solid var(--ink);
+            padding: 0.35rem 1rem;
+            border-radius: 12px;
+            font-size: 0.75rem;
+            font-weight: 800;
+            text-transform: uppercase;
+            box-shadow: var(--hard-sm);
+            transform: rotate(-2deg);
+        }
+
+        .card-content { padding: 1.8rem; display: flex; flex-direction: column; flex-grow: 1; }
+
+        .course-title {
+            font-family: 'Fraunces', serif;
+            font-size: 1.45rem;
+            font-weight: 800;
+            color: var(--burgundy);
+            margin-bottom: 0.7rem;
+        }
+
+        .course-details {
+            display: flex;
+            gap: 1.2rem;
+            margin-bottom: 1.5rem;
+            font-size: 0.88rem;
+            color: var(--muted);
+            font-weight: 600;
+        }
+
+        .detail-item { display: flex; align-items: center; gap: 6px; }
+        .detail-item i { color: var(--coral); }
+
+        .price-container {
+            display: flex;
+            align-items: baseline;
+            justify-content: space-between;
+            margin-top: auto;
+            margin-bottom: 1.5rem;
+            padding-top: 1rem;
+            border-top: 2px dashed rgba(38, 27, 43, 0.15);
+        }
+
+        .price-label { font-size: 0.78rem; color: var(--muted); font-weight: 700; text-transform: uppercase; }
+        .course-price { font-family: 'Fraunces', serif; font-size: 1.6rem; font-weight: 800; color: var(--burgundy); }
+
+        .btn-interest {
+            background: var(--pink);
+            border: 2.5px solid var(--ink);
+            color: var(--ink);
+            padding: 0.85rem;
+            border-radius: 50px;
+            text-align: center;
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            box-shadow: var(--hard-sm);
+        }
+
+        .btn-interest:hover { background: var(--olive); color: var(--cream); box-shadow: var(--hard); transform: translate(-2px, -2px); }
+
+        /* NO RESULTADOS */
+        .no-results {
+            text-align: center;
+            padding: 4rem 2rem;
+            background: #FFFFFF;
+            border-radius: 28px;
+            border: 2.5px solid var(--ink);
+            box-shadow: var(--hard);
+            grid-column: 1 / -1;
+        }
+
+        .no-results i { font-size: 3.5rem; color: var(--coral); margin-bottom: 1rem; }
+
+        /* BANNER INSPIRACIONAL */
+        .banner-inspiration {
+            background: var(--burgundy);
+            border-radius: 32px;
+            padding: 3rem 2rem;
+            text-align: center;
+            border: 2.5px solid var(--pink);
+            box-shadow: 8px 8px 0 var(--pink);
+            margin-top: 3rem;
+            color: var(--cream);
+        }
+
+        .banner-inspiration h3 { font-size: 2rem; font-weight: 800; margin-bottom: 0.8rem; color: var(--cream); }
+        .banner-inspiration p { color: var(--pink-soft); max-width: 600px; margin: 0 auto 1.8rem; }
+
+        footer { background-color: var(--ink); color: #B9A9C4; padding: 3.5rem 1.5rem 2rem; text-align: center; border-top: 3px solid var(--pink); }
+        .footer-logo { font-size: 1.6rem; font-weight: 800; color: var(--cream); margin-bottom: 1rem; font-family: 'Fraunces', serif; text-transform: uppercase; }
+        .footer-logo span { color: var(--pink); font-style: italic; }
+
+        @media (min-width: 768px) {
+            .courses-grid { grid-template-columns: repeat(3, 1fr); }
+            .catalog-title { font-size: 3.5rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="topbar">✨ Estrategias digitales hechas para maquillistas ✨</div>
+
+    <!-- HEADER -->
+    <header>
+        <div class="container nav-container">
+            <a href="index.html" class="logo">CREATE YOUR <span>GLOW</span> ✨</a>
+            <a href="index.html" class="btn-cta-nav"><i class="fa-solid fa-arrow-left"></i> Volver al Inicio</a>
+        </div>
+    </header>
+
+    <!-- HERO CATALOGO -->
+    <section class="hero-catalog">
+        <div class="container">
+            <div class="hero-badge">💄 Formación Digital Exclusiva</div>
+            <h1 class="catalog-title">Aprende, Destaca y <span>Haz Brillar</span> tu Marca</h1>
+            <p class="catalog-subtitle">Programas creados especialmente para maquillistas y artistas de la belleza que buscan dominar sus redes, atraer más clientas y cobrar lo justo por su talento.</p>
+            
+            <!-- BUSCADOR FLOTANTE -->
+            <div class="search-box">
+                <i class="fa-solid fa-magnifying-glass search-icon"></i>
+                <input type="text" id="searchInput" class="search-input" placeholder="¿Qué habilidad quieres potenciar hoy?..." oninput="filtrarPorBusqueda()">
+            </div>
+
+            <!-- ESTADÍSTICAS -->
+            <div class="stats-strip">
+                <div class="stat-item"><i class="fa-solid fa-circle-check"></i> 100% Online & A tu Ritmo</div>
+                <div class="stat-item"><i class="fa-solid fa-award"></i> Certificado Oficial</div>
+                <div class="stat-item"><i class="fa-solid fa-infinity"></i> Acceso De Por Vida</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FILTROS POR CATEGORÍA -->
+    <section class="filters-section">
+        <div class="container filters-container">
+            <button class="btn-filter active" onclick="filtrarCursos('todos', this)">
+                <i class="fa-solid fa-sparkles"></i> Todos los Cursos
+            </button>
+            <button class="btn-filter" onclick="filtrarCursos('marca', this)">
+                <i class="fa-solid fa-crown"></i> Marca Personal
+            </button>
+            <button class="btn-filter" onclick="filtrarCursos('contenido', this)">
+                <i class="fa-solid fa-camera"></i> Contenido Digital
+            </button>
+            <button class="btn-filter" onclick="filtrarCursos('marketing', this)">
+                <i class="fa-solid fa-chart-line"></i> Marketing & Ventas
+            </button>
+        </div>
+    </section>
+
+    <!-- GRID DE CURSOS -->
+    <section class="courses-section">
+        <div class="container">
+            <div class="courses-grid" id="contenedor-cursos">
+                <!-- Se renderiza dinámicamente con JavaScript -->
+            </div>
+
+            <!-- BANNER FINAL INSPIRACIONAL -->
+            <div class="banner-inspiration">
+                <h3>✨ ¿No sabes por dónde empezar tu transformación?</h3>
+                <p>Te recomendamos iniciar por nuestro programa estelar de <b>Marca Personal</b> para cimentar las bases de tu negocio digital.</p>
+                <a href="curso-detalle.html?nombre=Marca%20Personal%20para%20Artistas" class="btn-interest" style="background: var(--yellow); max-width: 320px; margin: 0 auto; color: var(--ink);">
+                    Ver Curso Recomendado <i class="fa-solid fa-arrow-right"></i>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <div class="footer-logo">CREATE YOUR <span>GLOW</span> ✨</div>
+        <p>&copy; 2026 Create Your Glow. Todos los derechos reservados.</p>
+    </footer>
+
+    <!-- JAVASCRIPT DINÁMICO -->
+    <script>
+        const cursosData = [
+            {
+                id: "marca-personal",
+                titulo: "Marca Personal para Artistas",
+                categoria: "marca",
+                categoriaEtiqueta: "Marca Personal",
+                duracion: "4 Semanas",
+                nivel: "Principiante",
+                precio: "$50.000 COP",
+                imagen: "img/descarga (64).jpg"
+            },
+            {
+                id: "contenido-vende",
+                titulo: "Contenido que Vende",
+                categoria: "contenido",
+                categoriaEtiqueta: "Contenido Digital",
+                duracion: "5 Semanas",
+                nivel: "Intermedio",
+                precio: "$75.000 COP",
+                imagen: "img/descarga (65).jpg"
+            },
+            {
+                id: "marketing-maquillistas",
+                titulo: "Agenda Llena para Maquillistas",
+                categoria: "marketing",
+                categoriaEtiqueta: "Marketing & Ventas",
+                duracion: "6 Semanas",
+                nivel: "Todos los niveles",
+                precio: "$90.000 COP",
+                imagen: "img/942519028278826069.jpg"
+            }
+        ];
+
+        let categoriaActual = 'todos';
+
+        function renderizarCursos(lista) {
+            const contenedor = document.getElementById('contenedor-cursos');
+            contenedor.innerHTML = '';
+
+            if (lista.length === 0) {
+                contenedor.innerHTML = `
+                    <div class="no-results">
+                        <i class="fa-regular fa-face-smile-wink"></i>
+                        <h3 style="font-family: 'Fraunces'; font-weight: 800; color: var(--burgundy); font-size: 1.5rem;">No encontramos coincidencias</h3>
+                        <p style="color: var(--muted); margin-top: 8px;">Intenta buscar con otra palabra clave o selecciona otra categoría arriba.</p>
+                    </div>
+                `;
+                return;
+            }
+
+            lista.forEach(curso => {
+                const card = document.createElement('article');
+                card.className = 'course-card';
+                card.innerHTML = `
+                    <div class="card-image-wrapper">
+                        <img src="${curso.imagen}" alt="${curso.titulo}" class="card-image">
+                        <span class="badge-category">${curso.categoriaEtiqueta}</span>
+                    </div>
+                    <div class="card-content">
+                        <h3 class="course-title">${curso.titulo}</h3>
+                        <div class="course-details">
+                            <span class="detail-item"><i class="fa-regular fa-clock"></i> ${curso.duracion}</span>
+                            <span class="detail-item"><i class="fa-solid fa-layer-group"></i> ${curso.nivel}</span>
+                        </div>
+                        <div class="price-container">
+                            <span class="price-label">Inversión</span>
+                            <span class="course-price">${curso.precio}</span>
+                        </div>
+                        <a href="curso-detalle.html?nombre=${encodeURIComponent(curso.titulo)}" class="btn-interest">
+                            Explorar Programa <i class="fa-solid fa-arrow-right"></i>
+                        </a>
+                    </div>
+                `;
+                contenedor.appendChild(card);
+            });
+        }
+
+        function filtrarCursos(categoria, elementoBoton) {
+            categoriaActual = categoria;
+            const botones = document.querySelectorAll('.btn-filter');
+            botones.forEach(btn => btn.classList.remove('active'));
+            elementoBoton.classList.add('active');
+
+            aplicarFiltros();
+        }
+
+        function filtrarPorBusqueda() {
+            aplicarFiltros();
+        }
+
+        function aplicarFiltros() {
+            const textoBusqueda = document.getElementById('searchInput').value.toLowerCase().trim();
+            let resultado = cursosData;
+
+            if (categoriaActual !== 'todos') {
+                resultado = resultado.filter(c => c.categoria === categoriaActual);
+            }
+
+            if (textoBusqueda !== '') {
+                resultado = resultado.filter(c => 
+                    c.titulo.toLowerCase().includes(textoBusqueda) || 
+                    c.categoriaEtiqueta.toLowerCase().includes(textoBusqueda)
+                );
+            }
+
+            renderizarCursos(resultado);
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            renderizarCursos(cursosData);
+        });
+    </script>
+</body>
+</html>
+```
