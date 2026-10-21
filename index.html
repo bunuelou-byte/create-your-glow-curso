@@ -14,6 +14,21 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@500;700&family=DM+Sans:wght@400;500;700&family=Fraunces:ital,opsz,wght@0,9..144,600;0,9..144,800;1,9..144,600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <script>
+        const firebaseConfig = {
+            apiKey: "AIzaSyCR724EP9rNkKtETG1xM_CGSQ1ZIHhbOhc",
+            authDomain: "create-your-glow.firebaseapp.com",
+            projectId: "create-your-glow",
+            storageBucket: "create-your-glow.firebasestorage.app",
+            messagingSenderId: "917183846981",
+            appId: "1:917183846981:web:214a14dbefdbdcc017612c"
+        };
+        firebase.initializeApp(firebaseConfig);
+        const auth = firebase.auth();
+        const db = firebase.firestore();
+    </script>
 
     <style>
         :root {
@@ -480,7 +495,7 @@
 
     <div class="topbar">✨ Estrategias digitales hechas para maquillistas ✨</div>
 
-    <!-- HEADER Y NAVEGACIÓN -->
+    <!-- HEADER Y NAVEGACIÓN INTELIGENTE -->
     <header>
         <div class="container nav-container">
             <a href="index.html" class="logo">CREATE YOUR <span>GLOW</span> ✨</a>
@@ -492,7 +507,28 @@
                 <li><a href="#nosotros">Sobre Mí</a></li>
             </ul>
 
-            <a href="cursos.html" class="btn-cta-nav">Ver Catálogo 🔥</a>
+            <!-- BOTONES DINÁMICOS DE AUTENTICACIÓN -->
+            <div id="auth-buttons" style="display: flex; align-items: center; gap: 10px;">
+                <!-- Estado 1: Invitado -->
+                <a href="auth.html" id="btn-login" class="btn-cta-nav" style="background: var(--yellow); color: var(--ink);">
+                    <i class="fa-solid fa-user"></i> Iniciar Sesión / Registro
+                </a>
+
+                <!-- Estado 2: Estudiante -->
+                <a href="mis-cursos.html" id="btn-mis-cursos" class="btn-cta-nav" style="display: none; background: var(--pink); color: var(--ink);">
+                    <i class="fa-solid fa-graduation-cap"></i> Mis Cursos
+                </a>
+
+                <!-- Estado 3: Admin / Tutora -->
+                <a href="panel-tutora.html" id="btn-panel-admin" class="btn-cta-nav" style="display: none; background: var(--coral); color: #fff;">
+                    <i class="fa-solid fa-crown"></i> Panel Tutora
+                </a>
+
+                <!-- Botón Salir -->
+                <button id="btn-logout" onclick="cerrarSesion()" style="display: none; background: transparent; border: 1.5px solid var(--cream); color: var(--cream); padding: 0.5rem 1rem; border-radius: 50px; cursor: pointer; font-weight: 700; font-size: 0.8rem;">
+                    Salir
+                </button>
+            </div>
 
             <button class="hamburger" id="hamburgerBtn" aria-label="Abrir Menú">
                 <span></span>
@@ -506,9 +542,63 @@
             <a href="cursos.html" onclick="toggleMenu()">Cursos Destacados</a>
             <a href="#galeria" onclick="toggleMenu()">Resultados Alumnas</a>
             <a href="#nosotros" onclick="toggleMenu()">Sobre Mí</a>
-            <a href="cursos.html" class="btn-cta-nav" style="text-align: center; justify-content: center;">Ver Catálogo ✨</a>
+            <hr style="border: 0.5px solid var(--ink); opacity: 0.2;">
+            <a href="auth.html" id="mobile-btn-login" class="btn-cta-nav" style="text-align: center; justify-content: center; background: var(--yellow); color: var(--ink);">Iniciar Sesión ✨</a>
+            <a href="mis-cursos.html" id="mobile-btn-mis-cursos" class="btn-cta-nav" style="display: none; text-align: center; justify-content: center; background: var(--pink); color: var(--ink);">Mis Cursos 🎓</a>
+            <a href="panel-tutora.html" id="mobile-btn-panel-admin" class="btn-cta-nav" style="display: none; text-align: center; justify-content: center; background: var(--coral); color: #fff;">Panel Tutora 👑</a>
         </div>
     </header>
+
+    <!-- SCRIPT DE DETECCIÓN DE SESIÓN Y ROLES -->
+    <script>
+        auth.onAuthStateChanged(async (user) => {
+            const btnLogin = document.getElementById('btn-login');
+            const btnMisCursos = document.getElementById('btn-mis-cursos');
+            const btnPanelAdmin = document.getElementById('btn-panel-admin');
+            const btnLogout = document.getElementById('btn-logout');
+
+            const mobileBtnLogin = document.getElementById('mobile-btn-login');
+            const mobileBtnMisCursos = document.getElementById('mobile-btn-mis-cursos');
+            const mobileBtnPanelAdmin = document.getElementById('mobile-btn-panel-admin');
+
+            if (user) {
+                if (btnLogin) btnLogin.style.display = 'none';
+                if (mobileBtnLogin) mobileBtnLogin.style.display = 'none';
+                if (btnLogout) btnLogout.style.display = 'inline-block';
+
+                try {
+                    const userDoc = await db.collection("users").doc(user.uid).get();
+
+                    if (userDoc.exists && userDoc.data().role === "admin") {
+                        if (btnPanelAdmin) btnPanelAdmin.style.display = 'inline-flex';
+                        if (mobileBtnPanelAdmin) mobileBtnPanelAdmin.style.display = 'flex';
+                    } else {
+                        if (btnMisCursos) btnMisCursos.style.display = 'inline-flex';
+                        if (mobileBtnMisCursos) mobileBtnMisCursos.style.display = 'flex';
+                    }
+                } catch (e) {
+                    console.error("Error identificando rol:", e);
+                    if (btnMisCursos) btnMisCursos.style.display = 'inline-flex';
+                    if (mobileBtnMisCursos) mobileBtnMisCursos.style.display = 'flex';
+                }
+            } else {
+                if (btnLogin) btnLogin.style.display = 'inline-flex';
+                if (mobileBtnLogin) mobileBtnLogin.style.display = 'flex';
+                if (btnMisCursos) btnMisCursos.style.display = 'none';
+                if (btnPanelAdmin) btnPanelAdmin.style.display = 'none';
+                if (btnLogout) btnLogout.style.display = 'none';
+                if (mobileBtnMisCursos) mobileBtnMisCursos.style.display = 'none';
+                if (mobileBtnPanelAdmin) mobileBtnPanelAdmin.style.display = 'none';
+            }
+        });
+
+        function cerrarSesion() {
+            auth.signOut().then(() => {
+                alert("Has cerrado sesión correctamente.");
+                window.location.reload();
+            });
+        }
+    </script>
 
     <!-- HERO -->
     <section class="hero">
