@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Panel de Administración - Create Your Glow</title>
+    <link rel="stylesheet" href="css/estilos.css">
+</head>
+<body>
+    <header>
+        <h1>Panel de Tutora - Subir Clase 💖</h1>
+        <nav>
+            <a href="index.html">Volver al Inicio</a>
+        </nav>
+    </header>
+
+    <main style="max-width: 600px; margin: 40px auto; padding: 20px;">
+        <div id="loading-auth" style="text-align: center;">
+            <p>Verificando permisos de tutora...</p>
+        </div>
+
+        <!-- El formulario se oculta inicialmente hasta verificar que eres admin -->
+        <form id="form-leccion" style="display: none; background: #f9f9f9; padding: 20px; border-radius: 8px;">
+            <h2>Agregar Nueva Lección</h2>
+            
+            <label>ID del Curso (ej. curso-arte):</label><br>
+            <input type="text" id="courseId" required style="width: 100%; margin-bottom: 15px; padding: 8px;"><br>
+
+            <label>Número de Módulo:</label><br>
+            <input type="number" id="moduleNumber" value="1" required style="width: 100%; margin-bottom: 15px; padding: 8px;"><br>
+
+            <label>Nombre del Módulo:</label><br>
+            <input type="text" id="moduleName" placeholder="Ej. Fundamentos" required style="width: 100%; margin-bottom: 15px; padding: 8px;"><br>
+
+            <label>Número de Orden de la Lección:</label><br>
+            <input type="number" id="order" value="1" required style="width: 100%; margin-bottom: 15px; padding: 8px;"><br>
+
+            <label>Título de la Clase:</label><br>
+            <input type="text" id="title" placeholder="Ej. Clase 1: Materiales básicos" required style="width: 100%; margin-bottom: 15px; padding: 8px;"><br>
+
+            <label>URL del Video de YouTube (No listado):</label><br>
+            <input type="url" id="videoUrl" placeholder="https://www.youtube.com/watch?v=..." required style="width: 100%; margin-bottom: 15px; padding: 8px;"><br>
+
+            <label>URL del Material (Google Drive opcional):</label><br>
+            <url id="materialUrl" style="width: 100%; margin-bottom: 15px; padding: 8px;"></url>
+            <input type="url" id="materialUrl" placeholder="https://drive.google.com/..." style="width: 100%; margin-bottom: 15px; padding: 8px;"><br>
+
+            <label>Contenido o Descripción:</label><br>
+            <textarea id="content" rows="4" placeholder="Escribe un breve resumen de la clase..." style="width: 100%; margin-bottom: 15px; padding: 8px;"></textarea><br>
+
+            <button type="submit" style="background: #ff4b72; color: white; padding: 10px 20px; border: none; border-radius: 5px; cursor: pointer; font-weight: bold; width: 100%;">Publicar Lección</button>
+        </form>
+
+        <div id="unauthorized" style="display: none; text-align: center; color: red;">
+            <h3>Acceso Denegado</h3>
+            <p>Esta sección es exclusiva para la tutora de la plataforma.</p>
+        </div>
+    </main>
+
+    <!-- Scripts de Firebase y tu lógica -->
+    <script type="module" src="js/admin.js"></script>
+</body>
+</html>
+```
+
+---
+
+### Paso 2: Crear el archivo de lógica JavaScript (`js/admin.js`)
+Crea una carpeta llamada `js` (si no la tienes) y dentro un archivo llamado **`admin.js`**. 
+
+Este script se encargará de comprobar que tu cuenta sea la tutora (rol `admin`) y de guardar la clase en tu base de datos de Firestore:
+
+```javascript
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+import { getFirestore, doc, getDoc, collection, addTimestamp, addDoc } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+
+// Configuración de Firebase (asegúrate de usar tu archivo de config o pegarla aquí)
+import { firebaseConfig } from "./firebase-config.js";
+
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+const db = getFirestore(app);
+
+const loadingAuth = document.getElementById("loading-auth");
+const formLeccion = document.getElementById("form-leccion");
+const unauthorized = document.getElementById("unauthorized");
+
+// 1. Verificar autenticación y rol de administrador
+onAuthStateChanged(auth, async (user) => {
+    if (user) {
+        try {
+            // Buscar el documento del usuario en Firestore para ver su rol
+            const userDocRef = doc(db, "users", user.uid);
+            const userSnap = await getDoc(userDocRef);
+
+            if (userSnap.exists() && userSnap.data().role === "admin") {
+                // ¡Eres tú, la tutora! Mostramos el formulario
+                loadingAuth.style.display = "none";
+                formLeccion.style.display = "block";
+            } else {
+                // Es un estudiante normal, se le niega el acceso
+                loadingAuth.style.display = "none";
+                unauthorized.style.display = "block";
+            }
+        } catch (error) {
+            console.error("Error verificando rol:", error);
+        }
+    } else {
+        // No ha iniciado sesión
+        window.location.href = "login.html";
+    }
+});
+
+// 2. Procesar el envío del formulario para guardar la lección en Firestore
+formLeccion.addEventListener("submit", async (e) => {
+    e.preventDefault();
+
+    const nuevaLeccion = {
+        courseId: document.getElementById("courseId").value,
+        moduleNumber: Number(document.getElementById("moduleNumber").value),
+        moduleName: document.getElementById("moduleName").value,
+        order: Number(document.getElementById("order").value),
+        title: document.getElementById("title").value,
+        videoUrl: document.getElementById("videoUrl").value,
+        materialUrl: document.getElementById("materialUrl").value,
+        content: document.getElementById("content").value,
+        createdAt: new Date()
+    };
+
+    try {
+        await addDoc(collection(db, "lessons"), nuevaLeccion);
+        alert("¡Clase subida y publicada con éxito! 🎉");
+        formLeccion.reset();
+    } catch (error) {
+        console.error("Error al guardar la lección:", error);
+        alert("Hubo un error al subir la clase. Revisa la consola.");
+    }
+});
