@@ -1,3 +1,4 @@
+```html
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -10,10 +11,10 @@
     <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-auth-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
 
-    <!-- Fuentes Google Fonts & FontAwesome -->
+    <!-- Google Fonts & FontAwesome -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;800&family=Montserrat:wght@600;700;800;900&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@500;700&family=DM+Sans:wght@400;500;700&family=Fraunces:ital,opsz,wght@0,9..144,600;0,9..144,800;1,9..144,600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
     <script>
@@ -32,24 +33,23 @@
 
     <style>
         :root {
-            --bg-body: #FFFDFD;
-            --bg-surface: #FFFFFF;
-            --bg-blush-soft: #FFF0F3;
-            --bg-cream: #FFF7F8;
-            --pink-accent: #FF5388;
-            --pink-soft: #FF85A2;
-            --violet-soft: #9B51E0;
-            --gold-accent: #D4AF37;
-            --text-main: #1C1917;
-            --text-sub: #57534E;
-            --text-muted: #8C857B;
-            --border-subtle: #FFE4E8;
-            
-            --shadow-soft: 0 10px 30px rgba(255, 83, 136, 0.06);
-            --shadow-hover: 0 20px 40px rgba(255, 83, 136, 0.15);
-            --grad-pink-gold: linear-gradient(135deg, #FF5388 0%, #FF85A2 50%, #E8B962 100%);
-            --grad-bg-hero: linear-gradient(180deg, #FFF0F3 0%, #FFFDFD 100%);
-            --transition: all 0.35s cubic-bezier(0.25, 1, 0.5, 1);
+            --lavender: #C5B3F2;
+            --pink: #F7A8D0;
+            --pink-soft: #FBD3E6;
+            --coral: #F7704F;
+            --burgundy: #6B0F2E;
+            --olive: #A7A83B;
+            --yellow: #FFF08A;
+            --cream: #FBF3E8;
+            --ink: #261B2B;
+            --muted: #6A5870;
+
+            --grad-hero: linear-gradient(160deg, #F7A8D0 0%, #E9B4E8 35%, #C5B3F2 65%, #F9B08C 100%);
+            --hard: 5px 5px 0 var(--ink);
+            --hard-sm: 3px 3px 0 var(--ink);
+            --transition: all 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+            --grain: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.55'/%3E%3C/svg%3E");
+            --wave: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 80 28' preserveAspectRatio='none'%3E%3Cpath d='M0 0H80V10Q60 28 40 10T0 10Z'/%3E%3C/svg%3E");
         }
 
         * {
@@ -60,14 +60,16 @@
         }
 
         body {
-            font-family: 'Plus Jakarta Sans', sans-serif;
-            background-color: var(--bg-body);
-            color: var(--text-main);
-            line-height: 1.6;
+            font-family: 'DM Sans', sans-serif;
+            background-color: var(--cream);
+            color: var(--ink);
+            line-height: 1.65;
+            overflow-x: hidden;
         }
 
         h1, h2, h3, h4 {
-            font-family: 'Montserrat', sans-serif;
+            font-family: 'Fraunces', serif;
+            letter-spacing: -0.02em;
         }
 
         .container {
@@ -77,10 +79,19 @@
         }
 
         /* HEADER */
+        .topbar {
+            background: var(--pink);
+            color: var(--burgundy);
+            text-align: center;
+            font-size: 0.8rem;
+            font-weight: 700;
+            padding: 0.4rem 1rem;
+            letter-spacing: 0.3px;
+        }
+
         header {
-            background-color: rgba(255, 255, 255, 0.85);
-            backdrop-filter: blur(15px);
-            border-bottom: 1px solid var(--border-subtle);
+            background-color: var(--burgundy);
+            border-bottom: 3px solid var(--ink);
             position: sticky;
             top: 0;
             z-index: 1000;
@@ -90,82 +101,103 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 1.1rem 0;
+            padding: 0.9rem 1.5rem;
         }
 
         .logo {
-            font-family: 'Cinzel', serif;
-            font-size: 1.4rem;
+            font-family: 'Fraunces', serif;
+            font-size: 1.3rem;
             font-weight: 800;
-            color: var(--text-main);
+            color: var(--cream);
             text-decoration: none;
-            letter-spacing: 2px;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+            display: flex;
+            align-items: center;
+            gap: 6px;
         }
 
         .logo span {
-            background: var(--grad-pink-gold);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
+            color: var(--pink);
+            font-style: italic;
         }
 
         .btn-back {
-            color: var(--text-sub);
+            background: var(--olive);
+            color: var(--cream);
+            border: 2px solid var(--ink);
+            padding: 0.6rem 1.4rem;
+            border-radius: 50px;
             text-decoration: none;
             font-weight: 700;
-            font-size: 0.9rem;
+            font-size: 0.82rem;
+            text-transform: uppercase;
+            letter-spacing: 0.8px;
+            box-shadow: var(--hard-sm);
+            transition: var(--transition);
             display: inline-flex;
             align-items: center;
             gap: 8px;
-            padding: 0.5rem 1.2rem;
-            border-radius: 50px;
-            background: var(--bg-blush-soft);
-            border: 1px solid var(--border-subtle);
-            transition: var(--transition);
         }
 
         .btn-back:hover {
-            background: var(--pink-accent);
-            color: #FFFFFF;
-            border-color: transparent;
+            transform: translate(-2px, -2px);
+            box-shadow: 5px 5px 0 var(--ink);
+            background: var(--yellow);
+            color: var(--ink);
         }
 
         /* HERO DETALLE CURSO */
         .course-hero {
-            background: var(--grad-bg-hero);
-            padding: 4.5rem 0;
+            background: var(--grad-hero);
+            padding: 4.5rem 1.5rem;
             position: relative;
-            border-bottom: 1px solid var(--border-subtle);
+            overflow: hidden;
+            border-bottom: 3px solid var(--ink);
+        }
+
+        .course-hero::after {
+            content: '';
+            position: absolute; inset: 0;
+            background-image: var(--grain);
+            mix-blend-mode: multiply;
+            opacity: 0.22;
+            pointer-events: none;
         }
 
         .hero-layout {
+            position: relative;
+            z-index: 1;
             display: grid;
             grid-template-columns: 1fr;
-            gap: 3rem;
+            gap: 3.5rem;
             align-items: center;
         }
 
         .course-tag {
             display: inline-flex;
             align-items: center;
-            gap: 6px;
-            background: #FFFFFF;
-            border: 1px solid var(--border-subtle);
-            color: var(--pink-accent);
-            padding: 0.4rem 1.2rem;
-            border-radius: 50px;
-            font-size: 0.82rem;
-            font-weight: 800;
+            gap: 8px;
+            background: var(--burgundy);
+            color: var(--cream);
+            border: 2px solid var(--ink);
+            padding: 0.5rem 1.3rem;
+            border-radius: 50%/100%;
+            font-size: 0.78rem;
+            font-weight: 700;
+            letter-spacing: 1px;
             text-transform: uppercase;
-            margin-bottom: 1.2rem;
-            box-shadow: var(--shadow-soft);
+            margin-bottom: 1.5rem;
+            transform: rotate(-2deg);
+            box-shadow: var(--hard-sm);
         }
 
         .course-main-title {
-            font-size: 2.6rem;
-            font-weight: 900;
-            line-height: 1.2;
-            margin-bottom: 1rem;
-            color: var(--text-main);
+            font-size: 2.5rem;
+            font-weight: 800;
+            line-height: 1.15;
+            margin-bottom: 1.2rem;
+            color: var(--burgundy);
         }
 
         .course-meta {
@@ -173,7 +205,7 @@
             gap: 1.8rem;
             flex-wrap: wrap;
             font-size: 0.92rem;
-            color: var(--text-sub);
+            color: var(--ink);
             font-weight: 600;
             margin-top: 1.5rem;
         }
@@ -185,18 +217,24 @@
         }
 
         .course-meta i {
-            color: var(--pink-accent);
+            color: var(--burgundy);
         }
 
-        /* Tarjeta de Compra Flotante Clara */
+        /* Tarjeta de Compra Flotante Estilo Polaroid */
         .purchase-box {
-            background: var(--bg-surface);
-            color: var(--text-main);
-            border-radius: 28px;
-            padding: 2.2rem;
-            box-shadow: var(--shadow-hover);
-            border: 1px solid var(--border-subtle);
+            background: var(--cream);
+            color: var(--ink);
+            border-radius: 26px;
+            padding: 1.5rem;
+            box-shadow: var(--hard);
+            border: 2.5px solid var(--ink);
             position: relative;
+            transform: rotate(1deg);
+            transition: var(--transition);
+        }
+
+        .purchase-box:hover {
+            transform: rotate(0) scale(1.02);
         }
 
         .course-banner-img {
@@ -204,106 +242,120 @@
             height: 220px;
             object-fit: cover;
             border-radius: 18px;
-            margin-bottom: 1.5rem;
-            border: 1px solid var(--border-subtle);
+            margin-bottom: 1.2rem;
+            border: 2px solid var(--ink);
+            background: #fff;
+            padding: 6px;
+            box-shadow: var(--hard-sm);
         }
 
         .price-tag {
-            font-family: 'Montserrat', sans-serif;
+            font-family: 'Fraunces', serif;
             font-size: 2.2rem;
-            font-weight: 900;
-            color: var(--text-main);
+            font-weight: 800;
+            color: var(--burgundy);
             margin-bottom: 1.2rem;
+            text-align: center;
         }
 
         .btn-buy-now {
             display: block;
             width: 100%;
-            background: var(--pink-accent);
-            color: #FFFFFF;
+            background: var(--yellow);
+            color: var(--ink);
             text-align: center;
             padding: 1.1rem;
             border-radius: 50px;
-            text-decoration: none;
-            font-family: 'Montserrat', sans-serif;
-            font-weight: 800;
-            font-size: 1rem;
-            box-shadow: 0 10px 25px rgba(255, 83, 136, 0.3);
+            font-family: 'DM Sans', sans-serif;
+            font-weight: 700;
+            font-size: 0.95rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            box-shadow: var(--hard);
             transition: var(--transition);
-            border: none;
+            border: 2.5px solid var(--ink);
             cursor: pointer;
         }
 
         .btn-buy-now:hover {
-            background: #E04174;
-            transform: translateY(-2px);
-            box-shadow: 0 15px 30px rgba(255, 83, 136, 0.45);
+            transform: translate(-3px, -3px);
+            box-shadow: 8px 8px 0 var(--ink);
+            background: var(--olive);
+            color: var(--cream);
         }
 
         /* CONTENIDO PRINCIPAL */
         .main-content {
-            padding: 4rem 0;
+            padding: 5rem 0;
         }
 
         .section-block {
-            background: var(--bg-surface);
-            padding: 2.5rem;
+            background: #FFFFFF;
+            padding: 2.8rem;
             border-radius: 28px;
-            border: 1px solid var(--border-subtle);
-            box-shadow: var(--shadow-soft);
+            border: 2.5px solid var(--ink);
+            box-shadow: var(--hard);
             margin-bottom: 2.5rem;
+            transition: var(--transition);
+        }
+
+        .section-block:hover {
+            transform: translateY(-3px);
+            box-shadow: 8px 10px 0 var(--ink);
         }
 
         .block-title {
-            font-size: 1.5rem;
+            font-size: 1.8rem;
             font-weight: 800;
-            color: var(--text-main);
-            margin-bottom: 1.2rem;
+            color: var(--burgundy);
+            margin-bottom: 1.5rem;
             display: flex;
             align-items: center;
-            gap: 10px;
+            gap: 12px;
         }
 
         .block-title i {
-            color: var(--pink-accent);
+            color: var(--coral);
         }
 
         /* Acordeón de Módulos */
         .module-item {
-            border: 1.5px solid var(--border-subtle);
-            border-radius: 18px;
-            margin-bottom: 1rem;
+            border: 2px solid var(--ink);
+            border-radius: 20px;
+            margin-bottom: 1.1rem;
             overflow: hidden;
-            background: var(--bg-cream);
+            background: var(--cream);
+            box-shadow: var(--hard-sm);
+            transition: var(--transition);
         }
 
         .module-header {
-            padding: 1.2rem 1.5rem;
-            font-weight: 800;
-            font-size: 1rem;
+            padding: 1.3rem 1.6rem;
+            font-weight: 700;
+            font-size: 1.05rem;
             cursor: pointer;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            color: var(--text-main);
-            transition: var(--transition);
+            color: var(--ink);
+            background: var(--yellow);
         }
 
         .module-header:hover {
-            background: var(--bg-blush-soft);
+            background: var(--pink-soft);
         }
 
         .module-content {
             max-height: 0;
             overflow: hidden;
-            transition: max-height 0.35s ease;
+            transition: max-height 0.35s ease, padding 0.35s ease;
             background: #FFFFFF;
-            padding: 0 1.5rem;
+            padding: 0 1.6rem;
         }
 
         .module-item.active .module-content {
             max-height: 400px;
-            padding: 1rem 1.5rem 1.5rem 1.5rem;
+            padding: 1.2rem 1.6rem 1.6rem 1.6rem;
         }
 
         .lesson-list {
@@ -311,13 +363,13 @@
         }
 
         .lesson-list li {
-            padding: 0.7rem 0;
-            border-bottom: 1px solid var(--border-subtle);
-            font-size: 0.92rem;
-            color: var(--text-sub);
+            padding: 0.8rem 0;
+            border-bottom: 1px dashed rgba(38, 27, 43, 0.15);
+            font-size: 0.95rem;
+            color: var(--ink);
             display: flex;
             align-items: center;
-            gap: 8px;
+            gap: 10px;
             font-weight: 500;
         }
 
@@ -329,17 +381,20 @@
         .instructor-card {
             display: flex;
             flex-direction: column;
-            gap: 1.5rem;
+            gap: 2rem;
             align-items: center;
             text-align: center;
         }
 
         .instructor-avatar {
-            width: 110px;
-            height: 110px;
+            width: 130px;
+            height: 130px;
             border-radius: 50%;
             object-fit: cover;
-            border: 3px solid var(--pink-soft);
+            border: 3px solid var(--ink);
+            box-shadow: var(--hard);
+            background: #fff;
+            padding: 4px;
         }
 
         /* Requisitos */
@@ -349,9 +404,9 @@
 
         .requirements-list li {
             position: relative;
-            padding-left: 1.8rem;
-            margin-bottom: 0.8rem;
-            color: var(--text-sub);
+            padding-left: 2rem;
+            margin-bottom: 0.9rem;
+            color: var(--ink);
             font-weight: 500;
         }
 
@@ -359,17 +414,19 @@
             content: '✨';
             position: absolute;
             left: 0;
-            font-size: 0.85rem;
+            font-size: 0.95rem;
         }
 
         @media (min-width: 768px) {
-            .hero-layout { grid-template-columns: 1.3fr 1fr; }
-            .course-main-title { font-size: 3rem; }
+            .hero-layout { grid-template-columns: 1.2fr 1fr; }
+            .course-main-title { font-size: 3.2rem; }
             .instructor-card { flex-direction: row; text-align: left; }
         }
     </style>
 </head>
 <body>
+
+    <div class="topbar">✨ Estrategias digitales hechas para maquillistas ✨</div>
 
     <!-- HEADER -->
     <header>
@@ -385,13 +442,13 @@
             <div>
                 <span class="course-tag" id="courseCategory"><i class="fa-solid fa-sparkles"></i> Formación Profesional</span>
                 <h1 class="course-main-title" id="courseTitle">Cargando curso...</h1>
-                <p style="color: var(--text-sub); font-size: 1.1rem; line-height: 1.7; font-weight: 500;" id="courseSubtitle">
+                <p style="color: var(--ink); font-size: 1.1rem; line-height: 1.7; font-weight: 500;" id="courseSubtitle">
                     Sincronizando información detallada del programa...
                 </p>
                 <div class="course-meta">
                     <span><i class="fa-regular fa-clock"></i> <strong id="courseDuration">4 Semanas</strong></span>
                     <span><i class="fa-solid fa-layer-group"></i> <strong id="courseLevel">Principiante</strong></span>
-                    <span><i class="fa-solid fa-star" style="color: var(--gold-accent);"></i> <strong>4.9 / 5.0 (Reseñas)</strong></span>
+                    <span><i class="fa-solid fa-star" style="color: var(--burgundy);"></i> <strong>4.9 / 5.0 (Reseñas)</strong></span>
                 </div>
             </div>
 
@@ -412,7 +469,7 @@
             <!-- DESCRIPCIÓN -->
             <section class="section-block">
                 <h2 class="block-title"><i class="fa-solid fa-book-open"></i> Descripción del Programa</h2>
-                <p style="color: var(--text-sub); line-height: 1.8;" id="courseDescription">
+                <p style="color: var(--ink); line-height: 1.8;" id="courseDescription">
                     Cargando descripción detallada de los módulos y objetivos de aprendizaje...
                 </p>
             </section>
@@ -421,7 +478,7 @@
             <section class="section-block">
                 <h2 class="block-title"><i class="fa-solid fa-list-check"></i> Temario del Curso</h2>
                 <div id="temarioContainer">
-                    <p style="color: var(--text-muted); font-size: 0.95rem;">Cargando módulos y clases...</p>
+                    <p style="color: var(--muted); font-size: 0.95rem;">Cargando módulos y clases...</p>
                 </div>
             </section>
 
@@ -429,12 +486,12 @@
             <section class="section-block">
                 <h2 class="block-title"><i class="fa-solid fa-chalkboard-user"></i> Tu Mentora</h2>
                 <div class="instructor-card">
-                    <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=400&q=80" 
+                    <img src="img/#BTS JosieRaeXlunaB.jpg" 
                          alt="Foto de la Instructora" class="instructor-avatar">
                     <div>
-                        <h3 style="font-size: 1.3rem; margin-bottom: 0.3rem;">Sharon Ramos</h3>
-                        <p style="color: var(--pink-accent); font-weight: 700; margin-bottom: 0.6rem;">Especialista en Marketing y Belleza Digital</p>
-                        <p style="color: var(--text-sub); font-size: 0.95rem; font-weight: 500;">
+                        <h3 style="font-size: 1.5rem; margin-bottom: 0.3rem; color: var(--burgundy);">Sharon Ramos</h3>
+                        <p style="color: var(--coral); font-weight: 700; margin-bottom: 0.6rem;">Especialista en Marketing y Belleza Digital</p>
+                        <p style="color: var(--ink); font-size: 1rem; font-weight: 500;">
                             Con más de 6 años de experiencia impulsando a artistas del maquillaje en toda Latinoamérica para posicionar su marca y escalar sus ingresos independientes.
                         </p>
                     </div>
@@ -488,7 +545,6 @@
                 courseTitleGlobal = data.title;
                 coursePriceGlobal = Number(data.price || 0);
 
-                // Rellenar datos en pantalla
                 document.getElementById('courseTitle').innerText = data.title;
                 document.getElementById('courseSubtitle').innerText = data.description || "Aprende paso a paso las mejores estrategias profesionales.";
                 document.getElementById('courseDescription').innerText = data.description || "Formación completa diseñada para llevar tu talento al siguiente nivel.";
@@ -498,7 +554,6 @@
                     document.getElementById('courseImage').src = data.imageUrl;
                 }
 
-                // Cargar Módulos y Lecciones de este curso
                 await cargarModulosYLecciones(currentCourseId);
 
             } catch (error) {
@@ -512,7 +567,7 @@
                 const modulesSnap = await db.collection("modules").where("courseId", "==", courseId).get();
 
                 if (modulesSnap.empty) {
-                    container.innerHTML = `<p style="color: var(--text-muted); font-size: 0.95rem;">Próximamente se agregarán los módulos de estudio.</p>`;
+                    container.innerHTML = `<p style="color: var(--muted); font-size: 0.95rem;">Próximamente se agregarán los módulos de estudio.</p>`;
                     return;
                 }
 
@@ -530,7 +585,7 @@
                     } else {
                         lessonsSnap.forEach(lesDoc => {
                             const lesData = lesDoc.data();
-                            lessonsHtml += `<li><i class="fa-solid fa-play" style="font-size: 0.75rem; color: var(--pink-accent);"></i> ${lesData.title}</li>`;
+                            lessonsHtml += `<li><i class="fa-solid fa-play" style="font-size: 0.75rem; color: var(--coral);"></i> ${lesData.title}</li>`;
                         });
                     }
 
@@ -539,7 +594,7 @@
                     modDiv.innerHTML = `
                         <div class="module-header" onclick="toggleModulo(this)">
                             <span>${modData.title}</span>
-                            <i class="fa-solid fa-chevron-down" style="font-size: 0.85rem; color: var(--text-muted);"></i>
+                            <i class="fa-solid fa-chevron-down" style="font-size: 0.85rem; color: var(--ink);"></i>
                         </div>
                         <div class="module-content">
                             <ul class="lesson-list">
@@ -560,7 +615,6 @@
             moduleItem.classList.toggle('active');
         }
 
-        // Integración con Vercel Serverless Functions y Mercado Pago
         async function iniciarCompraPasarela() {
             const user = auth.currentUser;
 
@@ -570,7 +624,6 @@
                 return;
             }
 
-            // URL DE PRODUCCIÓN LIMPIA DE VERCEL
             const urlVercel = "https://create-your-glow-curso.vercel.app/api/crear-pago";
 
             const btnComprar = document.querySelector('.btn-buy-now');
@@ -616,3 +669,4 @@
     </script>
 </body>
 </html>
+```
