@@ -1,22 +1,21 @@
+```html
 <!DOCTYPE html>
 <html lang="es">
-    <!-- SDKs de Firebase (Versión Compat) -->
-<script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-auth-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>CREATE YOUR GLOW — Estrategias Digitales para Maquillistas</title>
+
+    <!-- SDKs de Firebase (Versión Compat) -->
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@500;700&family=DM+Sans:wght@400;500;700&family=Fraunces:ital,opsz,wght@0,9..144,600;0,9..144,800;1,9..144,600&display=swap" rel="stylesheet">
 
     <style>
-        /* ===== 1. PALETA (extraída de las dos referencias) =====
-           Ref. 1: lavanda, crema, negro carbón, amarillo pastel
-           Ref. 2: vino/burdeos, rosa chicle, coral, verde oliva, crema */
         :root {
             --lavender: #C5B3F2;
             --pink: #F7A8D0;
@@ -60,7 +59,7 @@
         .container { width: 100%; max-width: 1240px; margin: 0 auto; padding: 0 1.5rem; }
         ::selection { background: var(--yellow); color: var(--ink); }
 
-        /* ===== 2. BARRA SUPERIOR + HEADER ===== */
+        /* ===== BARRA SUPERIOR Y HEADER ===== */
         .topbar {
             background: var(--pink);
             color: var(--burgundy);
@@ -146,7 +145,7 @@
         .mobile-menu a { text-decoration: none; color: var(--burgundy); font-weight: 700; font-size: 1.1rem; }
         .mobile-menu a.btn-cta-nav { color: var(--cream); }
 
-        /* ===== 3. HERO (degradado rosa → lavanda → coral con grano) ===== */
+        /* ===== HERO ===== */
         .hero {
             padding: 3.5rem 1.5rem 5.5rem;
             background: var(--grad-hero);
@@ -184,9 +183,7 @@
         }
 
         .hero h1 { font-size: 2.5rem; font-weight: 800; line-height: 1.12; margin-bottom: 1.4rem; color: var(--burgundy); }
-
         .hero h1 .highlight { color: var(--cream); font-style: italic; text-shadow: 3px 3px 0 var(--burgundy); }
-
         .hero p { font-size: 1.1rem; color: var(--ink); margin-bottom: 2.2rem; font-weight: 500; max-width: 520px; }
         .hero-buttons { display: flex; flex-direction: column; gap: 1rem; }
 
@@ -207,9 +204,7 @@
         }
 
         .btn-primary:hover { transform: translate(-3px, -3px); box-shadow: 8px 8px 0 var(--ink); background: var(--olive); color: var(--cream); }
-        .btn-primary:active { transform: translate(2px, 2px); box-shadow: 2px 2px 0 var(--ink); }
 
-        /* Collage tipo polaroid */
         .hero-collage { position: relative; display: grid; grid-template-columns: repeat(2, 1fr); gap: 1.2rem; }
 
         .collage-img {
@@ -248,15 +243,14 @@
 
         .floating-card-icon { font-size: 1.8rem; background: var(--yellow); border: 2px solid var(--ink); padding: 6px; border-radius: 50%; }
 
-        /* Cinta de texto en movimiento (como la referencia 2) */
+        /* CINTA DE TEXTO */
         .marquee { background: var(--coral); border-block: 3px solid var(--ink); overflow: hidden; white-space: nowrap; padding: 0.7rem 0; }
         .marquee-track { display: inline-flex; animation: marquee 28s linear infinite; }
         .marquee span { font-family: 'Fraunces', serif; font-style: italic; font-weight: 600; font-size: 1.3rem; color: var(--cream); padding: 0 1.6rem; }
         @keyframes marquee { to { transform: translateX(-50%); } }
 
-        /* ===== 4. BENEFICIOS ===== */
+        /* BENEFICIOS */
         .benefits { padding: 6rem 1.5rem; background-color: var(--cream); }
-
         .section-header { text-align: center; max-width: 720px; margin: 0 auto 4rem; }
 
         .section-tag {
@@ -269,7 +263,6 @@
         }
 
         .section-title { font-size: 2.3rem; font-weight: 800; color: var(--burgundy); line-height: 1.15; }
-
         .benefits-grid { display: grid; grid-template-columns: 1fr; gap: 2.5rem; }
 
         .benefit-card {
@@ -286,7 +279,6 @@
         .benefit-card:nth-child(1) { background: var(--pink-soft); }
         .benefit-card:nth-child(2) { background: #E6DCFB; }
         .benefit-card:nth-child(3) { background: #FFE9B8; }
-
         .benefit-card:hover { transform: translate(-4px, -4px) rotate(-0.6deg); box-shadow: 9px 9px 0 var(--ink); }
 
         .benefit-img { width: 100%; height: 200px; object-fit: cover; border-bottom: 2.5px solid var(--ink); }
@@ -294,10 +286,9 @@
         .benefit-card h3 { font-size: 1.4rem; margin-bottom: 0.8rem; color: var(--burgundy); font-weight: 800; }
         .benefit-card p { color: var(--ink); font-size: 1rem; }
 
-        /* ===== 5. CURSOS (degradado coral → rosa → vino con grano) ===== */
+        /* CURSOS */
         .courses { position: relative; padding: 7rem 1.5rem 6rem; background: var(--grad-courses); }
-
-        .courses::before, .about::before {
+        .courses::before {
             content: '';
             position: absolute;
             top: -1px; left: 0; right: 0;
@@ -319,7 +310,6 @@
         .courses .container { position: relative; z-index: 1; }
         .courses .section-tag { color: var(--yellow); }
         .courses .section-title { color: var(--cream); }
-
         .courses-grid { display: grid; grid-template-columns: 1fr; gap: 2.8rem; padding-top: 1rem; }
 
         .course-card {
@@ -334,12 +324,10 @@
         }
 
         .course-card:hover { transform: translate(-4px, -8px); box-shadow: 9px 12px 0 var(--ink); }
-
         .course-img-wrap { position: relative; height: 230px; width: 100%; overflow: hidden; border-radius: 23px 23px 0 0; border-bottom: 2.5px solid var(--ink); }
         .course-img { width: 100%; height: 100%; object-fit: cover; transition: var(--transition); }
         .course-card:hover .course-img { transform: scale(1.08); }
 
-        /* Precio como etiqueta/ribbon colgante */
         .price-badge {
             position: absolute;
             top: 14px; right: 14px;
@@ -379,7 +367,7 @@
 
         .btn-course-enroll:hover { background: var(--olive); color: var(--cream); box-shadow: var(--hard-sm); transform: translate(-2px, -2px); }
 
-        /* ===== 6. GALERÍA (polaroids) ===== */
+        /* GALERÍA / RESULTADOS */
         .gallery { padding: 6rem 1.5rem; background: var(--cream); }
         .gallery-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1.6rem; }
 
@@ -397,7 +385,6 @@
         .gallery-item:nth-child(odd) { transform: rotate(-2deg); }
         .gallery-item:nth-child(even) { transform: rotate(2deg); }
         .gallery-item:hover { transform: rotate(0) scale(1.05); box-shadow: var(--hard); z-index: 2; }
-
         .gallery-item img { width: 100%; height: 100%; object-fit: cover; display: block; }
 
         .gallery-overlay {
@@ -412,9 +399,17 @@
             line-height: 1.2;
         }
 
-        /* ===== 7. SOBRE MÍ (fondo rosa + polaroid + lavanda) ===== */
+        /* SOBRE MÍ */
         .about { position: relative; padding: 7rem 1.5rem 6rem; background: var(--pink); }
-        .about::before { background: var(--cream); }
+        .about::before {
+            content: '';
+            position: absolute;
+            top: -1px; left: 0; right: 0;
+            height: 28px;
+            background: var(--cream);
+            -webkit-mask: var(--wave) repeat-x 0 0 / 80px 28px;
+            mask: var(--wave) repeat-x 0 0 / 80px 28px;
+        }
 
         .about-grid { display: grid; grid-template-columns: 1fr; gap: 3.5rem; align-items: center; }
         .about-img-wrap { position: relative; text-align: center; }
@@ -448,7 +443,6 @@
         }
 
         .about .section-tag { color: var(--burgundy); }
-
         .about-stats { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1.4rem; margin-top: 2.2rem; }
 
         .stat-box {
@@ -465,164 +459,10 @@
         .stat-number { font-size: 2.4rem; font-weight: 800; color: var(--ink); font-family: 'Fraunces', serif; line-height: 1.1; }
         .stat-label { font-size: 0.78rem; color: var(--ink); font-weight: 700; text-transform: uppercase; letter-spacing: 1px; }
 
-        /* ===== 8. FAQ (píldoras amarillas como "Can you relate?") ===== */
-        .faq { padding: 6rem 1.5rem; background-color: var(--cream); }
-        .faq-wrap { max-width: 800px; margin: 0 auto; }
-
-        .faq-item {
-            background: var(--yellow);
-            border-radius: 32px;
-            margin-bottom: 1.1rem;
-            border: 2.5px solid var(--ink);
-            overflow: hidden;
-            transition: var(--transition);
-        }
-
-        .faq-item:hover { box-shadow: var(--hard-sm); transform: translate(-2px, -2px); }
-
-        .faq-question {
-            padding: 1.3rem 1.6rem;
-            font-weight: 700;
-            font-size: 1.02rem;
-            cursor: pointer;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            gap: 1rem;
-            color: var(--ink);
-        }
-
-        .faq-icon {
-            flex-shrink: 0;
-            width: 34px; height: 34px;
-            background: var(--ink);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: var(--yellow);
-            transition: var(--transition);
-            font-weight: bold;
-        }
-
-        .faq-answer {
-            max-height: 0;
-            overflow: hidden;
-            transition: max-height 0.35s ease-out, padding 0.35s ease;
-            padding: 0 1.6rem;
-            color: var(--ink);
-            font-size: 1rem;
-        }
-
-        .faq-item.active { background: var(--pink-soft); box-shadow: var(--hard); }
-        .faq-item.active .faq-icon { transform: rotate(45deg); background: var(--burgundy); }
-        .faq-item.active .faq-answer { max-height: 200px; padding: 0 1.6rem 1.6rem; }
-
-        /* ===== 9. CONTACTO (bloque oscuro + botón amarillo, como ref. 1) ===== */
-        .contact {
-            padding: 6rem 1.5rem;
-            background:
-                radial-gradient(circle at 15% 15%, rgba(247, 168, 208, 0.28), transparent 42%),
-                radial-gradient(circle at 85% 85%, rgba(197, 179, 242, 0.28), transparent 45%),
-                var(--ink);
-            color: var(--cream);
-            position: relative;
-        }
-
-        .contact-box {
-            max-width: 650px;
-            margin: 0 auto;
-            background: var(--burgundy);
-            padding: 3rem 2rem;
-            border-radius: 32px;
-            border: 2.5px solid var(--pink);
-            box-shadow: 8px 8px 0 var(--pink);
-        }
-
-        .contact h2 { text-align: center; font-size: 2.2rem; font-weight: 800; color: var(--cream); margin-bottom: 0.6rem; }
-        .contact p { text-align: center; color: var(--pink-soft); font-size: 1rem; margin-bottom: 2.2rem; }
-
-        .form-group { margin-bottom: 1.3rem; }
-        .form-label { display: block; font-size: 0.85rem; margin-bottom: 0.45rem; color: var(--yellow); font-weight: 700; text-transform: uppercase; letter-spacing: 0.8px; }
-
-        .form-input, .form-select {
-            width: 100%;
-            padding: 1rem 1.3rem;
-            border-radius: 50px;
-            border: 2px solid var(--pink);
-            background-color: var(--cream);
-            color: var(--ink);
-            font-family: 'DM Sans', sans-serif;
-            font-size: 1rem;
-            outline: none;
-            transition: var(--transition);
-        }
-
-        .form-input::placeholder { color: #9A8AA0; }
-        .form-select option { background-color: var(--cream); color: var(--ink); }
-
-        .form-input:focus, .form-select:focus { border-color: var(--yellow); box-shadow: 0 0 0 4px rgba(255, 240, 138, 0.45); }
-
-        .btn-submit {
-            width: 100%;
-            background: var(--yellow);
-            color: var(--ink);
-            padding: 1.1rem;
-            border: 2.5px solid var(--ink);
-            border-radius: 50px;
-            font-family: 'DM Sans', sans-serif;
-            font-weight: 700;
-            font-size: 0.95rem;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            cursor: pointer;
-            box-shadow: var(--hard);
-            transition: var(--transition);
-            margin-top: 1rem;
-        }
-
-        .btn-submit:hover { transform: translate(-3px, -3px); box-shadow: 8px 8px 0 var(--ink); background: var(--pink); }
-        .btn-submit:active { transform: translate(2px, 2px); box-shadow: 2px 2px 0 var(--ink); }
-
-        .toast-notification {
-            display: none;
-            position: fixed;
-            bottom: 30px; right: 30px;
-            background: var(--yellow);
-            color: var(--ink);
-            padding: 1.2rem 1.8rem;
-            border-radius: 20px;
-            border: 2.5px solid var(--ink);
-            box-shadow: var(--hard);
-            z-index: 2000;
-            animation: slideIn 0.4s ease;
-        }
-
-        @keyframes slideIn { from { transform: translateY(100px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
-
-        /* ===== 10. FOOTER ===== */
         footer { background-color: var(--ink); color: #B9A9C4; padding: 3.5rem 1.5rem 2rem; text-align: center; border-top: 3px solid var(--pink); }
         .footer-logo { font-size: 1.6rem; font-weight: 800; color: var(--cream); margin-bottom: 1rem; font-family: 'Fraunces', serif; text-transform: uppercase; }
         .footer-logo span { color: var(--pink); font-style: italic; }
 
-        .social-links { display: flex; justify-content: center; flex-wrap: wrap; gap: 1rem; margin: 1.8rem 0; }
-
-        .social-links a {
-            color: var(--cream);
-            text-decoration: none;
-            font-weight: 700;
-            font-size: 0.85rem;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            transition: var(--transition);
-            border: 2px solid var(--lavender);
-            padding: 0.55rem 1.3rem;
-            border-radius: 50px;
-        }
-
-        .social-links a:hover { background: var(--lavender); color: var(--ink); transform: translateY(-3px); }
-
-        /* ===== 11. RESPONSIVE ===== */
         @media (min-width: 768px) {
             .hamburger { display: none; }
             .nav-links { display: flex; }
@@ -633,11 +473,6 @@
             .benefits-grid, .courses-grid { grid-template-columns: repeat(3, 1fr); }
             .gallery-grid { grid-template-columns: repeat(4, 1fr); }
             .about-grid { grid-template-columns: 1fr 1fr; }
-        }
-
-        @media (prefers-reduced-motion: reduce) {
-            .marquee-track { animation: none; }
-            * { transition: none !important; }
         }
     </style>
 </head>
@@ -655,7 +490,6 @@
                 <li><a href="cursos.html">Cursos</a></li>
                 <li><a href="#galeria">Transformación</a></li>
                 <li><a href="#nosotros">Sobre Mí</a></li>
-                <li><a href="#faq">FAQ</a></li>
             </ul>
 
             <a href="cursos.html" class="btn-cta-nav">Ver Catálogo 🔥</a>
@@ -672,7 +506,6 @@
             <a href="cursos.html" onclick="toggleMenu()">Cursos Destacados</a>
             <a href="#galeria" onclick="toggleMenu()">Resultados Alumnas</a>
             <a href="#nosotros" onclick="toggleMenu()">Sobre Mí</a>
-            <a href="#faq" onclick="toggleMenu()">Preguntas Frecuentes</a>
             <a href="cursos.html" class="btn-cta-nav" style="text-align: center; justify-content: center;">Ver Catálogo ✨</a>
         </div>
     </header>
@@ -690,18 +523,11 @@
                 </div>
             </div>
 
+            <!-- COLLAGE TIPO POLAROID CON TUS RUTAS DE IMÁGENES -->
             <div class="hero-collage">
-                <img src="img/hero-maquillista.jpg" style="object-position: 50% 40%"
-                     alt="Maquillista Profesional aplicando sombra"
-                     class="collage-img tall">
-
-                <img src="img/hero-camara.jpg" style="object-position: 50% 50%"
-                     alt="Cámara e iluminación de maquillaje"
-                     class="collage-img">
-
-                <img src="img/hero-productos.jpg" style="object-position: 50% 60%"
-                     alt="Pinceles de Maquillaje Profesional"
-                     class="collage-img">
+                <img src="img/Photography.jpg" style="object-position: 50% 40%" alt="Maquillista Profesional" class="collage-img tall">
+                <img src="img/1067282812339212742.jpg" style="object-position: 50% 50%" alt="Cámara e iluminación" class="collage-img">
+                <img src="img/425942077281145684.jpg" style="object-position: 50% 60%" alt="Pinceles de Maquillaje" class="collage-img">
 
                 <div class="floating-card">
                     <div class="floating-card-icon">👑</div>
@@ -732,8 +558,7 @@
 
             <div class="benefits-grid">
                 <div class="benefit-card">
-                    <img src="img/beneficio-marca.jpg" style="object-position: 50% 22%"
-                         alt="Marca Personal Elegante" class="benefit-img">
+                    <img src="img/descarga (61).jpg" alt="Marca Personal Elegante" class="benefit-img">
                     <div class="benefit-body">
                         <h3>Marca Personal Inolvidable</h3>
                         <p>Aprende a diferenciar tu perfil en redes sociales. Muestra la sofisticación y profesionalismo de tu trabajo desde el primer segundo.</p>
@@ -741,8 +566,7 @@
                 </div>
 
                 <div class="benefit-card">
-                    <img src="img/beneficio-reels.jpg" style="object-position: 50% 55%"
-                         alt="Creación de Videos y Reels" class="benefit-img">
+                    <img src="img/descarga (62).jpg" alt="Creación de Videos" class="benefit-img">
                     <div class="benefit-body">
                         <h3>Videos Virales y Nítidos</h3>
                         <p>Domina las luces, ángulos y edición móvil para que las pieles y difuminados de tus videos luzcan impecables como en revista.</p>
@@ -750,8 +574,7 @@
                 </div>
 
                 <div class="benefit-card">
-                    <img src="img/beneficio-agenda.jpg" style="object-position: 50% 27%"
-                         alt="Clientes y Novias Glamour" class="benefit-img">
+                    <img src="img/descarga (63).jpg" alt="Clientes y Novias" class="benefit-img">
                     <div class="benefit-body">
                         <h3>Agenda Siempre Llena</h3>
                         <p>Convierte seguidores curiosos en clientas fieles que pagan tarifas altas sin dudarlo por tus servicios de maquillaje profesional.</p>
@@ -772,7 +595,7 @@
             <div class="courses-grid">
                 <div class="course-card">
                     <div class="course-img-wrap">
-                        <img src="img/curso-marca-personal.jpg" style="object-position: 50% 25%" alt="Marca Personal" class="course-img">
+                        <img src="img/descarga (64).jpg" alt="Marca Personal" class="course-img">
                         <div class="price-badge">$50.000 COP</div>
                     </div>
                     <div class="course-content">
@@ -780,244 +603,122 @@
                             <h3>Marca Personal para Artistas</h3>
                             <p>Estrategias digitales paso a paso para posicionarte como la referente de belleza número uno en tu ciudad.</p>
                         </div>
-                        <a href="cursos.html" class="btn-course-enroll">Quiero saber más de este ✨</a>
+                        <a href="cursos.html" class="btn-course-enroll">Inscribirme Ahora ✨</a>
                     </div>
                 </div>
 
                 <div class="course-card">
                     <div class="course-img-wrap">
-                        <img src="img/curso-contenido.jpg" style="object-position: 50% 50%" alt="Contenido que Vende" class="course-img">
-                        <div class="price-badge">$70.000 COP</div>
+                        <img src="img/descarga (65).jpg" alt="Iluminación y Video" class="course-img">
+                        <div class="price-badge">$75.000 COP</div>
                     </div>
                     <div class="course-content">
                         <div>
-                            <h3>Contenido que Vende</h3>
-                            <p>Domina la grabación de reels y transiciones impactantes que atraen miles de visualizaciones y nuevos prospectos.</p>
+                            <h3>Iluminación y Contenido HD</h3>
+                            <p>Aprende a grabar con tu celular y lograr acabados profesionales con luz perfecta para destacar tus maquillajes.</p>
                         </div>
-                        <a href="cursos.html" class="btn-course-enroll">Quiero saber más de este ✨</a>
+                        <a href="cursos.html" class="btn-course-enroll">Inscribirme Ahora ✨</a>
                     </div>
                 </div>
 
                 <div class="course-card">
                     <div class="course-img-wrap">
-                        <img src="img/curso-marketing.jpg" style="object-position: 50% 35%" alt="Marketing para Maquillistas" class="course-img">
-                        <div class="price-badge">$60.000 COP</div>
+                        <img src="img/942519028278826069.jpg" alt="Atracción de Clientes" class="course-img">
+                        <div class="price-badge">$90.000 COP</div>
                     </div>
                     <div class="course-content">
                         <div>
-                            <h3>Marketing para Maquillistas</h3>
-                            <p>Estructura embudos de venta sencillos en Instagram y WhatsApp para cerrar contratos de maquillaje todos los fines de semana.</p>
+                            <h3>Agenda Llena para Maquillistas</h3>
+                            <p>Técnicas de ventas, paquetes para novias y estrategias de retención para multiplicar tus ingresos mensuales.</p>
                         </div>
-                        <a href="cursos.html" class="btn-course-enroll">Quiero saber más de este ✨</a>
+                        <a href="cursos.html" class="btn-course-enroll">Inscribirme Ahora ✨</a>
                     </div>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- GALERÍA -->
+    <!-- GALERÍA / RESULTADOS -->
     <section class="gallery" id="galeria">
         <div class="container">
             <div class="section-header">
-                <span class="section-tag">Galería Glam</span>
-                <h2 class="section-title">El arte y talento de nuestras alumnas</h2>
+                <span class="section-tag">Casos de Éxito</span>
+                <h2 class="section-title">Transformaciones de Nuestras Alumnas</h2>
             </div>
 
             <div class="gallery-grid">
                 <div class="gallery-item">
-                    <img src="img/galeria-1.jpg" style="object-position: 50% 45%" alt="Glam 1">
-                    <div class="gallery-overlay">Smokey Eyes Pro</div>
+                    <img src="img/1109785533255600116.jpg" alt="Resultado Maquillaje 1">
+                    <div class="gallery-overlay">Piel Blindada ✨</div>
                 </div>
                 <div class="gallery-item">
-                    <img src="img/galeria-2.jpg" style="object-position: 50% 20%" alt="Glam 2">
-                    <div class="gallery-overlay">Sesión Editorial</div>
+                    <img src="img/Ensaio profissional - harmonização facial - cirurgiã dentista - boss - branding.jpg" alt="Resultado Maquillaje 2">
+                    <div class="gallery-overlay">Marca Personal 👑</div>
                 </div>
                 <div class="gallery-item">
-                    <img src="img/galeria-3.jpg" style="object-position: 60% 55%" alt="Glam 3">
-                    <div class="gallery-overlay">Piel Efecto Vidrio</div>
+                    <img src="img/Королевский парфюм с нотой туберозы и амбры 👑.jpg" alt="Resultado Maquillaje 3">
+                    <div class="gallery-overlay">Glamour Total 💄</div>
                 </div>
                 <div class="gallery-item">
-                    <img src="img/galeria-4.jpg" style="object-position: 50% 36%" alt="Glam 4">
-                    <div class="gallery-overlay">Contenido Maquillaje</div>
+                    <img src="img/makeup.jpg" alt="Resultado Maquillaje 4">
+                    <div class="gallery-overlay">Smokey Eye Pro 🔥</div>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- QUIÉNES SOMOS -->
+    <!-- SOBRE MÍ -->
     <section class="about" id="nosotros">
         <div class="container about-grid">
             <div class="about-img-wrap">
-                <img src="img/sobre-mi.jpg" style="object-position: 50% 30%" alt="Creadora de Create Your Glow" class="about-img">
-                <div class="about-badge">⭐ Fundadora & Mentora</div>
+                <img src="img/#BTS JosieRaeXlunaB.jpg" alt="Creadora Create Your Glow" class="about-img">
+                <div class="about-badge">Fundadora & Mentora ✨</div>
             </div>
 
-            <div>
-                <span class="section-tag">Quiénes Somos</span>
-                <h2 class="section-title" style="margin-bottom: 1.2rem;">Ayudamos a maquillistas a vivir de su gran pasión</h2>
-                <p style="color: var(--ink); margin-bottom: 1.5rem; font-size: 1.05rem;">
-                    En <strong>CREATE YOUR GLOW</strong> sabemos que tienes un talento increíble con las brochas y los pigmentos. Sin embargo, el mercado digital actual exige algo más que buenas técnicas: exige visibilidad, estrategia y confianza.
-                </p>
-                <p style="color: var(--ink); margin-bottom: 2rem; font-size: 1.05rem;">
-                    Creamos rutas formativas prácticas, directas al grano y accesibles para que dejes de improvisar en redes sociales y comiences a construir un negocio rentable y admirado.
+            <div class="about-text">
+                <span class="section-tag">Hola, soy tu mentora</span>
+                <h2 class="section-title">Te enseño a convertir tu talento en un negocio rentable</h2>
+                <p style="margin-top: 1rem; font-size: 1.05rem;">
+                    Creé <strong>Create Your Glow</strong> para ayudar a maquillistas talentosas a salir del anonimato digital. No se trata solo de saber maquillar bien, sino de saber mostrarlo al mundo para atraer a las clientas ideales.
                 </p>
 
                 <div class="about-stats">
                     <div class="stat-box">
                         <div class="stat-number">+500</div>
-                        <div class="stat-label">Alumnas Activas</div>
+                        <div class="stat-label">Alumnas</div>
                     </div>
                     <div class="stat-box">
                         <div class="stat-number">100%</div>
-                        <div class="stat-label">Enfoque Práctico</div>
+                        <div class="stat-label">Online & Práctico</div>
                     </div>
                 </div>
             </div>
         </div>
     </section>
-
-    <!-- FAQ -->
-    <section class="faq" id="faq">
-        <div class="container">
-            <div class="section-header">
-                <span class="section-tag">Dudas Comunes</span>
-                <h2 class="section-title">Preguntas Frecuentes</h2>
-            </div>
-
-            <div class="faq-wrap">
-                <div class="faq-item">
-                    <div class="faq-question">
-                        ¿Necesito experiencia previa en marketing o redes sociales?
-                        <div class="faq-icon">+</div>
-                    </div>
-                    <div class="faq-answer">
-                        Para nada. Nuestros cursos están diseñados desde cero (nivel principiante hasta avanzado), explicados con peras y manzanas para que cualquier artista del maquillaje pueda implementarlos el mismo día.
-                    </div>
-                </div>
-
-                <div class="faq-item">
-                    <div class="faq-question">
-                        ¿Cómo recibo los cursos una vez realizado el pago?
-                        <div class="faq-icon">+</div>
-                    </div>
-                    <div class="faq-answer">
-                        El acceso es inmediato y 100% online. Podrás estudiar a tu propio ritmo desde cualquier dispositivo (celular o computador) las veces que quieras.
-                    </div>
-                </div>
-
-                <div class="faq-item">
-                    <div class="faq-question">
-                        ¿Los precios están en pesos colombianos (COP)?
-                        <div class="faq-icon">+</div>
-                    </div>
-                    <div class="faq-answer">
-                        Sí, todos nuestros programas tienen tarifas súper accesibles adaptadas a tu moneda local ($50.000, $60.000 y $70.000 COP).
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- CONTACTO -->
-    <section class="contact" id="contacto">
-        <div class="container">
-            <div class="contact-box">
-                <h2>¿Quieres más información?</h2>
-                <p>Déjanos tus datos y te enviaremos los detalles completos y accesos directos.</p>
-
-                <form id="leadForm" onsubmit="handleFormSubmit(event)">
-                    <div class="form-group">
-                        <label class="form-label">Tu Nombre</label>
-                        <input type="text" class="form-input" id="nombreInput" placeholder="Ej. Camila Rojas" required>
-                    </div>
-
-                    <div class="form-group">
-                        <label class="form-label">Correo Electrónico</label>
-                        <input type="email" class="form-input" id="emailInput" placeholder="tucorreo@gmail.com" required>
-                    </div>
-
-                    <div class="form-group">
-                        <label class="form-label">Curso de tu Interés</label>
-                        <select class="form-select" id="cursoSelect">
-                            <option value="Marca Personal">Marca Personal para Artistas ($50.000 COP)</option>
-                            <option value="Contenido que Vende">Contenido que Vende ($70.000 COP)</option>
-                            <option value="Marketing para Maquillistas">Marketing para Maquillistas ($60.000 COP)</option>
-                            <option value="Todos los Cursos">Pack Completo / Todos los Cursos</option>
-                        </select>
-                    </div>
-
-                    <button type="submit" class="btn-submit">Enviar Información ✨</button>
-                </form>
-            </div>
-        </div>
-    </section>
-
-    <!-- Toast de Notificación -->
-    <div class="toast-notification" id="toastNotification">
-        <strong>¡Mensaje Enviado con Éxito! ✨</strong>
-        <p style="font-size: 0.9rem; color: #52525B; margin-top: 4px;">Pronto nos pondremos en contacto contigo.</p>
-    </div>
 
     <!-- FOOTER -->
     <footer>
-        <div class="container">
-            <div class="footer-logo">CREATE YOUR <span>GLOW</span></div>
-            <p>Tu talento te hace brillar. Tu estrategia hace que te vean.</p>
-
-            <div class="social-links">
-                <a href="#">Instagram</a>
-                <a href="#">TikTok</a>
-                <a href="#">WhatsApp</a>
-            </div>
-
-            <p style="font-size: 0.8rem; color: #71717A; margin-top: 2rem;">© 2026 CREATE YOUR GLOW. Todos los derechos reservados.</p>
-        </div>
+        <div class="footer-logo">CREATE YOUR <span>GLOW</span> ✨</div>
+        <p>&copy; 2026 Create Your Glow. Todos los derechos reservados.</p>
     </footer>
 
-    <!-- JAVASCRIPT ORIGINAL (sin modificar) -->
     <script>
-        // Menú Hamburguesa Móvil
+        // Menú Hamburguesa para celulares
         const hamburgerBtn = document.getElementById('hamburgerBtn');
         const mobileMenu = document.getElementById('mobileMenu');
 
-        if (hamburgerBtn && mobileMenu) {
+        if(hamburgerBtn) {
             hamburgerBtn.addEventListener('click', () => {
                 mobileMenu.classList.toggle('active');
             });
         }
 
         function toggleMenu() {
-            if (mobileMenu) {
+            if(mobileMenu) {
                 mobileMenu.classList.remove('active');
             }
-        }
-
-        // Acordeón Preguntas Frecuentes (FAQ)
-        const faqItems = document.querySelectorAll('.faq-item');
-        faqItems.forEach(item => {
-            const question = item.querySelector('.faq-question');
-            if (question) {
-                question.addEventListener('click', () => {
-                    faqItems.forEach(other => {
-                        if (other !== item) other.classList.remove('active');
-                    });
-                    item.classList.toggle('active');
-                });
-            }
-        });
-
-        // Manejo del Formulario de Contacto
-        function handleFormSubmit(event) {
-            event.preventDefault();
-            const toast = document.getElementById('toastNotification');
-            if (toast) {
-                toast.style.display = 'block';
-                setTimeout(() => {
-                    toast.style.display = 'none';
-                }, 4000);
-            }a
-            document.getElementById('leadForm').reset();
         }
     </script>
 </body>
 </html>
+```
