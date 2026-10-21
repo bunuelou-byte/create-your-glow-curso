@@ -399,8 +399,8 @@
             <div class="purchase-box">
                 <img src="https://images.unsplash.com/photo-1522337360788-8b13dee7a37e?auto=format&fit=crop&w=800&q=80" 
                      alt="Portada del curso" class="course-banner-img" id="courseImage">
-                <div class="price-tag" id="coursePrice">$50.000 COP</div>
-                <button class="btn-buy-now" onclick="inscribirseAlCurso()">Inscribirme y Empezar 💖</button>
+                <div class="price-tag" id="coursePrice">$0 COP</div>
+                <button class="btn-buy-now" onclick="iniciarCompraPasarela()">Inscribirme y Pagar 💖</button>
             </div>
         </div>
     </section>
@@ -417,7 +417,7 @@
                 </p>
             </section>
 
-            <!-- TEMARIO (MÓDULOS Y LECCIONES DESDE FIRESTORE) -->
+            <!-- TEMARIO -->
             <section class="section-block">
                 <h2 class="block-title"><i class="fa-solid fa-list-check"></i> Temario del Curso</h2>
                 <div id="temarioContainer">
@@ -454,10 +454,11 @@
         </div>
     </main>
 
-    <!-- LÓGICA DINÁMICA DE FIREBASE -->
+    <!-- LÓGICA DINÁMICA DE FIREBASE Y MERCADO PAGO -->
     <script>
         let currentCourseId = null;
         let courseTitleGlobal = "";
+        let coursePriceGlobal = 0;
 
         document.addEventListener('DOMContentLoaded', async () => {
             const urlParams = new URLSearchParams(window.location.search);
@@ -485,12 +486,13 @@
                 const data = doc.data();
                 currentCourseId = doc.id;
                 courseTitleGlobal = data.title;
+                coursePriceGlobal = Number(data.price || 0);
 
                 // Rellenar datos en pantalla
                 document.getElementById('courseTitle').innerText = data.title;
                 document.getElementById('courseSubtitle').innerText = data.description || "Aprende paso a paso las mejores estrategias profesionales.";
                 document.getElementById('courseDescription').innerText = data.description || "Formación completa diseñada para llevar tu talento al siguiente nivel.";
-                document.getElementById('coursePrice').innerText = `$${Number(data.price || 0).toLocaleString()} COP`;
+                document.getElementById('coursePrice').innerText = `$${coursePriceGlobal.toLocaleString()} COP`;
                 document.getElementById('courseLevel').innerText = data.level || "Principiante";
                 if (data.imageUrl) {
                     document.getElementById('courseImage').src = data.imageUrl;
@@ -558,76 +560,62 @@
             moduleItem.classList.toggle('active');
         }
 
-        // Inscripción y verificación de usuario
-        async function inscribirseAlCurso() {
-            auth.onAuthStateChanged(async (user) => {
-                if (!user) {
-                    // Si no ha iniciado sesión, lo mandamos a auth.html con el curso seleccionado
-                    alert("Por favor inicia sesión o crea una cuenta para inscribirte.");
-                    window.location.href = `auth.html?curso=${encodeURIComponent(courseTitleGlobal)}`;
-                    return;
-                }
+        // Integración con Google Apps Script y Mercado Pago
+        async function iniciarCompraPasarela() {
+            const user = auth.currentUser;
 
-                // Si ya inició sesión, creamos su inscripción en Firestore
-                try {
-                    const existingEnroll = await db.collection("inscripciones")
-                        .where("uid", "==", user.uid)
-                        .where("courseId", "==", currentCourseId)
-                        .get();
+            if (!user) {
+                alert("Por favor inicia sesión o crea una cuenta para continuar con tu compra.");
+                window.location.href = `auth.html?curso=${encodeURIComponent(courseTitleGlobal)}`;
+                return;
+            }
 
-                    if (existingEnroll.empty) {
-                        await db.collection("inscripciones").add({
+            // REEMPLAZA ESTA URL CON TU URL DE LA APLICACIÓN WEB DE APPS SCRIPT QUE TERMINA EN /exec
+            const urlAppsScript = "TU_URL_DE_APLICACION_WEB_DE_APPS_SCRIPT";
+
+            if (urlAppsScript.includes("TU_URL_")) {
+                alert("Por favor configura la URL de tu Apps Script en el código JavaScript de esta página.");
+                return;
+            }
+
+            const btnComprar = document.querySelector('.btn-buy-now');
+            btnComprar.innerText = "Generando pago...";
+            btnComprar.disabled = true;
+
+            try {
+                const respuesta = await fetch(urlAppsScript + "?action=crearPago", {
+                    method: "POST",
+                    body: JSON.stringify({
+                        curso: {
+                            id: currentCourseId,
+                            title: courseTitleGlobal,
+                            price: coursePriceGlobal
+                        },
+                        usuario: {
                             uid: user.uid,
-                            courseId: currentCourseId,
-                            courseTitle: courseTitleGlobal,
-                            progreso: 0,
-                            leccionesCompletadas: [],
-                            createdAt: firebase.firestore.FieldValue.serverTimestamp()
-                        });
-                    }
+                            email: user.email
+                        }
+                    })
+                });
 
-                    alert("🎉 ¡Inscripción exitosa! Redirigiendo a tus cursos...");
-                    window.location.href = "mis-cursos.html";
+                const resultado = await respuesta.json();
 
-                } catch (error) {
-                    console.error("Error al inscribirse:", error);
-                    alert("Hubo un error al procesar tu inscripción.");
+                if (resultado.status === "success") {
+                    window.location.href = resultado.init_point;
+                } else {
+                    alert("No se pudo iniciar el pago: " + (resultado.error || "Error desconocido"));
+                    btnComprar.innerText = "Inscribirme y Pagar 💖";
+                    btnComprar.disabled = false;
                 }
-            });
+
+            } catch (error) {
+                console.error("Error de conexión:", error);
+                alert("Ocurrió un error de conexión con la pasarela de pagos.");
+                btnComprar.innerText = "Inscribirme y Pagar 💖";
+                btnComprar.disabled = false;
+            }
         }
     </script>
 </body>
-</html>async function iniciarCompra(cursoActual, usuarioActual) {
-    // Reemplaza con la URL /exec que te dio Google Apps Script al implementar tu Web App
-    const urlAppsScript = "TU_URL_DE_APLICACION_WEB_DE_APPS_SCRIPT";
-
-    try {
-        const respuesta = await fetch(urlAppsScript + "?action=crearPago", {
-            method: "POST",
-            body: JSON.stringify({
-                curso: {
-                    id: cursoActual.id,         // ID del documento del curso en Firestore
-                    title: cursoActual.title,   // Título del curso
-                    price: cursoActual.price    // Precio del curso (ej: 49.90)
-                },
-                usuario: {
-                    uid: usuarioActual.uid,     // UID del usuario autenticado en Firebase Auth
-                    email: usuarioActual.email  // Correo del usuario
-                }
-            })
-        });
-
-        const resultado = await respuesta.json();
-
-        if (resultado.status === "success") {
-            // Te redirige automáticamente a la pasarela de pagos de Mercado Pago
-            window.location.href = resultado.init_point; 
-        } else {
-            alert("No se pudo iniciar el pago: " + (resultado.error || "Error desconocido"));
-        }
-
-    } catch (error) {
-        console.error("Error de red al intentar comprar:", error);
-        alert("Ocurrió un error de conexión con la pasarela de pagos.");
-    }
-}
+</html>
+            
