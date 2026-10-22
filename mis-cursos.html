@@ -1,20 +1,22 @@
+```html
 <!DOCTYPE html>
 <html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mis Cursos - Create Your Glow</title>
-    <!-- Google Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <!-- FontAwesome para iconos -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    
-    <!-- 1. SDKs de Firebase (Versión Compat) -->
+    <title>Mis Cursos | CREATE YOUR GLOW</title>
+
+    <!-- SDKs de Firebase (Versión Compat) -->
     <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-auth-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
 
-    <!-- 2. Inicialización de Firebase con tus credenciales reales -->
+    <!-- Google Fonts & FontAwesome -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@500;700&family=DM+Sans:wght@400;500;700&family=Fraunces:ital,opsz,wght@0,9..144,600;0,9..144,800;1,9..144,600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
     <script>
         const firebaseConfig = {
             apiKey: "AIzaSyCR724EP9rNkKtETG1xM_CGSQ1ZIHhbOhc",
@@ -24,7 +26,6 @@
             messagingSenderId: "917183846981",
             appId: "1:917183846981:web:214a14dbefdbdcc017612c"
         };
-
         firebase.initializeApp(firebaseConfig);
         const auth = firebase.auth();
         const db = firebase.firestore();
@@ -32,585 +33,460 @@
 
     <style>
         :root {
-            --bg-ivory: #FDFBF7;
-            --white: #FFFFFF;
-            --pink-soft: #FCE4EC;
-            --pink-primary: #E91E63;
-            --pink-dark: #C2185B;
-            --mauve: #9C27B0;
-            --text-dark: #2D2D2D;
-            --text-muted: #666666;
-            --border-color: #EEDFE5;
-            --shadow: 0 10px 30px rgba(233, 30, 99, 0.05);
-            --radius: 16px;
+            --lavender: #C5B3F2;
+            --pink: #F7A8D0;
+            --pink-soft: #FBD3E6;
+            --coral: #F7704F;
+            --burgundy: #6B0F2E;
+            --olive: #A7A83B;
+            --yellow: #FFF08A;
+            --cream: #FBF3E8;
+            --ink: #261B2B;
+            --muted: #6A5870;
+
+            --grad-hero: linear-gradient(160deg, #F7A8D0 0%, #E9B4E8 35%, #C5B3F2 65%, #F9B08C 100%);
+            --grad-courses: linear-gradient(180deg, #F7704F 0%, #E86FA6 45%, #8C2E6B 100%);
+            --hard: 5px 5px 0 var(--ink);
+            --hard-sm: 3px 3px 0 var(--ink);
+            --transition: all 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+            --grain: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.55'/%3E%3C/svg%3E");
+            --wave: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 80 28' preserveAspectRatio='none'%3E%3Cpath d='M0 0H80V10Q60 28 40 10T0 10Z'/%3E%3C/svg%3E");
         }
 
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Plus Jakarta Sans', sans-serif;
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; scroll-behavior: smooth; }
 
         body {
-            background-color: var(--bg-ivory);
-            color: var(--text-dark);
-            display: flex;
-            min-height: 100vh;
+            font-family: 'DM Sans', sans-serif;
+            background-color: var(--cream);
+            color: var(--ink);
+            line-height: 1.65;
+            overflow-x: hidden;
         }
 
-        /* Barra lateral de navegación */
-        aside {
-            width: 260px;
-            background-color: var(--white);
-            border-right: 1px solid var(--border-color);
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-            position: fixed;
-            height: 100vh;
-            z-index: 100;
-            transition: transform 0.3s ease;
-        }
+        h1, h2, h3, .heading-font { font-family: 'Fraunces', serif; letter-spacing: -0.02em; }
+        .container { width: 100%; max-width: 1240px; margin: 0 auto; padding: 0 1.5rem; }
+        ::selection { background: var(--yellow); color: var(--ink); }
 
-        .aside-header {
-            padding: 24px;
-            font-size: 1.25rem;
+        /* TOPBAR & HEADER (IDÉNTICO A LANDING PAGE) */
+        .topbar {
+            background: var(--pink);
+            color: var(--burgundy);
+            text-align: center;
+            font-size: 0.8rem;
             font-weight: 700;
-            color: var(--pink-dark);
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            border-bottom: 1px solid var(--border-color);
+            padding: 0.4rem 1rem;
+            letter-spacing: 0.3px;
         }
 
-        .aside-nav {
-            list-style: none;
-            padding: 20px 16px;
-            flex-grow: 1;
+        header {
+            background-color: var(--burgundy);
+            border-bottom: 3px solid var(--ink);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
         }
 
-        .aside-nav li {
-            margin-bottom: 8px;
-        }
+        .nav-container { display: flex; justify-content: space-between; align-items: center; padding: 0.9rem 1.5rem; }
 
-        .aside-nav a {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            padding: 12px 16px;
-            color: var(--text-muted);
+        .logo {
+            font-family: 'Fraunces', serif;
+            font-size: 1.3rem;
+            font-weight: 800;
+            color: var(--cream);
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
             text-decoration: none;
-            font-weight: 500;
-            border-radius: 10px;
-            transition: all 0.2s ease;
-        }
-
-        .aside-nav a:hover, .aside-nav a.active {
-            background-color: var(--pink-soft);
-            color: var(--pink-primary);
-        }
-
-        .aside-footer {
-            padding: 20px 16px;
-            border-top: 1px solid var(--border-color);
-        }
-
-        .btn-logout {
-            width: 100%;
             display: flex;
             align-items: center;
-            gap: 12px;
-            padding: 12px 16px;
-            background: transparent;
-            border: none;
-            color: #d32f2f;
-            font-weight: 600;
-            border-radius: 10px;
+            gap: 6px;
+        }
+
+        .logo span { color: var(--pink); font-style: italic; }
+
+        .btn-cta-nav {
+            background: var(--olive);
+            color: var(--cream);
+            border: 2px solid var(--ink);
+            padding: 0.6rem 1.4rem;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 0.82rem;
+            text-transform: uppercase;
+            letter-spacing: 0.8px;
+            box-shadow: var(--hard-sm);
+            transition: var(--transition);
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
             cursor: pointer;
-            transition: background 0.2s;
         }
 
-        .btn-logout:hover {
-            background-color: #ffebee;
+        .btn-cta-nav:hover { transform: translate(-2px, -2px); box-shadow: 5px 5px 0 var(--ink); background: var(--yellow); color: var(--ink); }
+
+        /* HERO USER (ESTILO HOMEPAGE HERO) */
+        .user-hero {
+            padding: 4.5rem 1.5rem 5rem;
+            background: var(--grad-hero);
+            position: relative;
+            overflow: hidden;
+            border-bottom: 3px solid var(--ink);
         }
 
-        /* Contenido principal */
-        main {
-            margin-left: 260px;
-            flex-grow: 1;
-            padding: 40px;
-            max-width: 1200px;
+        .user-hero::after {
+            content: '';
+            position: absolute; inset: 0;
+            background-image: var(--grain);
+            mix-blend-mode: multiply;
+            opacity: 0.22;
+            pointer-events: none;
         }
 
-        /* Encabezado */
-        .header-content {
+        .hero-layout {
+            position: relative;
+            z-index: 1;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 32px;
-            background: var(--white);
-            padding: 24px 32px;
-            border-radius: var(--radius);
-            box-shadow: var(--shadow);
-            border: 1px solid var(--border-color);
+            flex-wrap: wrap;
+            gap: 2rem;
         }
 
-        .welcome-text h1 {
-            font-size: 1.75rem;
-            color: var(--text-dark);
-            margin-bottom: 4px;
-        }
-
-        .welcome-text p {
-            color: var(--text-muted);
-            font-size: 0.95rem;
-        }
-
-        .user-profile-badge {
-            display: flex;
+        .hero-badge {
+            display: inline-flex;
             align-items: center;
-            gap: 12px;
-            background: var(--pink-soft);
-            padding: 8px 16px;
-            border-radius: 50px;
-            color: var(--pink-dark);
-            font-weight: 600;
-            font-size: 0.9rem;
+            gap: 8px;
+            background: var(--burgundy);
+            color: var(--cream);
+            border: 2px solid var(--ink);
+            padding: 0.5rem 1.3rem;
+            border-radius: 50%/100%;
+            font-size: 0.78rem;
+            font-weight: 700;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            margin-bottom: 1.2rem;
+            transform: rotate(-2deg);
+            box-shadow: var(--hard-sm);
         }
 
-        /* Resumen del aprendizaje */
-        .stats-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-            gap: 20px;
-            margin-bottom: 40px;
+        .welcome-title {
+            font-size: 2.8rem;
+            font-weight: 800;
+            color: var(--burgundy);
+            line-height: 1.15;
+            margin-bottom: 0.5rem;
         }
 
-        .stat-card {
-            background: var(--white);
-            padding: 24px;
-            border-radius: var(--radius);
-            box-shadow: var(--shadow);
-            border: 1px solid var(--border-color);
-            display: flex;
-            align-items: center;
-            gap: 20px;
+        .welcome-title span { color: var(--cream); font-style: italic; text-shadow: 3px 3px 0 var(--burgundy); }
+
+        .welcome-subtitle {
+            font-size: 1.1rem;
+            color: var(--ink);
+            font-weight: 500;
         }
 
-        .stat-icon {
-            width: 50px;
-            height: 50px;
-            border-radius: 12px;
-            background: var(--pink-soft);
-            color: var(--pink-primary);
+        /* CARD RETRATO POLAROID DEL USUARIO */
+        .user-polaroid {
+            background: #fff;
+            padding: 10px 10px 30px;
+            border-radius: 8px;
+            border: 2.5px solid var(--ink);
+            box-shadow: var(--hard);
+            transform: rotate(3deg);
+            text-align: center;
+            min-width: 240px;
+        }
+
+        .user-avatar-icon {
+            width: 75px;
+            height: 75px;
+            background: var(--yellow);
+            border-radius: 50%;
+            border: 2px solid var(--ink);
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 1.25rem;
+            font-size: 2rem;
+            margin: 0 auto 0.8rem;
+            box-shadow: var(--hard-sm);
         }
 
-        .stat-info h3 {
-            font-size: 1.5rem;
-            font-weight: 700;
-            color: var(--text-dark);
-        }
-
-        .stat-info p {
+        .user-email-text {
             font-size: 0.85rem;
-            color: var(--text-muted);
+            font-weight: 800;
+            color: var(--burgundy);
         }
 
-        /* Sección Mis Cursos */
-        .section-title {
-            font-size: 1.25rem;
-            font-weight: 700;
-            margin-bottom: 20px;
-            color: var(--text-dark);
+        /* MÉTRICAS / ESTADÍSTICAS ESTILO LANDING */
+        .metrics-section {
+            padding: 3rem 0 1rem;
         }
 
-        .courses-grid {
+        .metrics-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-            gap: 24px;
+            grid-template-columns: 1fr;
+            gap: 1.8rem;
         }
 
-        .course-card {
-            background: var(--white);
-            border-radius: var(--radius);
-            overflow: hidden;
-            box-shadow: var(--shadow);
-            border: 1px solid var(--border-color);
+        .stat-box-lms {
+            padding: 1.8rem;
+            border-radius: 26px;
+            border: 2.5px solid var(--ink);
+            box-shadow: var(--hard);
+            transition: var(--transition);
             display: flex;
-            flex-direction: column;
-            transition: transform 0.2s ease;
+            align-items: center;
+            gap: 1.2rem;
         }
 
-        .course-card:hover {
-            transform: translateY(-4px);
-        }
+        .stat-box-lms:hover { transform: translate(-3px, -3px) rotate(-0.5deg); box-shadow: 8px 8px 0 var(--ink); }
 
-        .course-image {
-            width: 100%;
-            height: 160px;
-            object-fit: cover;
-            background-color: var(--pink-soft);
-        }
+        .stat-box-lms:nth-child(1) { background: var(--pink-soft); }
+        .stat-box-lms:nth-child(2) { background: #E6DCFB; }
+        .stat-box-lms:nth-child(3) { background: #FFE9B8; }
 
-        .course-content {
-            padding: 20px;
+        .stat-icon {
+            width: 58px; height: 58px;
+            background: #fff;
+            border: 2px solid var(--ink);
+            border-radius: 18px;
             display: flex;
-            flex-direction: column;
-            flex-grow: 1;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            color: var(--burgundy);
+            box-shadow: var(--hard-sm);
         }
 
-        .course-category {
-            font-size: 0.75rem;
+        .stat-num { font-family: 'Fraunces', serif; font-size: 2.2rem; font-weight: 800; color: var(--burgundy); line-height: 1; }
+        .stat-lbl { font-size: 0.8rem; font-weight: 700; color: var(--ink); text-transform: uppercase; letter-spacing: 0.8px; }
+
+        /* SECCIÓN CURSOS INSCRITOS */
+        .courses-section {
+            padding: 2.5rem 0 6rem;
+        }
+
+        .section-tag-sub {
+            font-family: 'Caveat', cursive;
+            font-size: 1.6rem;
             font-weight: 700;
-            text-transform: uppercase;
-            color: var(--mauve);
-            margin-bottom: 6px;
-            letter-spacing: 0.5px;
-        }
-
-        .course-title {
-            font-size: 1.1rem;
-            font-weight: 700;
-            color: var(--text-dark);
-            margin-bottom: 8px;
-        }
-
-        .course-level {
-            font-size: 0.85rem;
-            color: var(--text-muted);
-            margin-bottom: 16px;
-        }
-
-        /* Barra de progreso */
-        .progress-container {
-            margin-top: auto;
-            margin-bottom: 16px;
-        }
-
-        .progress-info {
-            display: flex;
-            justify-content: space-between;
-            font-size: 0.8rem;
-            font-weight: 600;
-            color: var(--text-muted);
-            margin-bottom: 6px;
-        }
-
-        .progress-bar-bg {
-            width: 100%;
-            height: 8px;
-            background-color: #f1f1f1;
-            border-radius: 4px;
-            overflow: hidden;
-        }
-
-        .progress-bar-fill {
-            height: 100%;
-            background-color: var(--pink-primary);
-            border-radius: 4px;
-            transition: width 0.4s ease;
-        }
-
-        .btn-continue {
+            color: var(--coral);
             display: block;
+        }
+
+        .section-title-lms {
+            font-size: 2.2rem;
+            font-weight: 800;
+            color: var(--burgundy);
+            margin-bottom: 2rem;
+        }
+
+        .courses-grid-lms {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 2.5rem;
+        }
+
+        /* ESTADO VACÍO (NEOBRUTALISTA) */
+        .empty-card {
+            background: #FFFFFF;
+            border-radius: 28px;
+            border: 2.5px solid var(--ink);
+            padding: 4rem 2rem;
             text-align: center;
-            background-color: var(--pink-primary);
-            color: var(--white);
-            padding: 10px 16px;
-            border-radius: 10px;
-            text-decoration: none;
-            font-weight: 600;
-            font-size: 0.9rem;
-            transition: background-color 0.2s;
-        }
-
-        .btn-continue:hover {
-            background-color: var(--pink-dark);
-        }
-
-        /* Estados de Carga, Vacío y Error */
-        .state-container {
+            box-shadow: var(--hard);
             grid-column: 1 / -1;
-            text-align: center;
-            padding: 60px 20px;
-            background: var(--white);
-            border-radius: var(--radius);
-            border: 1px solid var(--border-color);
-            box-shadow: var(--shadow);
         }
 
-        .state-container i {
-            font-size: 3rem;
-            color: var(--pink-primary);
-            margin-bottom: 16px;
-        }
+        .empty-card i { font-size: 3.5rem; color: var(--coral); margin-bottom: 1rem; }
+        .empty-card h3 { font-family: 'Fraunces', serif; font-size: 1.8rem; font-weight: 800; color: var(--burgundy); margin-bottom: 0.5rem; }
+        .empty-card p { color: var(--muted); max-width: 480px; margin: 0 auto 1.8rem; font-weight: 500; font-size: 1.05rem; }
 
-        .state-container h3 {
-            font-size: 1.25rem;
-            margin-bottom: 8px;
-            color: var(--text-dark);
-        }
-
-        .state-container p {
-            color: var(--text-muted);
-            font-size: 0.95rem;
-            margin-bottom: 20px;
-        }
-
-        .btn-primary-action {
-            display: inline-block;
-            background-color: var(--pink-primary);
-            color: var(--white);
-            padding: 10px 24px;
-            border-radius: 10px;
+        .btn-primary-lms {
+            background: var(--yellow);
+            color: var(--ink);
+            border: 2.5px solid var(--ink);
+            padding: 0.95rem 2.2rem;
+            border-radius: 50px;
             text-decoration: none;
-            font-weight: 600;
-            transition: background 0.2s;
+            font-weight: 700;
+            font-size: 0.88rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            box-shadow: var(--hard);
+            transition: var(--transition);
         }
 
-        .btn-primary-action:hover {
-            background-color: var(--pink-dark);
+        .btn-primary-lms:hover {
+            transform: translate(-3px, -3px);
+            box-shadow: 8px 8px 0 var(--ink);
+            background: var(--olive);
+            color: var(--cream);
         }
 
-        /* Responsive */
-        @media (max-width: 768px) {
-            aside {
-                transform: translateX(-100%);
-            }
-            main {
-                margin-left: 0;
-                padding: 20px;
-            }
-            .header-content {
-                flex-direction: column;
-                align-items: flex-start;
-                gap: 16px;
-            }
+        footer { background-color: var(--ink); color: #B9A9C4; padding: 3.5rem 1.5rem 2rem; text-align: center; border-top: 3px solid var(--pink); }
+        .footer-logo { font-size: 1.6rem; font-weight: 800; color: var(--cream); margin-bottom: 1rem; font-family: 'Fraunces', serif; text-transform: uppercase; }
+        .footer-logo span { color: var(--pink); font-style: italic; }
+
+        @media (min-width: 768px) {
+            .metrics-grid { grid-template-columns: repeat(3, 1fr); }
+            .courses-grid-lms { grid-template-columns: repeat(3, 1fr); }
         }
     </style>
 </head>
 <body>
 
-    <!-- Barra lateral de navegación -->
-    <aside>
-        <div>
-            <div class="aside-header">
-                <i class="fa-solid fa-wand-magic-sparkles"></i> Create Your Glow
+    <div class="topbar">✨ Espacio Privado de Aprendizaje ✨</div>
+
+    <!-- HEADER -->
+    <header>
+        <div class="container nav-container">
+            <a href="index.html" class="logo">CREATE YOUR <span>GLOW</span> ✨</a>
+            <div style="display: flex; gap: 10px; align-items: center;">
+                <a href="cursos.html" class="btn-cta-nav" style="background: var(--yellow); color: var(--ink);"><i class="fa-solid fa-compass"></i> Catálogo</a>
+                <button onclick="cerrarSesion()" class="btn-cta-nav" style="background: var(--coral); color: #fff;"><i class="fa-solid fa-right-from-bracket"></i> Salir</button>
             </div>
-            <ul class="aside-nav">
-                <li><a href="./index.html"><i class="fa-solid fa-house"></i> Inicio</a></li>
-                <li><a href="./mis-cursos.html" class="active"><i class="fa-solid fa-graduation-cap"></i> Mis cursos</a></li>
-                <li><a href="./cursos.html"><i class="fa-solid fa-compass"></i> Explorar cursos</a></li>
-                <li><a href="#" onclick="alert('Sección de Perfil en desarrollo');"><i class="fa-solid fa-user"></i> Mi perfil</a></li>
-            </ul>
         </div>
-        <div class="aside-footer">
-            <button id="logoutBtn" class="btn-logout" onclick="cerrarSesion()">
-                <i class="fa-solid fa-right-from-bracket"></i> Cerrar sesión
-            </button>
+    </header>
+
+    <!-- HERO DE BIENVENIDA -->
+    <section class="user-hero">
+        <div class="container hero-layout">
+            <div>
+                <div class="hero-badge">🎓 Panel de Estudiante</div>
+                <h1 class="welcome-title" id="userName">Hola, <span>Estudiante</span> ✨</h1>
+                <p class="welcome-subtitle">Bienvenida de nuevo a tu academia. Aquí tienes tus programas y avances guardados.</p>
+            </div>
+
+            <div class="user-polaroid">
+                <div class="user-avatar-icon">👑</div>
+                <div class="user-email-text" id="userEmail">Cargando datos...</div>
+            </div>
         </div>
-    </aside>
+    </section>
 
-    <!-- Contenido principal -->
-    <main>
-        <!-- Encabezado -->
-        <header class="header-content">
-            <div class="welcome-text">
-                <h1 id="welcomeTitle">Hola, Estudiante</h1>
-                <p>Bienvenida de nuevo a tu espacio de aprendizaje.</p>
-            </div>
-            <div class="user-profile-badge">
-                <i class="fa-solid fa-user-circle"></i>
-                <span id="userNameBadge">Cargando...</span>
-            </div>
-        </header>
+    <!-- MÉTRICAS -->
+    <section class="metrics-section">
+        <div class="container">
+            <div class="metrics-grid">
+                <div class="stat-box-lms">
+                    <div class="stat-icon"><i class="fa-solid fa-book-open"></i></div>
+                    <div>
+                        <div class="stat-num" id="countInscritos">0</div>
+                        <div class="stat-lbl">Cursos Inscritos</div>
+                    </div>
+                </div>
 
-        <!-- Resumen del aprendizaje -->
-        <section class="stats-grid">
-            <div class="stat-card">
-                <div class="stat-icon">
-                    <i class="fa-solid fa-book-open"></i>
+                <div class="stat-box-lms">
+                    <div class="stat-icon"><i class="fa-solid fa-fire"></i></div>
+                    <div>
+                        <div class="stat-num" id="countActivos">0</div>
+                        <div class="stat-lbl">Cursos Activos</div>
+                    </div>
                 </div>
-                <div class="stat-info">
-                    <h3 id="totalEnrolled">0</h3>
-                    <p>Cursos Inscritos</p>
-                </div>
-            </div>
-            <div class="stat-card">
-                <div class="stat-icon">
-                    <i class="fa-solid fa-fire"></i>
-                </div>
-                <div class="stat-info">
-                    <h3 id="activeCourses">0</h3>
-                    <p>Cursos Activos</p>
-                </div>
-            </div>
-            <div class="stat-card">
-                <div class="stat-icon">
-                    <i class="fa-solid fa-chart-line"></i>
-                </div>
-                <div class="stat-info">
-                    <h3 id="avgProgress">0%</h3>
-                    <p>Progreso General</p>
-                </div>
-            </div>
-        </section>
 
-        <!-- Sección Mis Cursos -->
-        <section>
-            <h2 class="section-title">Cursos en los que estás inscrita</h2>
-            <div id="coursesContainer" class="courses-grid">
-                <!-- Estado de carga inicial -->
-                <div class="state-container">
-                    <i class="fa-solid fa-spinner fa-spin"></i>
-                    <h3>Cargando tus cursos...</h3>
-                    <p>Por favor espera un momento mientras sincronizamos tu información.</p>
+                <div class="stat-box-lms">
+                    <div class="stat-icon"><i class="fa-solid fa-chart-line"></i></div>
+                    <div>
+                        <div class="stat-num" id="progresoGeneral">0%</div>
+                        <div class="stat-lbl">Progreso General</div>
+                    </div>
                 </div>
             </div>
-        </section>
-    </main>
+        </div>
+    </section>
 
-    <!-- Lógica de Conexión y Renderizado Dinámico -->
+    <!-- CURSOS INSCRITOS -->
+    <section class="courses-section">
+        <div class="container">
+            <span class="section-tag-sub">Tus programas</span>
+            <h2 class="section-title-lms">Cursos en los que estás inscrita 💖</h2>
+
+            <div class="courses-grid-lms" id="contenedor-mis-cursos">
+                <!-- Estado por defecto cuando no hay cursos inscritos -->
+                <div class="empty-card">
+                    <i class="fa-solid fa-face-smile-wink"></i>
+                    <h3>Aún no tienes cursos inscritos</h3>
+                    <p>Explora nuestro catálogo exclusivo y comienza hoy mismo a potenciar tu marca personal y tu negocio.</p>
+                    <a href="cursos.html" class="btn-primary-lms">
+                        Explorar Catálogo Ahora <i class="fa-solid fa-arrow-right"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <div class="footer-logo">CREATE YOUR <span>GLOW</span> ✨</div>
+        <p>&copy; 2026 Create Your Glow. Todos los derechos reservados.</p>
+    </footer>
+
+    <!-- LÓGICA DE FIREBASE Y SESIÓN -->
     <script>
-        // 1. Proteger la ruta: Verificar si la usuaria ha iniciado sesión
         auth.onAuthStateChanged(async (user) => {
-            if (!user) {
-                window.location.href = "auth.html";
-                return;
-            }
-
-            try {
-                const userDoc = await db.collection("users").doc(user.uid).get();
-                if (userDoc.exists) {
-                    const userData = userDoc.data();
-                    document.getElementById('welcomeTitle').innerText = `Hola, ${userData.name || 'Estudiante'} ✨`;
-                    document.getElementById('userNameBadge').innerText = userData.name || user.email;
-                } else {
-                    document.getElementById('userNameBadge').innerText = user.email;
+            if (user) {
+                document.getElementById('userEmail').innerText = user.email;
+                if (user.displayName) {
+                    document.getElementById('userName').innerHTML = `Hola, <span>${user.displayName}</span> ✨`;
                 }
 
-                await cargarMisInscripciones(user.uid);
-
-            } catch (error) {
-                console.error("Error al cargar perfil del usuario:", error);
+                await cargarMisCursos(user.uid);
+            } else {
+                window.location.href = "auth.html";
             }
         });
 
-        // 2. Cargar Inscripciones desde la colección 'inscripciones' con logs de depuración
-        async function cargarMisInscripciones(userId) {
-            const container = document.getElementById('coursesContainer');
-            
-            console.log("🔍 Buscando inscripciones para el UID actual:", userId);
-
+        async function cargarMisCursos(uid) {
             try {
-                const enrollmentsSnapshot = await db.collection("inscripciones")
-                    .where("uid", "==", userId)
-                    .where("estado", "==", "activa")
-                    .get();
+                const inscripcionesSnap = await db.collection("enrollments").where("userId", "==", uid).get();
+                const contenedor = document.getElementById('contenedor-mis-cursos');
 
-                console.log("📦 Total de documentos encontrados en 'inscripciones':", enrollmentsSnapshot.size);
-
-                let cursosInscritos = [];
-
-                if (!enrollmentsSnapshot.empty) {
-                    enrollmentsSnapshot.docs.forEach(doc => {
-                        console.log("📄 Datos del documento ID:", doc.id, "=>", doc.data());
-                    });
-
-                    for (const docEnr of enrollmentsSnapshot.docs) {
-                        const dataEnr = docEnr.data();
-                        
-                        if (dataEnr.courseId) {
-                            const courseDoc = await db.collection("courses").doc(dataEnr.courseId).get();
-                            if (courseDoc.exists) {
-                                console.log("📚 Curso encontrado:", courseDoc.data().title);
-                                cursosInscritos.push({ 
-                                    id: courseDoc.id, 
-                                    progreso: dataEnr.progreso || 0,
-                                    ...courseDoc.data() 
-                                });
-                            } else {
-                                console.warn("⚠️ El courseId de la inscripción no existe en 'courses':", dataEnr.courseId);
-                            }
-                        }
-                    }
-                } else {
-                    console.warn("⚠️ No hay documentos que coincidan con uid ==", userId, "y estado == 'activa'");
-                }
-
-                // Actualizar métricas
-                document.getElementById('totalEnrolled').innerText = cursosInscritos.length;
-                document.getElementById('activeCourses').innerText = cursosInscritos.length;
-                
-                let sumaProgreso = 0;
-                cursosInscritos.forEach(c => sumaProgreso += (c.progreso || 0));
-                const promedio = cursosInscritos.length > 0 ? Math.round(sumaProgreso / cursosInscritos.length) : 0;
-                document.getElementById('avgProgress').innerText = `${promedio}%`;
-
-                if (cursosInscritos.length === 0) {
-                    container.innerHTML = `
-                        <div class="state-container">
-                            <i class="fa-solid fa-book-bookmark"></i>
-                            <h3>Aún no tienes cursos inscritos</h3>
-                            <p>Explora nuestro catálogo y comienza tu camino hacia el éxito profesional.</p>
-                            <a href="cursos.html" class="btn-primary-action">Explorar Catálogo ✨</a>
-                        </div>
-                    `;
+                if (inscripcionesSnap.empty) {
                     return;
                 }
 
-                container.innerHTML = '';
-                cursosInscritos.forEach(curso => {
-                    const card = document.createElement('div');
-                    card.className = 'course-card';
-                    card.innerHTML = `
-                        <img src="${curso.imageUrl || 'https://images.unsplash.com/photo-1522337360788-8b13dee7a37e'}" alt="${curso.title}" class="course-image">
-                        <div class="course-content">
-                            <span class="course-category">${curso.category || 'Maquillaje'}</span>
-                            <h3 class="course-title">${curso.title}</h3>
-                            <p class="course-level">Nivel: ${curso.level || 'General'}</p>
-                            
-                            <div class="progress-container">
-                                <div class="progress-info">
-                                    <span>Progreso</span>
-                                    <span>${curso.progreso || 0}%</span>
-                                </div>
-                                <div class="progress-bar-bg">
-                                    <div class="progress-bar-fill" style="width: ${curso.progreso || 0}%;"></div>
-                                </div>
-                            </div>
+                document.getElementById('countInscritos').innerText = inscripcionesSnap.size;
+                document.getElementById('countActivos').innerText = inscripcionesSnap.size;
+                document.getElementById('progresoGeneral').innerText = "100%";
 
-                        <a href="lessons.html?nombre=${encodeURIComponent(curso.title)}" class="btn-continue">Continuar Aprendiendo 🚀</a>
-                        </div>
+                contenedor.innerHTML = '';
+
+                inscripcionesSnap.forEach(docSnap => {
+                    const data = docSnap.data();
+
+                    const card = document.createElement('article');
+                    card.className = 'stat-box-lms';
+                    card.style.background = "#FFFFFF";
+                    card.style.flexDirection = "column";
+                    card.style.alignItems = "flex-start";
+
+                    card.innerHTML = `
+                        <span style="background: var(--yellow); border: 2px solid var(--ink); padding: 0.35rem 0.9rem; border-radius: 12px; font-size: 0.75rem; font-weight: 800; text-transform: uppercase; box-shadow: var(--hard-sm); transform: rotate(-2deg); margin-bottom: 0.8rem;">Inscrito ✨</span>
+                        <h3 style="font-family: 'Fraunces', serif; font-size: 1.45rem; font-weight: 800; color: var(--burgundy); margin-bottom: 0.6rem;">${data.courseTitle || 'Programa Especializado'}</h3>
+                        <p style="color: var(--muted); font-size: 0.95rem; margin-bottom: 1.5rem;">Acceso ilimitado a las clases grabadas, archivos y guías de práctica.</p>
+                        <a href="curso-detalle.html?nombre=${encodeURIComponent(data.courseTitle || '')}" class="btn-primary-lms" style="width: 100%; text-align: center; justify-content: center;">
+                            Entrar a Clases <i class="fa-solid fa-arrow-right"></i>
+                        </a>
                     `;
-                    container.appendChild(card);
+                    contenedor.appendChild(card);
                 });
 
             } catch (error) {
-                console.error("❌ Error al cargar inscripciones:", error);
-                container.innerHTML = `
-                    <div class="state-container">
-                        <i class="fa-solid fa-triangle-exclamation" style="color: #d32f2f;"></i>
-                        <h3>Error al sincronizar</h3>
-                        <p>No pudimos cargar tus cursos en este momento. Intenta recargar la página.</p>
-                    </div>
-                `;
+                console.error("Error al cargar los cursos del usuario:", error);
             }
         }
 
-        // 3. Función de Cerrar Sesión
         function cerrarSesion() {
             auth.signOut().then(() => {
-                window.location.href = "auth.html";
-            }).catch((error) => {
-                alert("Error al cerrar sesión: " + error.message);
+                alert("Has cerrado sesión correctamente.");
+                window.location.href = "index.html";
             });
         }
     </script>
 </body>
 </html>
+```
