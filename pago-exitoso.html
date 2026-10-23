@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>¡Pago Exitoso! | CREATE YOUR GLOW</title>
+
+    <!-- SDKs de Firebase (Versión Compat) -->
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
+
+    <!-- Google Fonts & FontAwesome -->
+    <link href="https://fonts.googleapis.com/css2?family=Bowlby+One&family=Jost:wght@400;500;600&family=Pinyon+Script&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <script>
+        const firebaseConfig = {
+            apiKey: "AIzaSyCR724EP9rNkKtETG1xM_CGSQ1ZIHhbOhc",
+            authDomain: "create-your-glow.firebaseapp.com",
+            projectId: "create-your-glow",
+            storageBucket: "create-your-glow.firebasestorage.app",
+            messagingSenderId: "917183846981",
+            appId: "1:917183846981:web:214a14dbefdbdcc017612c"
+        };
+        firebase.initializeApp(firebaseConfig);
+        const auth = firebase.auth();
+        const db = firebase.firestore();
+    </script>
+
+    <style>
+        :root {
+            --burgundy: #5A1030;
+            --hot: #F06BAE;
+            --pink: #F7A8D0;
+            --pink-soft: #FBD3E6;
+            --cream: #FFF8E6;
+            --ink: #2A1220;
+            --font-chunk: 'Bowlby One', sans-serif;
+            --font-script: 'Pinyon Script', cursive;
+            --font-body: 'Jost', sans-serif;
+        }
+
+        body {
+            font-family: var(--font-body);
+            background-color: var(--cream);
+            color: var(--ink);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            text-align: center;
+            padding: 2rem;
+        }
+
+        .success-card {
+            background: #fff;
+            padding: 3rem 2rem;
+            border-radius: 32px;
+            box-shadow: 0 18px 36px rgba(90, 16, 48, 0.15);
+            max-width: 500px;
+            width: 100%;
+            border: 3px solid var(--pink-soft);
+        }
+
+        .success-icon {
+            font-size: 4rem;
+            color: #28a745;
+            margin-bottom: 1rem;
+        }
+
+        h1 {
+            font-family: var(--font-chunk);
+            color: var(--burgundy);
+            font-size: 2rem;
+            margin-bottom: 1rem;
+        }
+
+        p {
+            color: var(--ink);
+            font-size: 1.05rem;
+            margin-bottom: 2rem;
+            line-height: 1.6;
+        }
+
+        .btn-home {
+            display: inline-block;
+            background: var(--burgundy);
+            color: var(--cream);
+            padding: 0.9rem 2rem;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+
+        .btn-home:hover {
+            background: var(--hot);
+            color: #fff;
+            transform: translateY(-2px);
+        }
+    </style>
+</head>
+<body>
+
+    <div class="success-card">
+        <div class="success-icon">
+            <i class="fa-solid fa-circle-check"></i>
+        </div>
+        <h1>¡Pago Aprobado! 🎉</h1>
+        <p id="mensajeEstado">Estamos registrando tu inscripción al curso y preparando tu acceso...</p>
+        <a href="mis-cursos.html" class="btn-home" id="btnMisCursos" style="display: none;">Ir a Mis Cursos 💖</a>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', async () => {
+            auth.onAuthStateChanged(async (user) => {
+                if (!user) {
+                    document.getElementById('mensajeEstado').innerText = "Pago exitoso, por favor inicia sesión en tu cuenta para ver tu curso.";
+                    document.getElementById('btnMisCursos').style.display = "inline-block";
+                    return;
+                }
+
+                const urlParams = new URLSearchParams(window.location.search);
+                const ref = urlParams.get('ref'); // Ejemplo: uid_cursoId
+
+                if (ref && ref.includes('_')) {
+                    const partes = ref.split('_');
+                    const courseId = partes[1];
+
+                    try {
+                        // Registrar la inscripción en Firestore
+                        await db.collection("enrollments").add({
+                            userId: user.uid,
+                            courseId: courseId,
+                            enrolledAt: firebase.firestore.FieldValue.serverTimestamp(),
+                            status: "active"
+                        });
+
+                        document.getElementById('mensajeEstado').innerText = "¡Inscripción completada con éxito! Ya puedes acceder a tu contenido exclusivo.";
+                        document.getElementById('btnMisCursos').style.display = "inline-block";
+                    } catch (error) {
+                        console.error("Error al registrar inscripción:", error);
+                        document.getElementById('mensajeEstado').innerText = "Tu pago fue exitoso, pero hubo un pequeño detalle al sincronizar. Contáctanos si persiste.";
+                        document.getElementById('btnMisCursos').style.display = "inline-block";
+                    }
+                } else {
+                    document.getElementById('mensajeEstado').innerText = "¡Pago exitoso! Ya puedes disfrutar de tus formaciones.";
+                    document.getElementById('btnMisCursos').style.display = "inline-block";
+                }
+            });
+        });
+    </script>
+</body>
+</html>
