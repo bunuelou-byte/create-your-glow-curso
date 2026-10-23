@@ -254,9 +254,9 @@
                         <span style="background: var(--yellow); border: 2px solid var(--ink); padding: 0.35rem 0.9rem; border-radius: 12px; font-size: 0.75rem; font-weight: 800; text-transform: uppercase; box-shadow: var(--hard-sm); transform: rotate(-2deg); margin-bottom: 0.8rem;">Inscrito ✨</span>
                         <h3 style="font-size: 1.45rem; font-weight: 800; color: var(--burgundy); margin-bottom: 0.6rem;">${tituloCurso}</h3>
                         <p style="color: var(--muted); font-size: 0.95rem; margin-bottom: 1.5rem;">Acceso ilimitado a las clases grabadas, archivos y guías de práctica.</p>
-                        <a href="lessons.html?nombre=${encodeURIComponent(tituloCurso)}" class="btn-primary-lms" style="width: 100%; text-align: center; justify-content: center;">
-                            Entrar a Clases <i class="fa-solid fa-arrow-right"></i>
-                        </a>
+                   <a href="lessons.html?id=${docSnap.id}&nombre=${encodeURIComponent(tituloCurso)}" class="btn-primary-lms" style="width: 100%; text-align: center; justify-content: center;">
+    Entrar a Clases <i class="fa-solid fa-arrow-right"></i>
+</a>
                     `;
                     contenedor.appendChild(card);
                 });
