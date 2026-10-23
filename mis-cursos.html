@@ -445,4 +445,85 @@
             <h2 class="section-title-lms">Cursos en los que estás inscrita 💖</h2>
 
             <div class="courses-grid-lms" id="contenedor-mis-cursos">
-                <!-- Estado por defecto cuando no hay
+                <!-- Estado por defecto cuando no hay cursos inscritos -->
+                <div class="empty-card">
+                    <i class="fa-solid fa-face-smile-wink"></i>
+                    <h3>Aún no tienes cursos inscritos</h3>
+                    <p>Explora nuestro catálogo exclusivo y comienza hoy mismo a potenciar tu marca personal y tu negocio.</p>
+                    <a href="cursos.html" class="btn-primary-lms">
+                        Explorar catálogo ahora <i class="fa-solid fa-arrow-right"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <div class="footer-logo">Create Your <span>Glow</span> ✨</div>
+        <p>&copy; 2026 Create Your Glow. Todos los derechos reservados.</p>
+    </footer>
+
+    <!-- LÓGICA DE FIREBASE Y SESIÓN -->
+    <script>
+        auth.onAuthStateChanged(async (user) => {
+            if (user) {
+                document.getElementById('userEmail').innerText = user.email;
+                if (user.displayName) {
+                    document.getElementById('userName').innerHTML = `Hola, <span>${user.displayName}</span> ✨`;
+                }
+
+                await cargarMisCursos(user.uid);
+            } else {
+                window.location.href = "auth.html";
+            }
+        });
+
+        async function cargarMisCursos(uid) {
+            try {
+                const inscripcionesSnap = await db.collection("enrollments").where("userId", "==", uid).get();
+                const contenedor = document.getElementById('contenedor-mis-cursos');
+
+                if (inscripcionesSnap.empty) {
+                    return;
+                }
+
+                document.getElementById('countInscritos').innerText = inscripcionesSnap.size;
+                document.getElementById('countActivos').innerText = inscripcionesSnap.size;
+                document.getElementById('progresoGeneral').innerText = "100%";
+
+                contenedor.innerHTML = '';
+
+                inscripcionesSnap.forEach(docSnap => {
+                    const data = docSnap.data();
+
+                    const card = document.createElement('article');
+                    card.className = 'stat-box-lms';
+                    card.style.background = "#FFFFFF";
+                    card.style.flexDirection = "column";
+                    card.style.alignItems = "flex-start";
+
+                    card.innerHTML = `
+                        <span style="background: var(--yellow); border: 2px solid var(--ink); padding: 0.35rem 0.9rem; border-radius: 12px; font-size: 0.75rem; font-weight: 800; text-transform: uppercase; box-shadow: var(--hard-sm); transform: rotate(-2deg); margin-bottom: 0.8rem;">Inscrito ✨</span>
+                        <h3 style="font-family: 'Fraunces', serif; font-size: 1.45rem; font-weight: 800; color: var(--burgundy); margin-bottom: 0.6rem;">${data.courseTitle || 'Programa Especializado'}</h3>
+                        <p style="color: var(--muted); font-size: 0.95rem; margin-bottom: 1.5rem;">Acceso ilimitado a las clases grabadas, archivos y guías de práctica.</p>
+                        <a href="curso-detalle.html?nombre=${encodeURIComponent(data.courseTitle || '')}" class="btn-primary-lms" style="width: 100%; text-align: center; justify-content: center;">
+                            Entrar a Clases <i class="fa-solid fa-arrow-right"></i>
+                        </a>
+                    `;
+                    contenedor.appendChild(card);
+                });
+
+            } catch (error) {
+                console.error("Error al cargar los cursos del usuario:", error);
+            }
+        }
+
+        function cerrarSesion() {
+            auth.signOut().then(() => {
+                alert("Has cerrado sesión correctamente.");
+                window.location.href = "index.html";
+            });
+        }
+    </script>
+</body>
+</html>
