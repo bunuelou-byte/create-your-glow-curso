@@ -1,7 +1,6 @@
-javascript
 export default async function handler(req, res) {
-  // Configurar cabeceras CORS
-  res.setHeader('Access-Control-Allow-Credentials', true);
+  // Configurar cabeceras CORS de manera estricta para cualquier origen
+  res.setHeader('Access-Control-Allow-Credentials', 'true');
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Methods', 'GET,OPTIONS,PATCH,DELETE,POST,PUT');
   res.setHeader(
@@ -21,14 +20,20 @@ export default async function handler(req, res) {
   }
 
   try {
-    const { curso, usuario } = req.body;
+    const body = req.body || {};
+    const curso = body.curso;
+    const usuario = body.usuario;
     const accessToken = process.env.PASARELA_TOKEN;
 
     if (!accessToken) {
-      return res.status(500).json({ error: 'Falta configurar PASARELA_TOKEN en Vercel' });
+      return res.status(500).json({ error: 'Falta configurar PASARELA_TOKEN en las variables de entorno de Vercel' });
     }
 
-    const referenciaExterna = `${usuario.uid}_${curso.id}`;
+    if (!curso || !usuario) {
+      return res.status(400).json({ error: 'Faltan datos del curso o del usuario en la petición' });
+    }
+
+    const referenciaExterna = `${usuario.uid || 'anon'}_${curso.id || 'curso'}`;
 
     // Base URL de GitHub Pages
     const baseUrl = "https://bunuelou-byte.github.io/create-your-glow"; 
@@ -39,15 +44,15 @@ export default async function handler(req, res) {
     const preferenciaPayload = {
       items: [
         {
-          id: String(curso.id),
-          title: String(curso.title),
-          unit_price: Number(curso.price),
+          id: String(curso.id || '1'),
+          title: String(curso.title || 'Curso Digital'),
+          unit_price: Number(curso.price || 0),
           quantity: 1,
           currency_id: "COP"
         }
       ],
       payer: {
-        email: String(usuario.email)
+        email: String(usuario.email || 'test_payer@test.com')
       },
       external_reference: referenciaExterna,
       back_urls: {
@@ -71,13 +76,12 @@ export default async function handler(req, res) {
 
     if (!respuesta.ok) {
       return res.status(respuesta.status).json({
-        error: "Error de Mercado Pago",
+        error: "Error devuelto por la API de Mercado Pago",
         detalles: resultado
       });
     }
 
-    // CAMBIO CLAVE: Devolvemos explícitamente el link de pruebas (sandbox_init_point)
-    // si estás usando un token de pruebas (TEST-...). Si prefieres producción, puedes usar init_point.
+    // Seleccionar el link de pago según el tipo de token (Sandbox o Producción)
     const linkPago = accessToken.startsWith('TEST-') ? resultado.sandbox_init_point : resultado.init_point;
 
     return res.status(200).json({
@@ -87,6 +91,6 @@ export default async function handler(req, res) {
     });
 
   } catch (error) {
-    return res.status(500).json({ error: error.toString() });
+    return res.status(500).json({ error: "Excepción en el servidor: " + error.toString() });
   }
 }
