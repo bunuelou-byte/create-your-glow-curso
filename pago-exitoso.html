@@ -130,10 +130,22 @@
                     const courseId = partes[1];
 
                     try {
-                        // Guardar en la colección 'inscripciones' de Firestore
+                        // Intentar obtener el título real del curso desde Firestore si existe una colección de cursos
+                        let courseTitle = "Curso Especializado";
+                        try {
+                            const courseDoc = await db.collection("cursos").doc(courseId).get();
+                            if (courseDoc.exists && courseDoc.data().title) {
+                                courseTitle = courseDoc.data().title;
+                            }
+                        } catch (e) {
+                            console.log("No se pudo leer el título de la colección cursos, usando valor por defecto.");
+                        }
+
+                        // Guardar en la colección 'inscripciones' de Firestore incluyendo el courseTitle
                         await db.collection("inscripciones").add({
                             userId: user.uid,
                             courseId: courseId,
+                            courseTitle: courseTitle,
                             enrolledAt: firebase.firestore.FieldValue.serverTimestamp(),
                             status: "active"
                         });
