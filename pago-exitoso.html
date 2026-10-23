@@ -130,7 +130,7 @@
                     const courseId = partes[1];
 
                     try {
-                        // Guardar en la colección 'inscripciones' coincidiendo con tus reglas de Firestore
+                        // Guardar en la colección 'inscripciones' de Firestore
                         await db.collection("inscripciones").add({
                             userId: user.uid,
                             courseId: courseId,
