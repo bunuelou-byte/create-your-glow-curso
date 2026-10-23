@@ -758,5 +758,310 @@
             }
         }
     </script>
+    <!-- LÓGICA JAVASCRIPT -->
+    <script>
+        const urlParams = new URLSearchParams(window.location.search);
+        const courseName = urlParams.get('nombre');
+
+        let currentUser = null;
+        let currentCourseId = null;
+        let inscripcionDocId = null;
+        let leccionesCompletadasIds = [];
+        let totalLeccionesCurso = 0;
+        let leccionActualId = null;
+        let userNameLocal = "Estudiante";
+
+        auth.onAuthStateChanged(async (user) => {
+            if (!user) {
+                window.location.href = "auth.html";
+                return;
+            }
+            currentUser = user;
+
+            // Obtener nombre del usuario
+            try {
+                const userDoc = await db.collection("users").doc(user.uid).get();
+                if(userDoc.exists && userDoc.data().name) {
+                    userNameLocal = userDoc.data().name;
+                }
+            } catch (e) {
+                console.log("Aviso: No se pudo cargar perfil de usuario", e);
+            }
+
+            if (courseName) {
+                await cargarEstructuraCurso(courseName);
+            } else {
+                document.getElementById('courseTitleHeader').innerText = "Curso no especificado";
+            }
+        });
+
+        async function cargarEstructuraCurso(nombreCurso) {
+            try {
+                const coursesSnapshot = await db.collection("courses")
+                    .where("title", "==", nombreCurso)
+                    .get();
+
+                if (coursesSnapshot.empty) {
+                    document.getElementById('courseTitleHeader').innerText = "Curso no encontrado";
+                    document.getElementById('modulesContainer').innerHTML = `<p style="padding: 1rem; color: var(--text-muted); font-size: 0.9rem;">No se encontró el curso en el sistema.</p>`;
+                    return;
+                }
+
+                const courseDoc = coursesSnapshot.docs[0];
+                currentCourseId = courseDoc.id;
+                document.getElementById('courseTitleHeader').innerText = courseDoc.data().title;
+
+                await sincronizarInscripcionEstudiante();
+
+                const modulesSnapshot = await db.collection("modules")
+                    .where("courseId", "==", currentCourseId)
+                    .get();
+
+                const container = document.getElementById('modulesContainer');
+                container.innerHTML = '';
+
+                if (modulesSnapshot.empty) {
+                    container.innerHTML = `<p style="padding: 1rem; color: var(--text-muted); font-size: 0.9rem;">Próximamente se agregarán módulos.</p>`;
+                    return;
+                }
+
+                let totalCount = 0;
+                for (const modDoc of modulesSnapshot.docs) {
+                    const lessonsSnap = await db.collection("lessons").where("moduleId", "==", modDoc.id).get();
+                    totalCount += lessonsSnap.size;
+                }
+                totalLeccionesCurso = totalCount;
+
+                for (const modDoc of modulesSnapshot.docs) {
+                    const modData = modDoc.data();
+                    const modElement = document.createElement('div');
+                    modElement.className = 'module-item';
+                    modElement.innerHTML = `
+                        <div class="module-title">
+                            <i class="fa-solid fa-folder-open" style="color: var(--violet-glow);"></i> 
+                            ${modData.title || 'Módulo'}
+                        </div>
+                        <ul class="lessons-list" id="lessons-${modDoc.id}"></ul>
+                    `;
+                    container.appendChild(modElement);
+
+                    await cargarLeccionesDeModulo(modDoc.id, `lessons-${modDoc.id}`);
+                }
+
+                actualizarBarraProgresoVisual();
+
+            } catch (error) {
+                console.error("Error al cargar estructura:", error);
+                document.getElementById('modulesContainer').innerHTML = `<p style="padding: 1rem; color: var(--pink-primary); font-size: 0.9rem;">Error al sincronizar clases.</p>`;
+            }
+        }
+
+        async function sincronizarInscripcionEstudiante() {
+            try {
+                // Buscamos inscripción o creamos respaldo flexible
+                const enrSnap = await db.collection("inscripciones")
+                    .where("uid", "==", currentUser.uid)
+                    .where("courseId", "==", currentCourseId)
+                    .get();
+
+                if (!enrSnap.empty) {
+                    inscripcionDocId = enrSnap.docs[0].id;
+                    const data = enrSnap.docs[0].data();
+                    leccionesCompletadasIds = data.leccionesCompletadas || [];
+                } else {
+                    // Búsqueda flexible por email si el UID directo no coincide
+                    const enrEmailSnap = await db.collection("inscripciones")
+                        .where("email", "==", currentUser.email)
+                        .get();
+                    if (!enrEmailSnap.empty) {
+                        inscripcionDocId = enrEmailSnap.docs[0].id;
+                        const data = enrEmailSnap.docs[0].data();
+                        leccionesCompletadasIds = data.leccionesCompletadas || [];
+                    }
+                }
+            } catch (error) {
+                console.error("Error al sincronizar inscripción (se permite continuar):", error);
+            }
+        }
+
+        async function cargarLeccionesDeModulo(moduleId, containerId) {
+            const lessonsContainer = document.getElementById(containerId);
+            try {
+                const lessonsSnapshot = await db.collection("lessons")
+                    .where("moduleId", "==", moduleId)
+                    .get();
+
+                if (lessonsSnapshot.empty) {
+                    lessonsContainer.innerHTML = `<li style="font-size: 0.85rem; color: var(--text-muted); padding: 6px 1rem;">Sin lecciones aún</li>`;
+                    return;
+                }
+
+                lessonsSnapshot.forEach((lessonDoc) => {
+                    const lessonId = lessonDoc.id;
+                    const lesson = lessonDoc.data();
+                    const isCompleted = leccionesCompletadasIds.includes(lessonId);
+
+                    const li = document.createElement('li');
+                    li.innerHTML = `
+                        <a href="javascript:void(0);" class="lesson-link ${isCompleted ? 'completed' : ''}" id="link-${lessonId}" onclick="reproducirLeccion(this, '${lessonId}', '${encodeURIComponent(lesson.title || 'Clase')}', '${lesson.videoUrl || ''}', '${encodeURIComponent(lesson.content || lesson.description || '')}')">
+                            <span style="display: flex; align-items: center; gap: 8px;">
+                                <i class="fa-solid ${isCompleted ? 'fa-circle-check' : 'fa-circle-play'}"></i> 
+                                ${lesson.title || 'Clase sin título'}
+                            </span>
+                        </a>
+                    `;
+                    lessonsContainer.appendChild(li);
+                });
+            } catch (error) {
+                console.error("Error al cargar lecciones:", error);
+            }
+        }
+
+        function reproducirLeccion(element, lessonId, tituloEncoded, videoUrl, descripcionEncoded) {
+            document.querySelectorAll('.lesson-link').forEach(el => el.classList.remove('active'));
+            element.classList.add('active');
+
+            leccionActualId = lessonId;
+            const titulo = decodeURIComponent(tituloEncoded);
+            const descripcion = decodeURIComponent(descripcionEncoded);
+
+            document.getElementById('lessonTitle').innerText = titulo;
+            document.getElementById('lessonDescription').innerText = descripcion || "Disfruta de esta clase y practica cada técnica paso a paso.";
+
+            const completeBtn = document.getElementById('completeBtn');
+            completeBtn.style.display = 'inline-flex';
+
+            if (leccionesCompletadasIds.includes(lessonId)) {
+                completeBtn.className = 'btn-complete done';
+                completeBtn.innerHTML = `<i class="fa-solid fa-check"></i> ¡Lección Completada!`;
+            } else {
+                completeBtn.className = 'btn-complete';
+                completeBtn.innerHTML = `<i class="fa-solid fa-circle-check"></i> Marcar como Completada`;
+            }
+
+            const videoContainer = document.getElementById('videoContainer');
+            if (videoUrl) {
+                let embedUrl = videoUrl;
+                if (videoUrl.includes("youtube.com/watch?v=")) {
+                    embedUrl = videoUrl.replace("watch?v=", "embed/");
+                } else if (videoUrl.includes("youtu.be/")) {
+                    embedUrl = videoUrl.replace("youtu.be/", "www.youtube.com/embed/");
+                }
+                videoContainer.innerHTML = `<iframe src="${embedUrl}" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>`;
+            } else {
+                videoContainer.innerHTML = `
+                    <div style="text-align: center; padding: 2rem;">
+                        <i class="fa-solid fa-video-slash" style="font-size: 3rem; margin-bottom: 1rem; color: var(--pink-primary);"></i>
+                        <h3>Video no disponible</h3>
+                    </div>
+                `;
+            }
+
+            cargarComentariosDeLeccion(lessonId);
+        }
+
+        async function toggleCompletarLeccion() {
+            if (!leccionActualId) return;
+
+            const completeBtn = document.getElementById('completeBtn');
+            const linkElement = document.getElementById(`link-${leccionActualId}`);
+            const index = leccionesCompletadasIds.indexOf(leccionActualId);
+
+            if (index > -1) {
+                leccionesCompletadasIds.splice(index, 1);
+                completeBtn.className = 'btn-complete';
+                completeBtn.innerHTML = `<i class="fa-solid fa-circle-check"></i> Marcar como Completada`;
+                if (linkElement) {
+                    linkElement.classList.remove('completed');
+                    linkElement.querySelector('i').className = 'fa-solid fa-circle-play';
+                }
+            } else {
+                leccionesCompletadasIds.push(leccionActualId);
+                completeBtn.className = 'btn-complete done';
+                completeBtn.innerHTML = `<i class="fa-solid fa-check"></i> ¡Lección Completada!`;
+                if (linkElement) {
+                    linkElement.classList.add('completed');
+                    linkElement.querySelector('i').className = 'fa-solid fa-circle-check';
+                }
+            }
+
+            const nuevoProgreso = totalLeccionesCurso > 0 ? Math.round((leccionesCompletadasIds.length / totalLeccionesCurso) * 100) : 0;
+
+            if (inscripcionDocId) {
+                try {
+                    await db.collection("inscripciones").doc(inscripcionDocId).update({
+                        leccionesCompletadas: leccionesCompletadasIds,
+                        progreso: nuevoProgreso
+                    });
+                } catch (error) {
+                    console.error("Error al actualizar progreso:", error);
+                }
+            }
+            actualizarBarraProgresoVisual();
+        }
+
+        function actualizarBarraProgresoVisual() {
+            const porcentaje = totalLeccionesCurso > 0 ? Math.round((leccionesCompletadasIds.length / totalLeccionesCurso) * 100) : 0;
+            document.getElementById('progressPercentageText').innerText = `${porcentaje}%`;
+            document.getElementById('progressBarFill').style.width = `${porcentaje}%`;
+        }
+
+        function cambiarTab(evt, tabId) {
+            document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
+            document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('active'));
+            document.getElementById(tabId).classList.add('active');
+            evt.currentTarget.classList.add('active');
+        }
+
+        async function enviarComentario() {
+            const texto = document.getElementById('commentInput').value.trim();
+            if(!texto || !leccionActualId) return;
+
+            try {
+                await db.collection("comments").add({
+                    lessonId: leccionActualId,
+                    uid: currentUser.uid,
+                    userName: userNameLocal,
+                    text: texto,
+                    createdAt: firebase.firestore.FieldValue.serverTimestamp()
+                });
+
+                document.getElementById('commentInput').value = '';
+                cargarComentariosDeLeccion(leccionActualId);
+            } catch (error) {
+                console.error("Error al enviar comentario:", error);
+            }
+        }
+
+        async function cargarComentariosDeLeccion(lessonId) {
+            const container = document.getElementById('commentListContainer');
+            container.innerHTML = `<p style="font-size: 0.85rem; color: var(--text-muted);">Cargando comentarios...</p>`;
+
+            try {
+                const snap = await db.collection("comments")
+                    .where("lessonId", "==", lessonId)
+                    .get();
+
+                if(snap.empty) {
+                    container.innerHTML = `<p style="font-size: 0.85rem; color: var(--text-muted);">No hay dudas aún. ¡Sé la primera en comentar!</p>`;
+                    return;
+                }
+
+                container.innerHTML = '';
+                snap.docs.forEach(doc => {
+                    const com = doc.data();
+                    const card = document.createElement('div');
+                    card.className = 'comment-card';
+                    card.innerHTML = `
+                        <div class="comment-user">${com.userName || 'Estudiante'}</div>
+                        <p style="font-size: 0.9rem; color: var(--text-dark);">${com.text}</p>
+                    `;
+                    container.appendChild(card);
+                });
+            } catch (error) {
+                console.error("Error al cargar comentarios:", error);
+            }
+        }
+    </script>
 </body>
 </html>
