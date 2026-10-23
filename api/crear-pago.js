@@ -1,3 +1,4 @@
+javascript
 export default async function handler(req, res) {
   // Configurar cabeceras CORS
   res.setHeader('Access-Control-Allow-Credentials', true);
@@ -75,10 +76,13 @@ export default async function handler(req, res) {
       });
     }
 
+    // CAMBIO CLAVE: Devolvemos explícitamente el link de pruebas (sandbox_init_point)
+    // si estás usando un token de pruebas (TEST-...). Si prefieres producción, puedes usar init_point.
+    const linkPago = accessToken.startsWith('TEST-') ? resultado.sandbox_init_point : resultado.init_point;
+
     return res.status(200).json({
       status: "success",
-      init_point: resultado.init_point,
-      sandbox_init_point: resultado.sandbox_init_point,
+      init_point: linkPago,
       reference: referenciaExterna
     });
 
