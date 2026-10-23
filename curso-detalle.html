@@ -1,11 +1,10 @@
-```html
 <!DOCTYPE html>
 <html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Detalle del Curso | CREATE YOUR GLOW</title>
-    
+
     <!-- SDKs de Firebase (Versión Compat) -->
     <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-auth-compat.js"></script>
@@ -14,9 +13,9 @@
     <!-- Google Fonts & FontAwesome -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@500;700&family=DM+Sans:wght@400;500;700&family=Fraunces:ital,opsz,wght@0,9..144,600;0,9..144,800;1,9..144,600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Bowlby+One&family=Jost:wght@400;500;600&family=Pinyon+Script&family=Playfair+Display:ital,wght@1,500;1,600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    
+
     <script>
         const firebaseConfig = {
             apiKey: "AIzaSyCR724EP9rNkKtETG1xM_CGSQ1ZIHhbOhc",
@@ -33,226 +32,180 @@
 
     <style>
         :root {
-            --lavender: #C5B3F2;
+            /* Identidad nueva (misma que el resto de la plataforma) */
+            --burgundy: #5A1030;
+            --plum: #7A1F45;
+            --hot: #F06BAE;
             --pink: #F7A8D0;
             --pink-soft: #FBD3E6;
-            --coral: #F7704F;
-            --burgundy: #6B0F2E;
-            --olive: #A7A83B;
-            --yellow: #FFF08A;
-            --cream: #FBF3E8;
-            --ink: #261B2B;
-            --muted: #6A5870;
+            --blush: #EBCFE0;
+            --cream: #FFF8E6;
+            --ink: #2A1220;
+            --muted: #7A5A6B;
 
-            --grad-hero: linear-gradient(160deg, #F7A8D0 0%, #E9B4E8 35%, #C5B3F2 65%, #F9B08C 100%);
-            --hard: 5px 5px 0 var(--ink);
-            --hard-sm: 3px 3px 0 var(--ink);
+            /* Variables heredadas (el JS genera HTML que todavía las usa) */
+            --lavender: #E6DCFB;
+            --coral: #F06BAE;
+            --olive: #7A1F45;
+            --yellow: #FFF3B0;
+
+            --grad-pink: linear-gradient(180deg, #FFD3EA 0%, #F9A6D2 55%, #F27DB8 100%);
+            --grad-soft: linear-gradient(135deg, #FFE3F1 0%, #F9B6D8 100%);
             --transition: all 0.35s cubic-bezier(0.22, 1, 0.36, 1);
-            --grain: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.55'/%3E%3C/svg%3E");
-            --wave: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 80 28' preserveAspectRatio='none'%3E%3Cpath d='M0 0H80V10Q60 28 40 10T0 10Z'/%3E%3C/svg%3E");
+            --font-chunk: 'Bowlby One', 'Arial Black', sans-serif;
+            --font-script: 'Pinyon Script', 'Snell Roundhand', cursive;
+            --font-serif-it: 'Playfair Display', Georgia, serif;
+            --font-body: 'Jost', 'Helvetica Neue', Arial, sans-serif;
         }
 
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            scroll-behavior: smooth;
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; scroll-behavior: smooth; }
 
         body {
-            font-family: 'DM Sans', sans-serif;
+            font-family: var(--font-body);
             background-color: var(--cream);
             color: var(--ink);
             line-height: 1.65;
             overflow-x: hidden;
         }
 
-        h1, h2, h3, h4 {
-            font-family: 'Fraunces', serif;
-            letter-spacing: -0.02em;
-        }
+        h1, h2, h3, h4 { font-family: var(--font-chunk); font-weight: 400; letter-spacing: -0.01em; line-height: 1.05; }
+        .container { width: 100%; max-width: 1200px; margin: 0 auto; padding: 0 1.5rem; }
+        ::selection { background: var(--hot); color: #fff; }
+        a:focus-visible, button:focus-visible { outline: 3px solid var(--hot); outline-offset: 3px; }
 
-        .container {
-            width: 90%;
-            max-width: 1200px;
-            margin: 0 auto;
-        }
-
-        /* HEADER */
+        /* ===== TOPBAR & HEADER ===== */
         .topbar {
-            background: var(--pink);
+            background: var(--blush);
             color: var(--burgundy);
             text-align: center;
-            font-size: 0.8rem;
-            font-weight: 700;
-            padding: 0.4rem 1rem;
-            letter-spacing: 0.3px;
+            font-size: 0.82rem;
+            font-weight: 500;
+            padding: 0.45rem 1rem;
+            letter-spacing: 0.04em;
         }
 
-        header {
-            background-color: var(--burgundy);
-            border-bottom: 3px solid var(--ink);
-            position: sticky;
-            top: 0;
-            z-index: 1000;
-        }
-
-        .nav-container {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 0.9rem 1.5rem;
-        }
+        header { background-color: var(--burgundy); position: sticky; top: 0; z-index: 1000; }
+        .nav-container { display: flex; justify-content: space-between; align-items: center; padding: 0.8rem 1.5rem; gap: 1rem; }
 
         .logo {
-            font-family: 'Fraunces', serif;
-            font-size: 1.3rem;
-            font-weight: 800;
+            font-family: var(--font-script);
+            font-size: 2rem;
             color: var(--cream);
             text-decoration: none;
-            letter-spacing: 0.5px;
-            text-transform: uppercase;
             display: flex;
             align-items: center;
             gap: 6px;
+            line-height: 1;
+            white-space: nowrap;
         }
-
-        .logo span {
-            color: var(--pink);
-            font-style: italic;
-        }
+        .logo span { color: var(--pink); }
 
         .btn-back {
-            background: var(--olive);
-            color: var(--cream);
-            border: 2px solid var(--ink);
-            padding: 0.6rem 1.4rem;
+            background: var(--pink);
+            color: var(--burgundy);
+            border: 1px solid var(--pink);
+            padding: 0.55rem 1.3rem;
             border-radius: 50px;
             text-decoration: none;
-            font-weight: 700;
-            font-size: 0.82rem;
-            text-transform: uppercase;
-            letter-spacing: 0.8px;
-            box-shadow: var(--hard-sm);
+            font-weight: 500;
+            font-size: 0.8rem;
+            letter-spacing: 0.05em;
             transition: var(--transition);
             display: inline-flex;
             align-items: center;
             gap: 8px;
+            white-space: nowrap;
         }
+        .btn-back:hover { background: var(--cream); border-color: var(--cream); }
 
-        .btn-back:hover {
-            transform: translate(-2px, -2px);
-            box-shadow: 5px 5px 0 var(--ink);
-            background: var(--yellow);
-            color: var(--ink);
-        }
+        /* ===== HERO DETALLE ===== */
+        .course-hero { background: var(--grad-pink); padding: 4.5rem 0 5rem; position: relative; overflow: hidden; }
 
-        /* HERO DETALLE CURSO */
-        .course-hero {
-            background: var(--grad-hero);
-            padding: 4.5rem 1.5rem;
-            position: relative;
-            overflow: hidden;
-            border-bottom: 3px solid var(--ink);
-        }
-
-        .course-hero::after {
-            content: '';
-            position: absolute; inset: 0;
-            background-image: var(--grain);
-            mix-blend-mode: multiply;
-            opacity: 0.22;
-            pointer-events: none;
-        }
-
-        .hero-layout {
-            position: relative;
-            z-index: 1;
-            display: grid;
-            grid-template-columns: 1fr;
-            gap: 3.5rem;
-            align-items: center;
-        }
+        .hero-layout { position: relative; z-index: 1; display: grid; grid-template-columns: 1fr; gap: 3.5rem; align-items: center; }
 
         .course-tag {
             display: inline-flex;
             align-items: center;
             gap: 8px;
-            background: var(--burgundy);
-            color: var(--cream);
-            border: 2px solid var(--ink);
-            padding: 0.5rem 1.3rem;
-            border-radius: 50%/100%;
-            font-size: 0.78rem;
-            font-weight: 700;
-            letter-spacing: 1px;
-            text-transform: uppercase;
+            background: #fff;
+            color: var(--burgundy);
+            padding: 0.4rem 1.2rem;
+            border-radius: 50px;
+            font-size: 0.85rem;
+            font-weight: 500;
+            letter-spacing: 0.04em;
             margin-bottom: 1.5rem;
-            transform: rotate(-2deg);
-            box-shadow: var(--hard-sm);
         }
 
         .course-main-title {
-            font-size: 2.5rem;
-            font-weight: 800;
-            line-height: 1.15;
-            margin-bottom: 1.2rem;
-            color: var(--burgundy);
+            font-size: 2.1rem;
+            line-height: 1.1;
+            margin-bottom: 1.3rem;
+            color: var(--cream);
+            text-shadow: 0 2px 0 rgba(90, 16, 48, 0.22);
+            word-break: break-word;
         }
 
-        .course-meta {
-            display: flex;
-            gap: 1.8rem;
-            flex-wrap: wrap;
-            font-size: 0.92rem;
-            color: var(--ink);
-            font-weight: 600;
-            margin-top: 1.5rem;
-        }
+        .course-subtitle { color: var(--burgundy); font-size: 1.1rem; line-height: 1.7; font-weight: 500; max-width: 560px; }
+
+        .course-meta { display: flex; gap: 0.7rem; flex-wrap: wrap; margin-top: 1.8rem; }
 
         .course-meta span {
             display: flex;
             align-items: center;
-            gap: 6px;
+            gap: 8px;
+            background: var(--burgundy);
+            color: var(--cream);
+            padding: 0.45rem 1.1rem;
+            border-radius: 50px;
+            font-size: 0.88rem;
+            font-weight: 500;
         }
 
-        .course-meta i {
-            color: var(--burgundy);
-        }
+        .course-meta i { color: var(--pink); }
 
-        /* Tarjeta de Compra Flotante Estilo Polaroid */
+        /* Tarjeta de compra: polaroid con clip */
         .purchase-box {
-            background: var(--cream);
-            color: var(--ink);
-            border-radius: 26px;
-            padding: 1.5rem;
-            box-shadow: var(--hard);
-            border: 2.5px solid var(--ink);
             position: relative;
-            transform: rotate(1deg);
+            background: #fff;
+            padding: 2rem 1.6rem 1.8rem;
+            box-shadow: 0 18px 36px rgba(90, 16, 48, 0.28);
+            transform: rotate(1.5deg);
             transition: var(--transition);
+            max-width: 420px;
+            width: 100%;
+            justify-self: center;
         }
 
-        .purchase-box:hover {
-            transform: rotate(0) scale(1.02);
+        .purchase-box::before {
+            content: '';
+            position: absolute;
+            top: -18px; right: 30px;
+            width: 17px; height: 42px;
+            border: 3px solid var(--hot);
+            border-radius: 12px;
         }
+
+        .purchase-box:hover { transform: rotate(0) scale(1.02); }
 
         .course-banner-img {
-            width: 100%;
-            height: 220px;
+            display: block;
+            width: 230px;
+            height: 270px;
+            max-width: 100%;
+            margin: 0 auto 1.4rem;
             object-fit: cover;
-            border-radius: 18px;
-            margin-bottom: 1.2rem;
-            border: 2px solid var(--ink);
-            background: #fff;
-            padding: 6px;
-            box-shadow: var(--hard-sm);
+            border-radius: 50%;
+            border: 10px dotted #fff;
+            outline: 3px solid var(--pink);
+            outline-offset: -3px;
+            background: var(--pink-soft);
+            box-shadow: 0 10px 22px rgba(90, 16, 48, 0.18);
         }
 
         .price-tag {
-            font-family: 'Fraunces', serif;
-            font-size: 2.2rem;
-            font-weight: 800;
+            font-family: var(--font-chunk);
+            font-size: 1.9rem;
             color: var(--burgundy);
             margin-bottom: 1.2rem;
             text-align: center;
@@ -261,111 +214,108 @@
         .btn-buy-now {
             display: block;
             width: 100%;
-            background: var(--yellow);
-            color: var(--ink);
+            background: var(--burgundy);
+            color: var(--cream);
             text-align: center;
-            padding: 1.1rem;
+            padding: 1.05rem;
             border-radius: 50px;
-            font-family: 'DM Sans', sans-serif;
-            font-weight: 700;
-            font-size: 0.95rem;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            box-shadow: var(--hard);
+            font-family: var(--font-body);
+            font-weight: 500;
+            font-size: 0.98rem;
+            letter-spacing: 0.06em;
             transition: var(--transition);
-            border: 2.5px solid var(--ink);
+            border: 1px solid var(--burgundy);
             cursor: pointer;
         }
 
-        .btn-buy-now:hover {
-            transform: translate(-3px, -3px);
-            box-shadow: 8px 8px 0 var(--ink);
-            background: var(--olive);
-            color: var(--cream);
-        }
+        .btn-buy-now:hover { background: var(--hot); border-color: var(--hot); color: #fff; transform: translateY(-3px); }
+        .btn-buy-now:disabled { opacity: 0.7; cursor: wait; transform: none; }
 
-        /* CONTENIDO PRINCIPAL */
-        .main-content {
-            padding: 5rem 0;
-        }
+        /* ===== CONTENIDO PRINCIPAL ===== */
+        .main-content { padding: 5rem 0 6rem; background: var(--cream); }
 
         .section-block {
-            background: #FFFFFF;
-            padding: 2.8rem;
-            border-radius: 28px;
-            border: 2.5px solid var(--ink);
-            box-shadow: var(--hard);
-            margin-bottom: 2.5rem;
-            transition: var(--transition);
+            position: relative;
+            padding: 2.4rem 1.8rem;
+            border-radius: 32px;
+            margin-bottom: 3rem;
         }
 
-        .section-block:hover {
-            transform: translateY(-3px);
-            box-shadow: 8px 10px 0 var(--ink);
+        .section-block::before {
+            content: '';
+            position: absolute;
+            top: -16px; right: 32px;
+            width: 15px; height: 38px;
+            border: 3px solid var(--hot);
+            border-radius: 12px;
         }
+
+        .section-block:nth-of-type(1) { background: var(--pink-soft); }
+        .section-block:nth-of-type(2) { background: var(--burgundy); }
+        .section-block:nth-of-type(3) { background: var(--grad-soft); }
+        .section-block:nth-of-type(4) { background: var(--blush); }
+        .section-block:nth-of-type(2)::before { border-color: var(--pink); }
 
         .block-title {
-            font-size: 1.8rem;
-            font-weight: 800;
+            font-size: 1.5rem;
             color: var(--burgundy);
-            margin-bottom: 1.5rem;
+            margin-bottom: 1.6rem;
             display: flex;
             align-items: center;
             gap: 12px;
         }
 
-        .block-title i {
-            color: var(--coral);
-        }
+        .block-title i { color: var(--hot); font-size: 0.9em; }
+        .section-block:nth-of-type(2) .block-title { color: var(--cream); }
+        .section-block:nth-of-type(2) .block-title i { color: var(--pink); }
 
-        /* Acordeón de Módulos */
+        .block-text { color: var(--ink); line-height: 1.8; font-size: 1.05rem; }
+        .block-muted { color: var(--muted); font-size: 0.95rem; }
+        .section-block:nth-of-type(2) .block-muted { color: var(--blush); }
+
+        /* Acordeón de módulos */
         .module-item {
-            border: 2px solid var(--ink);
-            border-radius: 20px;
-            margin-bottom: 1.1rem;
+            border-radius: 22px;
+            margin-bottom: 1rem;
             overflow: hidden;
             background: var(--cream);
-            box-shadow: var(--hard-sm);
             transition: var(--transition);
         }
 
         .module-header {
-            padding: 1.3rem 1.6rem;
-            font-weight: 700;
+            padding: 1.2rem 1.5rem;
+            font-weight: 600;
             font-size: 1.05rem;
             cursor: pointer;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            color: var(--ink);
-            background: var(--yellow);
+            gap: 1rem;
+            color: var(--burgundy);
+            background: var(--pink);
+            transition: var(--transition);
         }
 
-        .module-header:hover {
-            background: var(--pink-soft);
-        }
+        .module-header:hover { background: var(--pink-soft); }
+        .module-header i { transition: var(--transition); }
+        .module-item.active .module-header i { transform: rotate(180deg); }
 
         .module-content {
             max-height: 0;
             overflow: hidden;
             transition: max-height 0.35s ease, padding 0.35s ease;
-            background: #FFFFFF;
-            padding: 0 1.6rem;
+            background: var(--cream);
+            padding: 0 1.5rem;
         }
 
-        .module-item.active .module-content {
-            max-height: 400px;
-            padding: 1.2rem 1.6rem 1.6rem 1.6rem;
-        }
+        .module-item.active .module-content { max-height: 400px; padding: 1.1rem 1.5rem 1.5rem 1.5rem; }
 
-        .lesson-list {
-            list-style: none;
-        }
+        .lesson-list { list-style: none; }
 
         .lesson-list li {
             padding: 0.8rem 0;
-            border-bottom: 1px dashed rgba(38, 27, 43, 0.15);
-            font-size: 0.95rem;
+            border-bottom: 1px dashed rgba(90, 16, 48, 0.3);
+            font-size: 0.98rem;
             color: var(--ink);
             display: flex;
             align-items: center;
@@ -373,66 +323,68 @@
             font-weight: 500;
         }
 
-        .lesson-list li:last-child {
-            border-bottom: none;
-        }
+        .lesson-list li:last-child { border-bottom: none; }
 
-        /* Perfil Instructor */
-        .instructor-card {
-            display: flex;
-            flex-direction: column;
-            gap: 2rem;
-            align-items: center;
-            text-align: center;
-        }
+        /* Instructora */
+        .instructor-card { display: flex; flex-direction: column; gap: 2rem; align-items: center; text-align: center; }
 
         .instructor-avatar {
-            width: 130px;
-            height: 130px;
+            flex-shrink: 0;
+            width: 150px;
+            height: 180px;
             border-radius: 50%;
             object-fit: cover;
-            border: 3px solid var(--ink);
-            box-shadow: var(--hard);
+            border: 10px dotted #fff;
+            outline: 3px solid var(--hot);
+            outline-offset: -3px;
             background: #fff;
-            padding: 4px;
+            box-shadow: 0 10px 22px rgba(90, 16, 48, 0.2);
         }
 
+        .instructor-name { font-family: var(--font-script); font-weight: 400; font-size: 2.6rem; color: var(--burgundy); line-height: 1; margin-bottom: 0.4rem; }
+        .instructor-role { font-family: var(--font-serif-it); font-style: italic; color: var(--plum); font-size: 1.15rem; margin-bottom: 0.7rem; }
+        .instructor-bio { color: var(--ink); font-size: 1.02rem; }
+
         /* Requisitos */
-        .requirements-list {
-            list-style: none;
-        }
+        .requirements-list { list-style: none; }
 
         .requirements-list li {
             position: relative;
             padding-left: 2rem;
             margin-bottom: 0.9rem;
-            color: var(--ink);
+            color: var(--burgundy);
             font-weight: 500;
+            font-size: 1.02rem;
         }
 
-        .requirements-list li::before {
-            content: '✨';
-            position: absolute;
-            left: 0;
-            font-size: 0.95rem;
+        .requirements-list li::before { content: '\2713'; position: absolute; left: 0; color: var(--hot); font-weight: 700; }
+
+        footer { background-color: var(--burgundy); color: var(--blush); padding: 3.5rem 1.5rem 2rem; text-align: center; border-top: 1px solid rgba(247, 168, 208, 0.25); }
+        .footer-logo { font-size: 2.4rem; color: var(--cream); margin-bottom: 0.8rem; font-family: var(--font-script); }
+        .footer-logo span { color: var(--pink); }
+
+        @media (prefers-reduced-motion: reduce) {
+            * { transition: none !important; scroll-behavior: auto !important; }
         }
 
         @media (min-width: 768px) {
             .hero-layout { grid-template-columns: 1.2fr 1fr; }
-            .course-main-title { font-size: 3.2rem; }
+            .course-main-title { font-size: 3rem; }
+            .section-block { padding: 3rem 3rem; }
+            .block-title { font-size: 1.9rem; }
             .instructor-card { flex-direction: row; text-align: left; }
         }
     </style>
 </head>
 <body>
 
-    <div class="topbar">✨ Estrategias digitales hechas para maquillistas ✨</div>
+    <div class="topbar">Estrategias digitales hechas para maquillistas</div>
 
     <!-- HEADER -->
     <header>
         <div class="container nav-container">
-            <a href="index.html" class="logo">CREATE YOUR <span>GLOW</span> ✨</a>
-            <a href="cursos.html" class="btn-back"><i class="fa-solid fa-arrow-left"></i> Volver al Catálogo</a>
+            <a href="index.html" class="logo">Create Your <span>Glow</span> ✨</a>
+            <a href="cursos.html" class="btn-back"><i class="fa-solid fa-arrow-left"></i> Volver al catálogo</a>
         </div>
     </header>
 
@@ -440,21 +392,21 @@
     <section class="course-hero">
         <div class="container hero-layout">
             <div>
-                <span class="course-tag" id="courseCategory"><i class="fa-solid fa-sparkles"></i> Formación Profesional</span>
+                <span class="course-tag" id="courseCategory"><i class="fa-solid fa-wand-magic-sparkles"></i> Formación profesional</span>
                 <h1 class="course-main-title" id="courseTitle">Cargando curso...</h1>
-                <p style="color: var(--ink); font-size: 1.1rem; line-height: 1.7; font-weight: 500;" id="courseSubtitle">
+                <p class="course-subtitle" id="courseSubtitle">
                     Sincronizando información detallada del programa...
                 </p>
                 <div class="course-meta">
                     <span><i class="fa-regular fa-clock"></i> <strong id="courseDuration">4 Semanas</strong></span>
                     <span><i class="fa-solid fa-layer-group"></i> <strong id="courseLevel">Principiante</strong></span>
-                    <span><i class="fa-solid fa-star" style="color: var(--burgundy);"></i> <strong>4.9 / 5.0 (Reseñas)</strong></span>
+                    <span><i class="fa-solid fa-star"></i> <strong>4.9 / 5.0 (Reseñas)</strong></span>
                 </div>
             </div>
 
             <!-- TARJETA DE COMPRA -->
             <div class="purchase-box">
-                <img src="https://images.unsplash.com/photo-1522337360788-8b13dee7a37e?auto=format&fit=crop&w=800&q=80" 
+                <img src="https://images.unsplash.com/photo-1522337360788-8b13dee7a37e?auto=format&fit=crop&w=800&q=80"
                      alt="Portada del curso" class="course-banner-img" id="courseImage">
                 <div class="price-tag" id="coursePrice">$0 COP</div>
                 <button class="btn-buy-now" onclick="iniciarCompraPasarela()">Inscribirme y Pagar 💖</button>
@@ -465,33 +417,33 @@
     <!-- CONTENIDO DETALLADO -->
     <main class="main-content">
         <div class="container">
-            
+
             <!-- DESCRIPCIÓN -->
             <section class="section-block">
-                <h2 class="block-title"><i class="fa-solid fa-book-open"></i> Descripción del Programa</h2>
-                <p style="color: var(--ink); line-height: 1.8;" id="courseDescription">
+                <h2 class="block-title"><i class="fa-solid fa-book-open"></i> Descripción del programa</h2>
+                <p class="block-text" id="courseDescription">
                     Cargando descripción detallada de los módulos y objetivos de aprendizaje...
                 </p>
             </section>
 
             <!-- TEMARIO -->
             <section class="section-block">
-                <h2 class="block-title"><i class="fa-solid fa-list-check"></i> Temario del Curso</h2>
+                <h2 class="block-title"><i class="fa-solid fa-list-check"></i> Temario del curso</h2>
                 <div id="temarioContainer">
-                    <p style="color: var(--muted); font-size: 0.95rem;">Cargando módulos y clases...</p>
+                    <p class="block-muted">Cargando módulos y clases...</p>
                 </div>
             </section>
 
-            <!-- INSTRUCTOR -->
+            <!-- INSTRUCTORA -->
             <section class="section-block">
-                <h2 class="block-title"><i class="fa-solid fa-chalkboard-user"></i> Tu Mentora</h2>
+                <h2 class="block-title"><i class="fa-solid fa-chalkboard-user"></i> Tu mentora</h2>
                 <div class="instructor-card">
-                    <img src="img/#BTS JosieRaeXlunaB.jpg" 
+                    <img src="img/#BTS JosieRaeXlunaB.jpg"
                          alt="Foto de la Instructora" class="instructor-avatar">
                     <div>
-                        <h3 style="font-size: 1.5rem; margin-bottom: 0.3rem; color: var(--burgundy);">Sharon Ramos</h3>
-                        <p style="color: var(--coral); font-weight: 700; margin-bottom: 0.6rem;">Especialista en Marketing y Belleza Digital</p>
-                        <p style="color: var(--ink); font-size: 1rem; font-weight: 500;">
+                        <h3 class="instructor-name">Sharon Ramos</h3>
+                        <p class="instructor-role">Especialista en marketing y belleza digital</p>
+                        <p class="instructor-bio">
                             Con más de 6 años de experiencia impulsando a artistas del maquillaje en toda Latinoamérica para posicionar su marca y escalar sus ingresos independientes.
                         </p>
                     </div>
@@ -500,7 +452,7 @@
 
             <!-- REQUISITOS -->
             <section class="section-block">
-                <h2 class="block-title"><i class="fa-solid fa-circle-check"></i> Requisitos Previos</h2>
+                <h2 class="block-title"><i class="fa-solid fa-circle-check"></i> Requisitos previos</h2>
                 <ul class="requirements-list">
                     <li>Un teléfono inteligente con cámara funcional (Android o iPhone).</li>
                     <li>Ganas de aprender y aplicar las estrategias diariamente en tus redes.</li>
@@ -510,6 +462,11 @@
 
         </div>
     </main>
+
+    <footer>
+        <div class="footer-logo">Create Your <span>Glow</span> ✨</div>
+        <p>&copy; 2026 Create Your Glow. Todos los derechos reservados.</p>
+    </footer>
 
     <!-- LÓGICA DINÁMICA DE FIREBASE Y MERCADO PAGO -->
     <script>
@@ -669,4 +626,3 @@
     </script>
 </body>
 </html>
-```
