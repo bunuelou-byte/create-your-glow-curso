@@ -232,7 +232,6 @@
 
         async function cargarMisCursos(uid) {
             try {
-                // CORREGIDO: Ahora busca en la colección 'inscripciones' que es donde el pago exitoso los guarda
                 const inscripcionesSnap = await db.collection("inscripciones").where("userId", "==", uid).get();
                 const contenedor = document.getElementById('contenedor-mis-cursos');
 
@@ -255,11 +254,14 @@
                     card.style.flexDirection = "column";
                     card.style.alignItems = "flex-start";
 
+                    // CORREGIDO: Muestra el nombre del curso guardado y lo pasa por la URL correctamente
+                    const tituloCurso = data.courseTitle || 'Curso Especializado';
+
                     card.innerHTML = `
                         <span style="background: var(--yellow); border: 2px solid var(--ink); padding: 0.35rem 0.9rem; border-radius: 12px; font-size: 0.75rem; font-weight: 800; text-transform: uppercase; box-shadow: var(--hard-sm); transform: rotate(-2deg); margin-bottom: 0.8rem;">Inscrito ✨</span>
-                        <h3 style="font-size: 1.45rem; font-weight: 800; color: var(--burgundy); margin-bottom: 0.6rem;">Curso ID: ${data.courseId || 'Especializado'}</h3>
+                        <h3 style="font-size: 1.45rem; font-weight: 800; color: var(--burgundy); margin-bottom: 0.6rem;">${tituloCurso}</h3>
                         <p style="color: var(--muted); font-size: 0.95rem; margin-bottom: 1.5rem;">Acceso ilimitado a las clases grabadas, archivos y guías de práctica.</p>
-                        <a href="curso-detalle.html?id=${data.courseId || ''}" class="btn-primary-lms" style="width: 100%; text-align: center; justify-content: center;">
+                        <a href="curso-detalle.html?nombre=${encodeURIComponent(tituloCurso)}" class="btn-primary-lms" style="width: 100%; text-align: center; justify-content: center;">
                             Entrar a Clases <i class="fa-solid fa-arrow-right"></i>
                         </a>
                     `;
