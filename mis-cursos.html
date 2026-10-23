@@ -1,4 +1,3 @@
-```html
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -14,7 +13,7 @@
     <!-- Google Fonts & FontAwesome -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@500;700&family=DM+Sans:wght@400;500;700&family=Fraunces:ital,opsz,wght@0,9..144,600;0,9..144,800;1,9..144,600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Bowlby+One&family=Jost:wght@400;500;600&family=Pinyon+Script&family=Playfair+Display:ital,wght@1,500;1,600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
     <script>
@@ -33,113 +32,103 @@
 
     <style>
         :root {
-            --lavender: #C5B3F2;
+            /* Identidad nueva (misma que la landing) */
+            --burgundy: #5A1030;
+            --plum: #7A1F45;
+            --hot: #F06BAE;
             --pink: #F7A8D0;
             --pink-soft: #FBD3E6;
-            --coral: #F7704F;
-            --burgundy: #6B0F2E;
-            --olive: #A7A83B;
-            --yellow: #FFF08A;
-            --cream: #FBF3E8;
-            --ink: #261B2B;
-            --muted: #6A5870;
+            --blush: #EBCFE0;
+            --cream: #FFF8E6;
+            --ink: #2A1220;
+            --muted: #7A5A6B;
 
-            --grad-hero: linear-gradient(160deg, #F7A8D0 0%, #E9B4E8 35%, #C5B3F2 65%, #F9B08C 100%);
-            --grad-courses: linear-gradient(180deg, #F7704F 0%, #E86FA6 45%, #8C2E6B 100%);
-            --hard: 5px 5px 0 var(--ink);
-            --hard-sm: 3px 3px 0 var(--ink);
+            /* Variables heredadas: el JS que genera las tarjetas todavía las usa en estilos inline */
+            --lavender: #E6DCFB;
+            --coral: #F06BAE;
+            --olive: #7A1F45;
+            --yellow: #FFF3B0;
+            --hard: 0 14px 30px rgba(90, 16, 48, 0.22);
+            --hard-sm: 0 4px 10px rgba(90, 16, 48, 0.18);
+
+            --grad-pink: linear-gradient(180deg, #FFD3EA 0%, #F9A6D2 55%, #F27DB8 100%);
             --transition: all 0.35s cubic-bezier(0.22, 1, 0.36, 1);
-            --grain: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.55'/%3E%3C/svg%3E");
-            --wave: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 80 28' preserveAspectRatio='none'%3E%3Cpath d='M0 0H80V10Q60 28 40 10T0 10Z'/%3E%3C/svg%3E");
+            --font-chunk: 'Bowlby One', 'Arial Black', sans-serif;
+            --font-script: 'Pinyon Script', 'Snell Roundhand', cursive;
+            --font-serif-it: 'Playfair Display', Georgia, serif;
+            --font-body: 'Jost', 'Helvetica Neue', Arial, sans-serif;
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; scroll-behavior: smooth; }
 
         body {
-            font-family: 'DM Sans', sans-serif;
+            font-family: var(--font-body);
             background-color: var(--cream);
             color: var(--ink);
             line-height: 1.65;
             overflow-x: hidden;
         }
 
-        h1, h2, h3, .heading-font { font-family: 'Fraunces', serif; letter-spacing: -0.02em; }
+        h1, h2, h3 { font-family: var(--font-chunk); font-weight: 400; letter-spacing: -0.01em; line-height: 1.05; }
         .container { width: 100%; max-width: 1240px; margin: 0 auto; padding: 0 1.5rem; }
-        ::selection { background: var(--yellow); color: var(--ink); }
+        ::selection { background: var(--hot); color: #fff; }
+        a:focus-visible, button:focus-visible { outline: 3px solid var(--hot); outline-offset: 3px; }
 
-        /* TOPBAR & HEADER (IDÉNTICO A LANDING PAGE) */
+        /* ===== TOPBAR & HEADER ===== */
         .topbar {
-            background: var(--pink);
+            background: var(--blush);
             color: var(--burgundy);
             text-align: center;
-            font-size: 0.8rem;
-            font-weight: 700;
-            padding: 0.4rem 1rem;
-            letter-spacing: 0.3px;
+            font-size: 0.82rem;
+            font-weight: 500;
+            padding: 0.45rem 1rem;
+            letter-spacing: 0.04em;
         }
 
-        header {
-            background-color: var(--burgundy);
-            border-bottom: 3px solid var(--ink);
-            position: sticky;
-            top: 0;
-            z-index: 1000;
-        }
-
-        .nav-container { display: flex; justify-content: space-between; align-items: center; padding: 0.9rem 1.5rem; }
+        header { background-color: var(--burgundy); position: sticky; top: 0; z-index: 1000; }
+        .nav-container { display: flex; justify-content: space-between; align-items: center; padding: 0.8rem 1.5rem; gap: 1rem; }
 
         .logo {
-            font-family: 'Fraunces', serif;
-            font-size: 1.3rem;
-            font-weight: 800;
+            font-family: var(--font-script);
+            font-size: 2rem;
             color: var(--cream);
-            letter-spacing: 0.5px;
-            text-transform: uppercase;
             text-decoration: none;
             display: flex;
             align-items: center;
             gap: 6px;
+            line-height: 1;
+            white-space: nowrap;
         }
-
-        .logo span { color: var(--pink); font-style: italic; }
+        .logo span { color: var(--pink); }
 
         .btn-cta-nav {
-            background: var(--olive);
+            background: transparent;
             color: var(--cream);
-            border: 2px solid var(--ink);
-            padding: 0.6rem 1.4rem;
+            border: 1px solid var(--cream);
+            padding: 0.55rem 1.3rem;
             border-radius: 50px;
             text-decoration: none;
-            font-weight: 700;
-            font-size: 0.82rem;
-            text-transform: uppercase;
-            letter-spacing: 0.8px;
-            box-shadow: var(--hard-sm);
+            font-family: var(--font-body);
+            font-weight: 500;
+            font-size: 0.8rem;
+            letter-spacing: 0.05em;
             transition: var(--transition);
             display: inline-flex;
             align-items: center;
             gap: 8px;
             cursor: pointer;
+            white-space: nowrap;
         }
+        .btn-cta-nav:hover { background: var(--pink); color: var(--burgundy); border-color: var(--pink); }
+        .btn-cta-nav.solid { background: var(--pink); color: var(--burgundy); border-color: var(--pink); }
+        .btn-cta-nav.solid:hover { background: var(--cream); border-color: var(--cream); }
 
-        .btn-cta-nav:hover { transform: translate(-2px, -2px); box-shadow: 5px 5px 0 var(--ink); background: var(--yellow); color: var(--ink); }
-
-        /* HERO USER (ESTILO HOMEPAGE HERO) */
+        /* ===== HERO DE BIENVENIDA ===== */
         .user-hero {
-            padding: 4.5rem 1.5rem 5rem;
-            background: var(--grad-hero);
+            padding: 4rem 1.5rem 5rem;
+            background: var(--grad-pink);
             position: relative;
             overflow: hidden;
-            border-bottom: 3px solid var(--ink);
-        }
-
-        .user-hero::after {
-            content: '';
-            position: absolute; inset: 0;
-            background-image: var(--grain);
-            mix-blend-mode: multiply;
-            opacity: 0.22;
-            pointer-events: none;
         }
 
         .hero-layout {
@@ -149,206 +138,247 @@
             justify-content: space-between;
             align-items: center;
             flex-wrap: wrap;
-            gap: 2rem;
-        }
-
-        .hero-badge {
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            background: var(--burgundy);
-            color: var(--cream);
-            border: 2px solid var(--ink);
-            padding: 0.5rem 1.3rem;
-            border-radius: 50%/100%;
-            font-size: 0.78rem;
-            font-weight: 700;
-            letter-spacing: 1px;
-            text-transform: uppercase;
-            margin-bottom: 1.2rem;
-            transform: rotate(-2deg);
-            box-shadow: var(--hard-sm);
-        }
-
-        .welcome-title {
-            font-size: 2.8rem;
-            font-weight: 800;
-            color: var(--burgundy);
-            line-height: 1.15;
-            margin-bottom: 0.5rem;
-        }
-
-        .welcome-title span { color: var(--cream); font-style: italic; text-shadow: 3px 3px 0 var(--burgundy); }
-
-        .welcome-subtitle {
-            font-size: 1.1rem;
-            color: var(--ink);
-            font-weight: 500;
-        }
-
-        /* CARD RETRATO POLAROID DEL USUARIO */
-        .user-polaroid {
-            background: #fff;
-            padding: 10px 10px 30px;
-            border-radius: 8px;
-            border: 2.5px solid var(--ink);
-            box-shadow: var(--hard);
-            transform: rotate(3deg);
-            text-align: center;
-            min-width: 240px;
-        }
-
-        .user-avatar-icon {
-            width: 75px;
-            height: 75px;
-            background: var(--yellow);
-            border-radius: 50%;
-            border: 2px solid var(--ink);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 2rem;
-            margin: 0 auto 0.8rem;
-            box-shadow: var(--hard-sm);
-        }
-
-        .user-email-text {
-            font-size: 0.85rem;
-            font-weight: 800;
-            color: var(--burgundy);
-        }
-
-        /* MÉTRICAS / ESTADÍSTICAS ESTILO LANDING */
-        .metrics-section {
-            padding: 3rem 0 1rem;
-        }
-
-        .metrics-grid {
-            display: grid;
-            grid-template-columns: 1fr;
-            gap: 1.8rem;
-        }
-
-        .stat-box-lms {
-            padding: 1.8rem;
-            border-radius: 26px;
-            border: 2.5px solid var(--ink);
-            box-shadow: var(--hard);
-            transition: var(--transition);
-            display: flex;
-            align-items: center;
-            gap: 1.2rem;
-        }
-
-        .stat-box-lms:hover { transform: translate(-3px, -3px) rotate(-0.5deg); box-shadow: 8px 8px 0 var(--ink); }
-
-        .stat-box-lms:nth-child(1) { background: var(--pink-soft); }
-        .stat-box-lms:nth-child(2) { background: #E6DCFB; }
-        .stat-box-lms:nth-child(3) { background: #FFE9B8; }
-
-        .stat-icon {
-            width: 58px; height: 58px;
-            background: #fff;
-            border: 2px solid var(--ink);
-            border-radius: 18px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.5rem;
-            color: var(--burgundy);
-            box-shadow: var(--hard-sm);
-        }
-
-        .stat-num { font-family: 'Fraunces', serif; font-size: 2.2rem; font-weight: 800; color: var(--burgundy); line-height: 1; }
-        .stat-lbl { font-size: 0.8rem; font-weight: 700; color: var(--ink); text-transform: uppercase; letter-spacing: 0.8px; }
-
-        /* SECCIÓN CURSOS INSCRITOS */
-        .courses-section {
-            padding: 2.5rem 0 6rem;
-        }
-
-        .section-tag-sub {
-            font-family: 'Caveat', cursive;
-            font-size: 1.6rem;
-            font-weight: 700;
-            color: var(--coral);
-            display: block;
-        }
-
-        .section-title-lms {
-            font-size: 2.2rem;
-            font-weight: 800;
-            color: var(--burgundy);
-            margin-bottom: 2rem;
-        }
-
-        .courses-grid-lms {
-            display: grid;
-            grid-template-columns: 1fr;
             gap: 2.5rem;
         }
 
-        /* ESTADO VACÍO (NEOBRUTALISTA) */
-        .empty-card {
-            background: #FFFFFF;
+        .hero-badge {
+            display: inline-block;
+            background: #fff;
+            color: var(--burgundy);
+            padding: 0.4rem 1.2rem;
+            border-radius: 50px;
+            font-size: 0.85rem;
+            font-weight: 500;
+            letter-spacing: 0.04em;
+            margin-bottom: 1.4rem;
+        }
+
+        .welcome-title {
+            font-size: 2.3rem;
+            color: var(--cream);
+            line-height: 1.1;
+            margin-bottom: 0.9rem;
+            text-shadow: 0 2px 0 rgba(90, 16, 48, 0.22);
+            word-break: break-word;
+        }
+
+        .welcome-title span {
+            font-family: var(--font-script);
+            font-size: 1.5em;
+            color: var(--burgundy);
+            text-shadow: none;
+            display: inline-block;
+            transform: rotate(-2deg);
+            line-height: 0.9;
+        }
+
+        .welcome-subtitle { font-size: 1.1rem; color: var(--burgundy); font-weight: 500; max-width: 520px; }
+
+        /* Polaroid con clip */
+        .user-polaroid {
+            position: relative;
+            background: #fff;
+            padding: 22px 22px 30px;
+            box-shadow: 0 18px 36px rgba(90, 16, 48, 0.28);
+            transform: rotate(3deg);
+            text-align: center;
+            min-width: 250px;
+            max-width: 100%;
+        }
+
+        .user-polaroid::before {
+            content: '';
+            position: absolute;
+            top: -16px; right: 24px;
+            width: 16px; height: 40px;
+            border: 3px solid var(--hot);
+            border-radius: 12px;
+        }
+
+        .user-avatar-icon {
+            width: 96px;
+            height: 112px;
+            background: var(--pink-soft);
+            border-radius: 50%;
+            border: 8px dotted #fff;
+            outline: 3px solid var(--pink);
+            outline-offset: -3px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2.2rem;
+            margin: 0 auto 1rem;
+        }
+
+        .user-email-text { font-family: var(--font-serif-it); font-style: italic; font-size: 0.95rem; color: var(--burgundy); word-break: break-all; }
+
+        /* CINTA */
+        .marquee { background: var(--blush); overflow: hidden; white-space: nowrap; padding: 0.8rem 0; color: var(--burgundy); }
+        .marquee-track { display: inline-flex; animation: marquee 30s linear infinite; }
+        .marquee span { font-family: var(--font-serif-it); font-style: italic; font-weight: 500; font-size: 1.1rem; padding: 0 1.6rem; }
+        @keyframes marquee { to { transform: translateX(-50%); } }
+
+        @media (prefers-reduced-motion: reduce) {
+            .marquee-track { animation: none; }
+            * { transition: none !important; scroll-behavior: auto !important; }
+        }
+
+        /* ===== MÉTRICAS ===== */
+        .metrics-section { padding: 4rem 0 4rem; background: var(--cream); }
+        .metrics-grid { display: grid; grid-template-columns: 1fr; gap: 1.6rem; }
+
+        .stat-box-lms {
+            position: relative;
+            padding: 1.7rem;
             border-radius: 28px;
-            border: 2.5px solid var(--ink);
+            box-shadow: var(--hard);
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            gap: 1.3rem;
+        }
+
+        .stat-box-lms:hover { transform: translateY(-5px); }
+
+        .metrics-grid .stat-box-lms:nth-child(1) { background: var(--pink-soft); }
+        .metrics-grid .stat-box-lms:nth-child(2) { background: var(--blush); }
+        .metrics-grid .stat-box-lms:nth-child(3) { background: var(--pink); }
+
+        .stat-icon {
+            flex-shrink: 0;
+            width: 76px; height: 88px;
+            background: #fff;
+            border-radius: 50%;
+            border: 8px dotted #fff;
+            outline: 3px solid var(--hot);
+            outline-offset: -3px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.4rem;
+            color: var(--burgundy);
+        }
+
+        .stat-num { font-family: var(--font-chunk); font-size: 2.3rem; color: var(--burgundy); line-height: 1; }
+        .stat-lbl { font-family: var(--font-serif-it); font-style: italic; font-size: 1.05rem; color: var(--burgundy); margin-top: 0.2rem; }
+
+        /* ===== CURSOS INSCRITOS ===== */
+        .courses-section { padding: 6rem 0; background: var(--burgundy); }
+
+        .section-tag-sub {
+            display: block;
+            font-family: var(--font-script);
+            font-size: 3rem;
+            color: var(--pink);
+            line-height: 1;
+            margin-bottom: -0.3rem;
+            transform: rotate(-2deg);
+            transform-origin: left;
+        }
+
+        .section-title-lms { font-size: 1.9rem; color: var(--cream); margin-bottom: 2.6rem; }
+        .courses-grid-lms { display: grid; grid-template-columns: 1fr; gap: 2.4rem; }
+
+        /* Tarjetas generadas por el JS (se mantienen sus estilos inline, se ajustan aquí) */
+        #contenedor-mis-cursos .stat-box-lms { border-radius: 28px; padding: 2rem 1.8rem; box-shadow: none; background: var(--pink-soft) !important; }
+        #contenedor-mis-cursos .stat-box-lms:hover { transform: translateY(-6px); }
+        #contenedor-mis-cursos .stat-box-lms::before {
+            content: '';
+            position: absolute;
+            top: -16px; right: 26px;
+            width: 15px; height: 38px;
+            border: 3px solid var(--hot);
+            border-radius: 12px;
+        }
+        #contenedor-mis-cursos .stat-box-lms > span {
+            background: var(--hot) !important;
+            color: #fff !important;
+            border: none !important;
+            box-shadow: none !important;
+            border-radius: 50px !important;
+            padding: 0.35rem 1rem !important;
+            font-family: var(--font-body) !important;
+            font-weight: 500 !important;
+            font-size: 0.8rem !important;
+            text-transform: none !important;
+            letter-spacing: 0.04em;
+        }
+        #contenedor-mis-cursos .stat-box-lms > h3 {
+            font-family: var(--font-chunk) !important;
+            font-weight: 400 !important;
+            font-size: 1.3rem !important;
+            color: var(--burgundy) !important;
+            line-height: 1.1 !important;
+        }
+        #contenedor-mis-cursos .stat-box-lms > p { color: var(--ink) !important; font-size: 1rem !important; }
+
+        /* ESTADO VACÍO */
+        .empty-card {
+            background: var(--pink-soft);
+            border-radius: 32px;
             padding: 4rem 2rem;
             text-align: center;
-            box-shadow: var(--hard);
             grid-column: 1 / -1;
         }
 
-        .empty-card i { font-size: 3.5rem; color: var(--coral); margin-bottom: 1rem; }
-        .empty-card h3 { font-family: 'Fraunces', serif; font-size: 1.8rem; font-weight: 800; color: var(--burgundy); margin-bottom: 0.5rem; }
-        .empty-card p { color: var(--muted); max-width: 480px; margin: 0 auto 1.8rem; font-weight: 500; font-size: 1.05rem; }
+        .empty-card i {
+            font-size: 2.4rem;
+            color: var(--burgundy);
+            background: #fff;
+            width: 110px; height: 130px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            border: 9px dotted #fff;
+            outline: 3px solid var(--hot);
+            outline-offset: -3px;
+            margin-bottom: 1.4rem;
+        }
+        .empty-card h3 { font-size: 1.6rem; color: var(--burgundy); margin-bottom: 0.7rem; }
+        .empty-card p { color: var(--ink); max-width: 480px; margin: 0 auto 1.8rem; font-size: 1.05rem; }
 
         .btn-primary-lms {
-            background: var(--yellow);
-            color: var(--ink);
-            border: 2.5px solid var(--ink);
+            background: var(--burgundy);
+            color: var(--cream);
+            border: 1px solid var(--burgundy);
             padding: 0.95rem 2.2rem;
             border-radius: 50px;
             text-decoration: none;
-            font-weight: 700;
-            font-size: 0.88rem;
-            text-transform: uppercase;
-            letter-spacing: 1px;
+            font-weight: 500;
+            font-size: 0.92rem;
+            letter-spacing: 0.06em;
             display: inline-flex;
             align-items: center;
             gap: 10px;
-            box-shadow: var(--hard);
             transition: var(--transition);
         }
+        .btn-primary-lms:hover { background: var(--cream); color: var(--burgundy); transform: translateY(-3px); }
 
-        .btn-primary-lms:hover {
-            transform: translate(-3px, -3px);
-            box-shadow: 8px 8px 0 var(--ink);
-            background: var(--olive);
-            color: var(--cream);
-        }
-
-        footer { background-color: var(--ink); color: #B9A9C4; padding: 3.5rem 1.5rem 2rem; text-align: center; border-top: 3px solid var(--pink); }
-        .footer-logo { font-size: 1.6rem; font-weight: 800; color: var(--cream); margin-bottom: 1rem; font-family: 'Fraunces', serif; text-transform: uppercase; }
-        .footer-logo span { color: var(--pink); font-style: italic; }
+        footer { background-color: var(--burgundy); color: var(--blush); padding: 3.5rem 1.5rem 2rem; text-align: center; border-top: 1px solid rgba(247, 168, 208, 0.25); }
+        .footer-logo { font-size: 2.4rem; color: var(--cream); margin-bottom: 0.8rem; font-family: var(--font-script); }
+        .footer-logo span { color: var(--pink); }
 
         @media (min-width: 768px) {
+            .welcome-title { font-size: 3.2rem; }
             .metrics-grid { grid-template-columns: repeat(3, 1fr); }
             .courses-grid-lms { grid-template-columns: repeat(3, 1fr); }
+            .section-title-lms { font-size: 2.6rem; }
+            .section-tag-sub { font-size: 3.6rem; }
         }
     </style>
 </head>
 <body>
 
-    <div class="topbar">✨ Espacio Privado de Aprendizaje ✨</div>
+    <div class="topbar">Espacio privado de aprendizaje</div>
 
     <!-- HEADER -->
     <header>
         <div class="container nav-container">
-            <a href="index.html" class="logo">CREATE YOUR <span>GLOW</span> ✨</a>
+            <a href="index.html" class="logo">Create Your <span>Glow</span> ✨</a>
             <div style="display: flex; gap: 10px; align-items: center;">
-                <a href="cursos.html" class="btn-cta-nav" style="background: var(--yellow); color: var(--ink);"><i class="fa-solid fa-compass"></i> Catálogo</a>
-                <button onclick="cerrarSesion()" class="btn-cta-nav" style="background: var(--coral); color: #fff;"><i class="fa-solid fa-right-from-bracket"></i> Salir</button>
+                <a href="cursos.html" class="btn-cta-nav solid"><i class="fa-solid fa-compass"></i> Catálogo</a>
+                <button onclick="cerrarSesion()" class="btn-cta-nav"><i class="fa-solid fa-right-from-bracket"></i> Salir</button>
             </div>
         </div>
     </header>
@@ -357,7 +387,7 @@
     <section class="user-hero">
         <div class="container hero-layout">
             <div>
-                <div class="hero-badge">🎓 Panel de Estudiante</div>
+                <div class="hero-badge">🎓 Panel de estudiante</div>
                 <h1 class="welcome-title" id="userName">Hola, <span>Estudiante</span> ✨</h1>
                 <p class="welcome-subtitle">Bienvenida de nuevo a tu academia. Aquí tienes tus programas y avances guardados.</p>
             </div>
@@ -369,6 +399,14 @@
         </div>
     </section>
 
+    <!-- CINTA EN MOVIMIENTO -->
+    <div class="marquee" aria-hidden="true">
+        <div class="marquee-track">
+            <span>✱ Tus clases</span><span>✱ Tu progreso</span><span>✱ Tu marca personal</span><span>✱ Create your glow</span>
+            <span>✱ Tus clases</span><span>✱ Tu progreso</span><span>✱ Tu marca personal</span><span>✱ Create your glow</span>
+        </div>
+    </div>
+
     <!-- MÉTRICAS -->
     <section class="metrics-section">
         <div class="container">
@@ -377,7 +415,7 @@
                     <div class="stat-icon"><i class="fa-solid fa-book-open"></i></div>
                     <div>
                         <div class="stat-num" id="countInscritos">0</div>
-                        <div class="stat-lbl">Cursos Inscritos</div>
+                        <div class="stat-lbl">Cursos inscritos</div>
                     </div>
                 </div>
 
@@ -385,7 +423,7 @@
                     <div class="stat-icon"><i class="fa-solid fa-fire"></i></div>
                     <div>
                         <div class="stat-num" id="countActivos">0</div>
-                        <div class="stat-lbl">Cursos Activos</div>
+                        <div class="stat-lbl">Cursos activos</div>
                     </div>
                 </div>
 
@@ -393,7 +431,7 @@
                     <div class="stat-icon"><i class="fa-solid fa-chart-line"></i></div>
                     <div>
                         <div class="stat-num" id="progresoGeneral">0%</div>
-                        <div class="stat-lbl">Progreso General</div>
+                        <div class="stat-lbl">Progreso general</div>
                     </div>
                 </div>
             </div>
@@ -407,86 +445,4 @@
             <h2 class="section-title-lms">Cursos en los que estás inscrita 💖</h2>
 
             <div class="courses-grid-lms" id="contenedor-mis-cursos">
-                <!-- Estado por defecto cuando no hay cursos inscritos -->
-                <div class="empty-card">
-                    <i class="fa-solid fa-face-smile-wink"></i>
-                    <h3>Aún no tienes cursos inscritos</h3>
-                    <p>Explora nuestro catálogo exclusivo y comienza hoy mismo a potenciar tu marca personal y tu negocio.</p>
-                    <a href="cursos.html" class="btn-primary-lms">
-                        Explorar Catálogo Ahora <i class="fa-solid fa-arrow-right"></i>
-                    </a>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <footer>
-        <div class="footer-logo">CREATE YOUR <span>GLOW</span> ✨</div>
-        <p>&copy; 2026 Create Your Glow. Todos los derechos reservados.</p>
-    </footer>
-
-    <!-- LÓGICA DE FIREBASE Y SESIÓN -->
-    <script>
-        auth.onAuthStateChanged(async (user) => {
-            if (user) {
-                document.getElementById('userEmail').innerText = user.email;
-                if (user.displayName) {
-                    document.getElementById('userName').innerHTML = `Hola, <span>${user.displayName}</span> ✨`;
-                }
-
-                await cargarMisCursos(user.uid);
-            } else {
-                window.location.href = "auth.html";
-            }
-        });
-
-        async function cargarMisCursos(uid) {
-            try {
-                const inscripcionesSnap = await db.collection("enrollments").where("userId", "==", uid).get();
-                const contenedor = document.getElementById('contenedor-mis-cursos');
-
-                if (inscripcionesSnap.empty) {
-                    return;
-                }
-
-                document.getElementById('countInscritos').innerText = inscripcionesSnap.size;
-                document.getElementById('countActivos').innerText = inscripcionesSnap.size;
-                document.getElementById('progresoGeneral').innerText = "100%";
-
-                contenedor.innerHTML = '';
-
-                inscripcionesSnap.forEach(docSnap => {
-                    const data = docSnap.data();
-
-                    const card = document.createElement('article');
-                    card.className = 'stat-box-lms';
-                    card.style.background = "#FFFFFF";
-                    card.style.flexDirection = "column";
-                    card.style.alignItems = "flex-start";
-
-                    card.innerHTML = `
-                        <span style="background: var(--yellow); border: 2px solid var(--ink); padding: 0.35rem 0.9rem; border-radius: 12px; font-size: 0.75rem; font-weight: 800; text-transform: uppercase; box-shadow: var(--hard-sm); transform: rotate(-2deg); margin-bottom: 0.8rem;">Inscrito ✨</span>
-                        <h3 style="font-family: 'Fraunces', serif; font-size: 1.45rem; font-weight: 800; color: var(--burgundy); margin-bottom: 0.6rem;">${data.courseTitle || 'Programa Especializado'}</h3>
-                        <p style="color: var(--muted); font-size: 0.95rem; margin-bottom: 1.5rem;">Acceso ilimitado a las clases grabadas, archivos y guías de práctica.</p>
-                        <a href="curso-detalle.html?nombre=${encodeURIComponent(data.courseTitle || '')}" class="btn-primary-lms" style="width: 100%; text-align: center; justify-content: center;">
-                            Entrar a Clases <i class="fa-solid fa-arrow-right"></i>
-                        </a>
-                    `;
-                    contenedor.appendChild(card);
-                });
-
-            } catch (error) {
-                console.error("Error al cargar los cursos del usuario:", error);
-            }
-        }
-
-        function cerrarSesion() {
-            auth.signOut().then(() => {
-                alert("Has cerrado sesión correctamente.");
-                window.location.href = "index.html";
-            });
-        }
-    </script>
-</body>
-</html>
-```
+                <!-- Estado por defecto cuando no hay
