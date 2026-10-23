@@ -36,7 +36,7 @@ export default async function handler(req, res) {
     const referenciaExterna = `${usuario.uid || 'anon'}_${curso.id || 'curso'}`;
 
     // Base URL de GitHub Pages
-    const baseUrl = "https://bunuelou-byte.github.io/create-your-glow"; 
+   const baseUrl = "https://bunuelou-byte.github.io/create-your-glow-curso";
     const urlExito = `${baseUrl}/pago-exitoso.html?ref=${referenciaExterna}`;
     const urlPendiente = `${baseUrl}/pago-pendiente.html?ref=${referenciaExterna}`;
     const urlRechazado = `${baseUrl}/pago-rechazado.html?ref=${referenciaExterna}`;
