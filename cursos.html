@@ -13,7 +13,7 @@
     <!-- Google Fonts & FontAwesome -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Bowlby+One&family=Jost:wght@400;500;600&family=Pinyon+Script&family=Playfair+Display:ital,wght@1,500;1,600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@500;700&family=DM+Sans:wght@400;500;700&family=Fraunces:ital,opsz,wght@0,9..144,600;0,9..144,800;1,9..144,600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
     <script>
@@ -32,159 +32,179 @@
 
     <style>
         :root {
-            /* Identidad nueva (misma que landing y mis-cursos) */
-            --burgundy: #5A1030;
-            --plum: #7A1F45;
-            --hot: #F06BAE;
+            --lavender: #C5B3F2;
             --pink: #F7A8D0;
             --pink-soft: #FBD3E6;
-            --blush: #EBCFE0;
-            --cream: #FFF8E6;
-            --ink: #2A1220;
-            --muted: #7A5A6B;
+            --coral: #F7704F;
+            --burgundy: #6B0F2E;
+            --olive: #A7A83B;
+            --yellow: #FFF08A;
+            --cream: #FBF3E8;
+            --ink: #261B2B;
+            --muted: #6A5870;
 
-            /* Variables heredadas (el JS genera HTML que todavía las usa) */
-            --lavender: #E6DCFB;
-            --coral: #F06BAE;
-            --olive: #7A1F45;
-            --yellow: #FFF3B0;
-
-            --grad-pink: linear-gradient(180deg, #FFD3EA 0%, #F9A6D2 55%, #F27DB8 100%);
-            --grad-soft: linear-gradient(135deg, #FFE3F1 0%, #F9B6D8 100%);
+            --grad-hero: linear-gradient(160deg, #F7A8D0 0%, #E9B4E8 35%, #C5B3F2 65%, #F9B08C 100%);
+            --grad-courses: linear-gradient(180deg, #F7704F 0%, #E86FA6 45%, #8C2E6B 100%);
+            --hard: 5px 5px 0 var(--ink);
+            --hard-sm: 3px 3px 0 var(--ink);
             --transition: all 0.35s cubic-bezier(0.22, 1, 0.36, 1);
-            --font-chunk: 'Bowlby One', 'Arial Black', sans-serif;
-            --font-script: 'Pinyon Script', 'Snell Roundhand', cursive;
-            --font-serif-it: 'Playfair Display', Georgia, serif;
-            --font-body: 'Jost', 'Helvetica Neue', Arial, sans-serif;
+            --grain: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.55'/%3E%3C/svg%3E");
+            --wave: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 80 28' preserveAspectRatio='none'%3E%3Cpath d='M0 0H80V10Q60 28 40 10T0 10Z'/%3E%3C/svg%3E");
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; scroll-behavior: smooth; }
 
         body {
-            font-family: var(--font-body);
+            font-family: 'DM Sans', sans-serif;
             background-color: var(--cream);
             color: var(--ink);
             line-height: 1.65;
             overflow-x: hidden;
         }
 
-        h1, h2, h3 { font-family: var(--font-chunk); font-weight: 400; letter-spacing: -0.01em; line-height: 1.05; }
+        h1, h2, h3, .heading-font { font-family: 'Fraunces', serif; letter-spacing: -0.02em; }
         .container { width: 100%; max-width: 1240px; margin: 0 auto; padding: 0 1.5rem; }
-        ::selection { background: var(--hot); color: #fff; }
-        a:focus-visible, button:focus-visible, input:focus-visible { outline: 3px solid var(--hot); outline-offset: 3px; }
+        ::selection { background: var(--yellow); color: var(--ink); }
 
-        /* ===== TOPBAR & HEADER ===== */
+        /* HEADER & TOPBAR */
         .topbar {
-            background: var(--blush);
+            background: var(--pink);
             color: var(--burgundy);
             text-align: center;
-            font-size: 0.82rem;
-            font-weight: 500;
-            padding: 0.45rem 1rem;
-            letter-spacing: 0.04em;
+            font-size: 0.8rem;
+            font-weight: 700;
+            padding: 0.4rem 1rem;
+            letter-spacing: 0.3px;
         }
 
-        header { background-color: var(--burgundy); position: sticky; top: 0; z-index: 1000; }
-        .nav-container { display: flex; justify-content: space-between; align-items: center; padding: 0.8rem 1.5rem; gap: 1rem; }
+        header {
+            background-color: var(--burgundy);
+            border-bottom: 3px solid var(--ink);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .nav-container { display: flex; justify-content: space-between; align-items: center; padding: 0.9rem 1.5rem; }
 
         .logo {
-            font-family: var(--font-script);
-            font-size: 2rem;
+            font-family: 'Fraunces', serif;
+            font-size: 1.3rem;
+            font-weight: 800;
             color: var(--cream);
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
             text-decoration: none;
             display: flex;
             align-items: center;
             gap: 6px;
-            line-height: 1;
-            white-space: nowrap;
         }
-        .logo span { color: var(--pink); }
+
+        .logo span { color: var(--pink); font-style: italic; }
 
         .btn-cta-nav {
-            background: var(--pink);
-            color: var(--burgundy);
-            border: 1px solid var(--pink);
-            padding: 0.55rem 1.3rem;
+            background: var(--olive);
+            color: var(--cream);
+            border: 2px solid var(--ink);
+            padding: 0.6rem 1.4rem;
             border-radius: 50px;
             text-decoration: none;
-            font-family: var(--font-body);
-            font-weight: 500;
-            font-size: 0.8rem;
-            letter-spacing: 0.05em;
+            font-weight: 700;
+            font-size: 0.82rem;
+            text-transform: uppercase;
+            letter-spacing: 0.8px;
+            box-shadow: var(--hard-sm);
             transition: var(--transition);
             display: inline-flex;
             align-items: center;
             gap: 8px;
-            white-space: nowrap;
         }
-        .btn-cta-nav:hover { background: var(--cream); border-color: var(--cream); }
 
-        /* ===== HERO CATÁLOGO ===== */
+        .btn-cta-nav:hover { transform: translate(-2px, -2px); box-shadow: 5px 5px 0 var(--ink); background: var(--yellow); color: var(--ink); }
+
+        /* HERO CATALOGO */
         .hero-catalog {
             padding: 4.5rem 1.5rem 5rem;
-            background: var(--grad-pink);
+            background: var(--grad-hero);
             position: relative;
             overflow: hidden;
             text-align: center;
         }
 
+        .hero-catalog::after {
+            content: '';
+            position: absolute; inset: 0;
+            background-image: var(--grain);
+            mix-blend-mode: multiply;
+            opacity: 0.22;
+            pointer-events: none;
+        }
+
         .hero-badge {
-            display: inline-block;
-            background: #fff;
-            color: var(--burgundy);
-            padding: 0.4rem 1.2rem;
-            border-radius: 50px;
-            font-size: 0.85rem;
-            font-weight: 500;
-            letter-spacing: 0.04em;
-            margin-bottom: 1.6rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: var(--burgundy);
+            color: var(--cream);
+            border: 2px solid var(--ink);
+            padding: 0.5rem 1.3rem;
+            border-radius: 50%/100%;
+            font-size: 0.78rem;
+            font-weight: 700;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            margin-bottom: 1.5rem;
+            transform: rotate(-2deg);
+            box-shadow: var(--hard-sm);
+            position: relative;
+            z-index: 1;
         }
 
         .catalog-title {
-            font-size: 2.2rem;
-            color: var(--cream);
-            margin-bottom: 1.2rem;
-            text-shadow: 0 2px 0 rgba(90, 16, 48, 0.22);
+            font-size: 2.8rem;
+            font-weight: 800;
+            color: var(--burgundy);
+            margin-bottom: 1rem;
+            position: relative;
+            z-index: 1;
         }
 
-        .catalog-title span {
-            display: block;
-            font-family: var(--font-script);
-            font-size: 1.9em;
-            color: var(--burgundy);
-            text-shadow: none;
-            line-height: 0.95;
-            transform: rotate(-2deg);
-            margin-top: 0.2rem;
-        }
+        .catalog-title span { color: var(--cream); font-style: italic; text-shadow: 3px 3px 0 var(--burgundy); }
 
         .catalog-subtitle {
             font-size: 1.1rem;
-            color: var(--burgundy);
+            color: var(--ink);
             max-width: 620px;
-            margin: 0 auto 2.4rem;
+            margin: 0 auto 2.5rem;
             font-weight: 500;
+            position: relative;
+            z-index: 1;
         }
 
-        /* BUSCADOR */
-        .search-box { max-width: 580px; margin: 0 auto 2rem; position: relative; }
+        /* BUSCADOR FLOTANTE */
+        .search-box {
+            max-width: 580px;
+            margin: 0 auto 2rem;
+            position: relative;
+            z-index: 1;
+        }
 
         .search-input {
             width: 100%;
             padding: 1.1rem 1.5rem 1.1rem 3.4rem;
             border-radius: 50px;
-            border: 1px solid var(--burgundy);
-            background: #fff;
+            border: 2.5px solid var(--ink);
+            background: var(--cream);
             color: var(--ink);
-            font-family: var(--font-body);
+            font-family: 'DM Sans', sans-serif;
             font-size: 1rem;
             outline: none;
-            box-shadow: 0 14px 30px rgba(90, 16, 48, 0.22);
+            box-shadow: var(--hard);
             transition: var(--transition);
         }
 
-        .search-input::placeholder { color: #9A7A8B; }
-        .search-input:focus { border-color: var(--hot); box-shadow: 0 14px 30px rgba(90, 16, 48, 0.3); }
+        .search-input::placeholder { color: #9A8AA0; }
+        .search-input:focus { border-color: var(--burgundy); box-shadow: 7px 7px 0 var(--ink); }
 
         .search-icon {
             position: absolute;
@@ -195,240 +215,220 @@
             font-size: 1.1rem;
         }
 
-        /* PASTILLAS INFORMATIVAS */
-        .stats-strip { display: flex; justify-content: center; gap: 0.9rem; margin-top: 2rem; flex-wrap: wrap; }
+        /* ESTADÍSTICAS */
+        .stats-strip {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin-top: 2rem;
+            flex-wrap: wrap;
+            position: relative;
+            z-index: 1;
+        }
 
         .stat-item {
-            background: var(--burgundy);
+            background: #fff;
             padding: 0.5rem 1.2rem;
             border-radius: 50px;
+            border: 2px solid var(--ink);
             font-size: 0.85rem;
-            font-weight: 500;
-            color: var(--cream);
+            font-weight: 700;
+            color: var(--ink);
+            box-shadow: var(--hard-sm);
             display: flex;
             align-items: center;
             gap: 8px;
         }
-        .stat-item i { color: var(--pink); }
 
-        /* ===== FILTROS ===== */
-        .filters-section { padding: 3rem 0 3rem; background-color: var(--cream); }
-        .filters-container { display: flex; justify-content: center; gap: 0.8rem; flex-wrap: wrap; }
+        .stat-item i { color: var(--coral); }
+
+        /* FILTROS */
+        .filters-section { padding: 2.5rem 0 1.5rem; background-color: var(--cream); }
+        .filters-container { display: flex; justify-content: center; gap: 0.9rem; flex-wrap: wrap; }
 
         .btn-filter {
-            background: transparent;
-            border: 1px solid var(--burgundy);
+            background: #fff;
+            border: 2.5px solid var(--ink);
             padding: 0.7rem 1.5rem;
             border-radius: 50px;
-            font-family: var(--font-body);
-            font-weight: 500;
-            font-size: 0.88rem;
-            letter-spacing: 0.04em;
-            color: var(--burgundy);
+            font-family: 'DM Sans', sans-serif;
+            font-weight: 700;
+            font-size: 0.85rem;
+            color: var(--ink);
             cursor: pointer;
             transition: var(--transition);
+            box-shadow: var(--hard-sm);
             display: inline-flex;
             align-items: center;
             gap: 8px;
         }
 
-        .btn-filter i { color: var(--hot); transition: var(--transition); }
-        .btn-filter:hover { background: var(--pink-soft); }
-        .btn-filter.active { background: var(--burgundy); color: var(--cream); }
-        .btn-filter.active i { color: var(--pink); }
+        .btn-filter:hover, .btn-filter.active {
+            background: var(--yellow);
+            color: var(--ink);
+            transform: translate(-2px, -2px);
+            box-shadow: 6px 6px 0 var(--ink);
+        }
 
-        /* ===== GRID DE CURSOS ===== */
-        .courses-section { padding: 6rem 0; background-color: var(--burgundy); }
-        .courses-grid { display: grid; grid-template-columns: 1fr; gap: 3rem 2.4rem; }
+        /* CURSOS GRID */
+        .courses-section { padding: 2rem 0 6rem; background-color: var(--cream); }
+        .courses-grid { display: grid; grid-template-columns: 1fr; gap: 2.8rem; }
 
         .course-card {
-            background: var(--pink-soft);
-            border-radius: 28px;
+            background: var(--cream);
+            border-radius: 26px;
+            border: 2.5px solid var(--ink);
+            box-shadow: var(--hard);
             display: flex;
             flex-direction: column;
             transition: var(--transition);
             position: relative;
-            padding: 2rem 1.6rem 1.8rem;
         }
 
-        .course-card::before {
-            content: '';
-            position: absolute;
-            top: -16px; right: 26px;
-            width: 15px; height: 38px;
-            border: 3px solid var(--hot);
-            border-radius: 12px;
-            z-index: 2;
+        .course-card:hover { transform: translate(-4px, -8px); box-shadow: 9px 12px 0 var(--ink); }
+
+        .card-image-wrapper {
+            position: relative;
+            height: 230px;
+            width: 100%;
+            overflow: hidden;
+            border-radius: 23px 23px 0 0;
+            border-bottom: 2.5px solid var(--ink);
+            background: var(--pink-soft);
         }
 
-        .course-card:hover { transform: translateY(-6px); }
-
-        .card-image-wrapper { position: relative; display: flex; justify-content: center; margin-bottom: 1.4rem; }
-
-        /* Óvalo con perlas */
-        .card-image {
-            width: 220px;
-            height: 260px;
-            object-fit: cover;
-            border-radius: 50%;
-            border: 10px dotted #fff;
-            outline: 3px solid var(--pink);
-            outline-offset: -3px;
-            background: #fff;
-            transition: var(--transition);
-        }
-
-        .course-card:hover .card-image { transform: rotate(-3deg) scale(1.04); }
+        .card-image { width: 100%; height: 100%; object-fit: cover; transition: var(--transition); }
+        .course-card:hover .card-image { transform: scale(1.08); }
 
         .badge-category {
             position: absolute;
-            top: -6px; left: -6px;
-            background: var(--hot);
-            color: #fff;
+            top: 14px; left: 14px;
+            background: var(--yellow);
+            color: var(--ink);
+            border: 2px solid var(--ink);
             padding: 0.35rem 1rem;
-            border-radius: 50px;
-            font-size: 0.8rem;
-            font-weight: 500;
-            letter-spacing: 0.04em;
-            transform: rotate(-3deg);
+            border-radius: 12px;
+            font-size: 0.75rem;
+            font-weight: 800;
+            text-transform: uppercase;
+            box-shadow: var(--hard-sm);
+            transform: rotate(-2deg);
         }
 
-        .card-content { display: flex; flex-direction: column; flex-grow: 1; text-align: center; }
-        .course-title { font-size: 1.3rem; color: var(--burgundy); margin-bottom: 0.9rem; }
+        .card-content { padding: 1.8rem; display: flex; flex-direction: column; flex-grow: 1; }
+
+        .course-title {
+            font-family: 'Fraunces', serif;
+            font-size: 1.45rem;
+            font-weight: 800;
+            color: var(--burgundy);
+            margin-bottom: 0.7rem;
+        }
 
         .course-details {
             display: flex;
-            justify-content: center;
-            flex-wrap: wrap;
-            gap: 0.5rem 1.2rem;
-            margin-bottom: 1.4rem;
-            font-size: 0.92rem;
-            color: var(--burgundy);
-            font-weight: 500;
+            gap: 1.2rem;
+            margin-bottom: 1.5rem;
+            font-size: 0.88rem;
+            color: var(--muted);
+            font-weight: 600;
         }
 
         .detail-item { display: flex; align-items: center; gap: 6px; }
-        .detail-item i { color: var(--hot); }
+        .detail-item i { color: var(--coral); }
 
         .price-container {
             display: flex;
-            align-items: center;
+            align-items: baseline;
             justify-content: space-between;
             margin-top: auto;
-            margin-bottom: 1.4rem;
+            margin-bottom: 1.5rem;
             padding-top: 1rem;
-            border-top: 1px dashed rgba(90, 16, 48, 0.35);
+            border-top: 2px dashed rgba(38, 27, 43, 0.15);
         }
 
-        .price-label { font-family: var(--font-serif-it); font-style: italic; font-size: 1.05rem; color: var(--burgundy); }
-        .course-price { font-family: var(--font-chunk); font-size: 1.15rem; color: var(--burgundy); }
+        .price-label { font-size: 0.78rem; color: var(--muted); font-weight: 700; text-transform: uppercase; }
+        .course-price { font-family: 'Fraunces', serif; font-size: 1.6rem; font-weight: 800; color: var(--burgundy); }
 
         .btn-interest {
-            background: var(--burgundy);
-            border: 1px solid var(--burgundy);
-            color: var(--cream);
+            background: var(--pink);
+            border: 2.5px solid var(--ink);
+            color: var(--ink);
             padding: 0.85rem;
             border-radius: 50px;
             text-align: center;
             text-decoration: none;
-            font-weight: 500;
-            font-size: 0.88rem;
-            letter-spacing: 0.06em;
+            font-weight: 700;
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
             transition: var(--transition);
             display: flex;
             align-items: center;
             justify-content: center;
             gap: 8px;
+            box-shadow: var(--hard-sm);
         }
 
-        .btn-interest:hover { background: transparent; color: var(--burgundy); }
+        .btn-interest:hover { background: var(--olive); color: var(--cream); box-shadow: var(--hard); transform: translate(-2px, -2px); }
 
-        /* SIN RESULTADOS (el HTML lo genera el JS con estilos inline: se ajustan aquí) */
+        /* NO RESULTADOS */
         .no-results {
             text-align: center;
             padding: 4rem 2rem;
-            background: var(--pink-soft);
-            border-radius: 32px;
+            background: #FFFFFF;
+            border-radius: 28px;
+            border: 2.5px solid var(--ink);
+            box-shadow: var(--hard);
             grid-column: 1 / -1;
         }
 
-        .no-results i {
-            font-size: 2.4rem;
-            color: var(--burgundy);
-            background: #fff;
-            width: 110px; height: 130px;
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            border-radius: 50%;
-            border: 9px dotted #fff;
-            outline: 3px solid var(--hot);
-            outline-offset: -3px;
-            margin-bottom: 1.4rem;
-        }
-        .no-results h3 { font-family: var(--font-chunk) !important; font-weight: 400 !important; color: var(--burgundy) !important; }
-        .no-results p { color: var(--ink) !important; font-size: 1.05rem; }
+        .no-results i { font-size: 3.5rem; color: var(--coral); margin-bottom: 1rem; }
 
-        /* BANNER FINAL */
+        /* BANNER INSPIRACIONAL */
         .banner-inspiration {
-            background: var(--grad-soft);
+            background: var(--burgundy);
             border-radius: 32px;
-            padding: 3.4rem 2rem;
+            padding: 3rem 2rem;
             text-align: center;
-            margin-top: 5rem;
-            color: var(--burgundy);
-            position: relative;
+            border: 2.5px solid var(--pink);
+            box-shadow: 8px 8px 0 var(--pink);
+            margin-top: 3rem;
+            color: var(--cream);
         }
 
-        .banner-inspiration::before {
-            content: '';
-            position: absolute;
-            top: -16px; left: 50%;
-            margin-left: -8px;
-            width: 16px; height: 40px;
-            border: 3px solid var(--hot);
-            border-radius: 12px;
-        }
+        .banner-inspiration h3 { font-size: 2rem; font-weight: 800; margin-bottom: 0.8rem; color: var(--cream); }
+        .banner-inspiration p { color: var(--pink-soft); max-width: 600px; margin: 0 auto 1.8rem; }
 
-        .banner-inspiration h3 { font-size: 1.6rem; margin-bottom: 1rem; color: var(--burgundy); }
-        .banner-inspiration p { color: var(--ink); max-width: 600px; margin: 0 auto 1.8rem; font-size: 1.05rem; }
-        .banner-inspiration .btn-interest { max-width: 320px; margin: 0 auto; }
-        .banner-inspiration .btn-interest:hover { background: var(--cream); }
-
-        footer { background-color: var(--burgundy); color: var(--blush); padding: 3.5rem 1.5rem 2rem; text-align: center; border-top: 1px solid rgba(247, 168, 208, 0.25); }
-        .footer-logo { font-size: 2.4rem; color: var(--cream); margin-bottom: 0.8rem; font-family: var(--font-script); }
-        .footer-logo span { color: var(--pink); }
-
-        @media (prefers-reduced-motion: reduce) {
-            * { transition: none !important; scroll-behavior: auto !important; }
-        }
+        footer { background-color: var(--ink); color: #B9A9C4; padding: 3.5rem 1.5rem 2rem; text-align: center; border-top: 3px solid var(--pink); }
+        .footer-logo { font-size: 1.6rem; font-weight: 800; color: var(--cream); margin-bottom: 1rem; font-family: 'Fraunces', serif; text-transform: uppercase; }
+        .footer-logo span { color: var(--pink); font-style: italic; }
 
         @media (min-width: 768px) {
             .courses-grid { grid-template-columns: repeat(3, 1fr); }
-            .catalog-title { font-size: 3.2rem; }
-            .banner-inspiration h3 { font-size: 2.2rem; }
+            .catalog-title { font-size: 3.5rem; }
         }
     </style>
 </head>
 <body>
 
-    <div class="topbar">Estrategias digitales hechas para maquillistas</div>
+    <div class="topbar">✨ Estrategias digitales hechas para maquillistas ✨</div>
 
     <!-- HEADER -->
     <header>
         <div class="container nav-container">
-            <a href="index.html" class="logo">Create Your <span>Glow</span> ✨</a>
-            <a href="index.html" class="btn-cta-nav"><i class="fa-solid fa-arrow-left"></i> Volver al inicio</a>
+            <a href="index.html" class="logo">CREATE YOUR <span>GLOW</span> ✨</a>
+            <a href="index.html" class="btn-cta-nav"><i class="fa-solid fa-arrow-left"></i> Volver al Inicio</a>
         </div>
     </header>
 
     <!-- HERO CATALOGO -->
     <section class="hero-catalog">
         <div class="container">
-            <div class="hero-badge">💄 Formación digital exclusiva</div>
-            <h1 class="catalog-title">Aprende, destaca y <span>haz brillar tu marca</span></h1>
+            <div class="hero-badge">💄 Formación Digital Exclusiva</div>
+            <h1 class="catalog-title">Aprende, Destaca y <span>Haz Brillar</span> tu Marca</h1>
             <p class="catalog-subtitle">Programas creados especialmente para maquillistas y artistas de la belleza que buscan dominar sus redes, atraer más clientas y cobrar lo justo por su talento.</p>
-
+            
             <!-- BUSCADOR FLOTANTE -->
             <div class="search-box">
                 <i class="fa-solid fa-magnifying-glass search-icon"></i>
@@ -437,9 +437,9 @@
 
             <!-- ESTADÍSTICAS -->
             <div class="stats-strip">
-                <div class="stat-item"><i class="fa-solid fa-circle-check"></i> 100% online y a tu ritmo</div>
-                <div class="stat-item"><i class="fa-solid fa-award"></i> Certificado oficial</div>
-                <div class="stat-item"><i class="fa-solid fa-infinity"></i> Acceso de por vida</div>
+                <div class="stat-item"><i class="fa-solid fa-circle-check"></i> 100% Online & A tu Ritmo</div>
+                <div class="stat-item"><i class="fa-solid fa-award"></i> Certificado Oficial</div>
+                <div class="stat-item"><i class="fa-solid fa-infinity"></i> Acceso De Por Vida</div>
             </div>
         </div>
     </section>
@@ -448,16 +448,16 @@
     <section class="filters-section">
         <div class="container filters-container">
             <button class="btn-filter active" onclick="filtrarCursos('todos', this)">
-                <i class="fa-solid fa-wand-magic-sparkles"></i> Todos los cursos
+                <i class="fa-solid fa-sparkles"></i> Todos los Cursos
             </button>
             <button class="btn-filter" onclick="filtrarCursos('marca', this)">
-                <i class="fa-solid fa-crown"></i> Marca personal
+                <i class="fa-solid fa-crown"></i> Marca Personal
             </button>
             <button class="btn-filter" onclick="filtrarCursos('contenido', this)">
-                <i class="fa-solid fa-camera"></i> Contenido digital
+                <i class="fa-solid fa-camera"></i> Contenido Digital
             </button>
             <button class="btn-filter" onclick="filtrarCursos('marketing', this)">
-                <i class="fa-solid fa-chart-line"></i> Marketing & ventas
+                <i class="fa-solid fa-chart-line"></i> Marketing & Ventas
             </button>
         </div>
     </section>
@@ -473,15 +473,15 @@
             <div class="banner-inspiration">
                 <h3>✨ ¿No sabes por dónde empezar tu transformación?</h3>
                 <p>Te recomendamos iniciar por nuestro programa estelar de <b>Marca Personal</b> para cimentar las bases de tu negocio digital.</p>
-                <a href="curso-detalle.html?nombre=Marca%20Personal%20para%20Artistas" class="btn-interest">
-                    Ver curso recomendado <i class="fa-solid fa-arrow-right"></i>
+                <a href="curso-detalle.html?nombre=Marca%20Personal%20para%20Artistas" class="btn-interest" style="background: var(--yellow); max-width: 320px; margin: 0 auto; color: var(--ink);">
+                    Ver Curso Recomendado <i class="fa-solid fa-arrow-right"></i>
                 </a>
             </div>
         </div>
     </section>
 
     <footer>
-        <div class="footer-logo">Create Your <span>Glow</span> ✨</div>
+        <div class="footer-logo">CREATE YOUR <span>GLOW</span> ✨</div>
         <p>&copy; 2026 Create Your Glow. Todos los derechos reservados.</p>
     </footer>
 
@@ -530,4 +530,75 @@
                 contenedor.innerHTML = `
                     <div class="no-results">
                         <i class="fa-regular fa-face-smile-wink"></i>
-                        <h3 style="font-family: 'Fraunces'; font-weight: 800; color: var(--burgundy); font-size: 1.5rem;">No
+                        <h3 style="font-family: 'Fraunces'; font-weight: 800; color: var(--burgundy); font-size: 1.5rem;">No encontramos coincidencias</h3>
+                        <p style="color: var(--muted); margin-top: 8px;">Intenta buscar con otra palabra clave o selecciona otra categoría arriba.</p>
+                    </div>
+                `;
+                return;
+            }
+
+            lista.forEach(curso => {
+                const card = document.createElement('article');
+                card.className = 'course-card';
+                card.innerHTML = `
+                    <div class="card-image-wrapper">
+                        <img src="${curso.imagen}" alt="${curso.titulo}" class="card-image">
+                        <span class="badge-category">${curso.categoriaEtiqueta}</span>
+                    </div>
+                    <div class="card-content">
+                        <h3 class="course-title">${curso.titulo}</h3>
+                        <div class="course-details">
+                            <span class="detail-item"><i class="fa-regular fa-clock"></i> ${curso.duracion}</span>
+                            <span class="detail-item"><i class="fa-solid fa-layer-group"></i> ${curso.nivel}</span>
+                        </div>
+                        <div class="price-container">
+                            <span class="price-label">Inversión</span>
+                            <span class="course-price">${curso.precio}</span>
+                        </div>
+                        <a href="curso-detalle.html?nombre=${encodeURIComponent(curso.titulo)}" class="btn-interest">
+                            Explorar Programa <i class="fa-solid fa-arrow-right"></i>
+                        </a>
+                    </div>
+                `;
+                contenedor.appendChild(card);
+            });
+        }
+
+        function filtrarCursos(categoria, elementoBoton) {
+            categoriaActual = categoria;
+            const botones = document.querySelectorAll('.btn-filter');
+            botones.forEach(btn => btn.classList.remove('active'));
+            elementoBoton.classList.add('active');
+
+            aplicarFiltros();
+        }
+
+        function filtrarPorBusqueda() {
+            aplicarFiltros();
+        }
+
+        function aplicarFiltros() {
+            const textoBusqueda = document.getElementById('searchInput').value.toLowerCase().trim();
+            let resultado = cursosData;
+
+            if (categoriaActual !== 'todos') {
+                resultado = resultado.filter(c => c.categoria === categoriaActual);
+            }
+
+            if (textoBusqueda !== '') {
+                resultado = resultado.filter(c => 
+                    c.titulo.toLowerCase().includes(textoBusqueda) || 
+                    c.categoriaEtiqueta.toLowerCase().includes(textoBusqueda)
+                );
+            }
+
+            renderizarCursos(resultado);
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            renderizarCursos(cursosData);
+        });
+    </script>
+</body>
+</html>
+
