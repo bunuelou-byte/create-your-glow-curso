@@ -32,7 +32,6 @@
 
     <style>
         :root {
-            /* Identidad nueva (misma que el resto de la plataforma) */
             --burgundy: #5A1030;
             --plum: #7A1F45;
             --hot: #F06BAE;
@@ -43,7 +42,6 @@
             --ink: #2A1220;
             --muted: #7A5A6B;
 
-            /* Variables heredadas (el JS genera HTML que todavía las usa) */
             --lavender: #E6DCFB;
             --coral: #F06BAE;
             --olive: #7A1F45;
@@ -73,7 +71,6 @@
         ::selection { background: var(--hot); color: #fff; }
         a:focus-visible, button:focus-visible { outline: 3px solid var(--hot); outline-offset: 3px; }
 
-        /* ===== TOPBAR & HEADER ===== */
         .topbar {
             background: var(--blush);
             color: var(--burgundy);
@@ -118,9 +115,7 @@
         }
         .btn-back:hover { background: var(--cream); border-color: var(--cream); }
 
-        /* ===== HERO DETALLE ===== */
         .course-hero { background: var(--grad-pink); padding: 4.5rem 0 5rem; position: relative; overflow: hidden; }
-
         .hero-layout { position: relative; z-index: 1; display: grid; grid-template-columns: 1fr; gap: 3.5rem; align-items: center; }
 
         .course-tag {
@@ -147,7 +142,6 @@
         }
 
         .course-subtitle { color: var(--burgundy); font-size: 1.1rem; line-height: 1.7; font-weight: 500; max-width: 560px; }
-
         .course-meta { display: flex; gap: 0.7rem; flex-wrap: wrap; margin-top: 1.8rem; }
 
         .course-meta span {
@@ -164,7 +158,6 @@
 
         .course-meta i { color: var(--pink); }
 
-        /* Tarjeta de compra: polaroid con clip */
         .purchase-box {
             position: relative;
             background: #fff;
@@ -231,7 +224,6 @@
         .btn-buy-now:hover { background: var(--hot); border-color: var(--hot); color: #fff; transform: translateY(-3px); }
         .btn-buy-now:disabled { opacity: 0.7; cursor: wait; transform: none; }
 
-        /* ===== CONTENIDO PRINCIPAL ===== */
         .main-content { padding: 5rem 0 6rem; background: var(--cream); }
 
         .section-block {
@@ -273,7 +265,6 @@
         .block-muted { color: var(--muted); font-size: 0.95rem; }
         .section-block:nth-of-type(2) .block-muted { color: var(--blush); }
 
-        /* Acordeón de módulos */
         .module-item {
             border-radius: 22px;
             margin-bottom: 1rem;
@@ -311,7 +302,6 @@
         .module-item.active .module-content { max-height: 400px; padding: 1.1rem 1.5rem 1.5rem 1.5rem; }
 
         .lesson-list { list-style: none; }
-
         .lesson-list li {
             padding: 0.8rem 0;
             border-bottom: 1px dashed rgba(90, 16, 48, 0.3);
@@ -322,10 +312,8 @@
             gap: 10px;
             font-weight: 500;
         }
-
         .lesson-list li:last-child { border-bottom: none; }
 
-        /* Instructora */
         .instructor-card { display: flex; flex-direction: column; gap: 2rem; align-items: center; text-align: center; }
 
         .instructor-avatar {
@@ -345,9 +333,7 @@
         .instructor-role { font-family: var(--font-serif-it); font-style: italic; color: var(--plum); font-size: 1.15rem; margin-bottom: 0.7rem; }
         .instructor-bio { color: var(--ink); font-size: 1.02rem; }
 
-        /* Requisitos */
         .requirements-list { list-style: none; }
-
         .requirements-list li {
             position: relative;
             padding-left: 2rem;
@@ -356,7 +342,6 @@
             font-weight: 500;
             font-size: 1.02rem;
         }
-
         .requirements-list li::before { content: '\2713'; position: absolute; left: 0; color: var(--hot); font-weight: 700; }
 
         footer { background-color: var(--burgundy); color: var(--blush); padding: 3.5rem 1.5rem 2rem; text-align: center; border-top: 1px solid rgba(247, 168, 208, 0.25); }
@@ -380,7 +365,6 @@
 
     <div class="topbar">Estrategias digitales hechas para maquillistas</div>
 
-    <!-- HEADER -->
     <header>
         <div class="container nav-container">
             <a href="index.html" class="logo">Create Your <span>Glow</span> ✨</a>
@@ -388,7 +372,6 @@
         </div>
     </header>
 
-    <!-- HERO SECCIÓN -->
     <section class="course-hero">
         <div class="container hero-layout">
             <div>
@@ -404,7 +387,6 @@
                 </div>
             </div>
 
-            <!-- TARJETA DE COMPRA -->
             <div class="purchase-box">
                 <img src="https://images.unsplash.com/photo-1522337360788-8b13dee7a37e?auto=format&fit=crop&w=800&q=80"
                      alt="Portada del curso" class="course-banner-img" id="courseImage">
@@ -414,11 +396,9 @@
         </div>
     </section>
 
-    <!-- CONTENIDO DETALLADO -->
     <main class="main-content">
         <div class="container">
 
-            <!-- DESCRIPCIÓN -->
             <section class="section-block">
                 <h2 class="block-title"><i class="fa-solid fa-book-open"></i> Descripción del programa</h2>
                 <p class="block-text" id="courseDescription">
@@ -426,7 +406,6 @@
                 </p>
             </section>
 
-            <!-- TEMARIO -->
             <section class="section-block">
                 <h2 class="block-title"><i class="fa-solid fa-list-check"></i> Temario del curso</h2>
                 <div id="temarioContainer">
@@ -434,11 +413,10 @@
                 </div>
             </section>
 
-            <!-- INSTRUCTORA -->
             <section class="section-block">
                 <h2 class="block-title"><i class="fa-solid fa-chalkboard-user"></i> Tu mentora</h2>
                 <div class="instructor-card">
-                    <img src="img/#BTS JosieRaeXlunaB.jpg"
+                    <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=600&q=80"
                          alt="Foto de la Instructora" class="instructor-avatar">
                     <div>
                         <h3 class="instructor-name">Sharon Ramos</h3>
@@ -450,7 +428,6 @@
                 </div>
             </section>
 
-            <!-- REQUISITOS -->
             <section class="section-block">
                 <h2 class="block-title"><i class="fa-solid fa-circle-check"></i> Requisitos previos</h2>
                 <ul class="requirements-list">
@@ -468,7 +445,6 @@
         <p>&copy; 2026 Create Your Glow. Todos los derechos reservados.</p>
     </footer>
 
-    <!-- LÓGICA DINÁMICA DE FIREBASE Y MERCADO PAGO -->
     <script>
         let currentCourseId = null;
         let courseTitleGlobal = "";
