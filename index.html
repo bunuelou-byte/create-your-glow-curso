@@ -1,4 +1,3 @@
-```html
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -13,7 +12,7 @@
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@500;700&family=DM+Sans:wght@400;500;700&family=Fraunces:ital,opsz,wght@0,9..144,600;0,9..144,800;1,9..144,600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Bowlby+One&family=Jost:wght@400;500;600&family=Pinyon+Script&family=Playfair+Display:ital,wght@1,500;1,600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
     <script>
@@ -32,17 +31,23 @@
 
     <style>
         :root {
-            --lavender: #C5B3F2;
+            /* Paleta nueva: vino, rosa chicle, rosa empolvado, crema */
+            --burgundy: #5A1030;
+            --plum: #7A1F45;
+            --hot: #F06BAE;
             --pink: #F7A8D0;
             --pink-soft: #FBD3E6;
-            --coral: #F7704F;
-            --burgundy: #6B0F2E;
-            --olive: #A7A83B;
-            --yellow: #FFF08A;
-            --cream: #FBF3E8;
-            --ink: #261B2B;
-            --muted: #6A5870;
+            --blush: #EBCFE0;
+            --cream: #FFF8E6;
+            --ink: #2A1220;
+            --muted: #7A5A6B;
+            --pearl: #FFFFFF;
 
+            /* Variables heredadas (se mantienen por compatibilidad con otras páginas) */
+            --lavender: #E6DCFB;
+            --coral: #F06BAE;
+            --olive: #7A1F45;
+            --yellow: #FFF3B0;
             --bg-light: var(--cream);
             --bg-surface: #FFFFFF;
             --bg-blush: var(--pink-soft);
@@ -51,355 +56,393 @@
             --violet-glow: var(--burgundy);
             --rose-gold: var(--pink);
 
-            --grad-hero: linear-gradient(160deg, #F7A8D0 0%, #E9B4E8 35%, #C5B3F2 65%, #F9B08C 100%);
-            --grad-courses: linear-gradient(180deg, #F7704F 0%, #E86FA6 45%, #8C2E6B 100%);
-            --hard: 5px 5px 0 var(--ink);
-            --hard-sm: 3px 3px 0 var(--ink);
+            --grad-pink: linear-gradient(180deg, #FFD3EA 0%, #F9A6D2 55%, #F27DB8 100%);
+            --grad-soft: linear-gradient(135deg, #FFE3F1 0%, #F9B6D8 100%);
             --transition: all 0.35s cubic-bezier(0.22, 1, 0.36, 1);
-            --grain: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.55'/%3E%3C/svg%3E");
-            --wave: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 80 28' preserveAspectRatio='none'%3E%3Cpath d='M0 0H80V10Q60 28 40 10T0 10Z'/%3E%3C/svg%3E");
+            --font-chunk: 'Bowlby One', 'Arial Black', sans-serif;
+            --font-script: 'Pinyon Script', 'Snell Roundhand', cursive;
+            --font-serif-it: 'Playfair Display', Georgia, serif;
+            --font-body: 'Jost', 'Helvetica Neue', Arial, sans-serif;
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; scroll-behavior: smooth; }
 
         body {
-            font-family: 'DM Sans', sans-serif;
+            font-family: var(--font-body);
             background-color: var(--cream);
             color: var(--ink);
             line-height: 1.65;
             overflow-x: hidden;
         }
 
-        h1, h2, h3, .heading-font { font-family: 'Fraunces', serif; letter-spacing: -0.02em; }
+        h1, h2, h3, .heading-font { font-family: var(--font-chunk); font-weight: 400; letter-spacing: -0.01em; line-height: 1.05; }
         .container { width: 100%; max-width: 1240px; margin: 0 auto; padding: 0 1.5rem; }
-        ::selection { background: var(--yellow); color: var(--ink); }
+        ::selection { background: var(--hot); color: #fff; }
+        a:focus-visible, button:focus-visible { outline: 3px solid var(--hot); outline-offset: 3px; }
+
+        .script { font-family: var(--font-script); font-weight: 400; letter-spacing: 0; text-transform: none; }
 
         /* ===== BARRA SUPERIOR Y HEADER ===== */
         .topbar {
-            background: var(--pink);
+            background: var(--blush);
             color: var(--burgundy);
             text-align: center;
-            font-size: 0.8rem;
-            font-weight: 700;
-            padding: 0.4rem 1rem;
-            letter-spacing: 0.3px;
+            font-size: 0.82rem;
+            font-weight: 500;
+            padding: 0.45rem 1rem;
+            letter-spacing: 0.04em;
         }
 
         header {
             background-color: var(--burgundy);
-            border-bottom: 3px solid var(--ink);
             position: sticky;
             top: 0;
             z-index: 1000;
         }
 
-        .nav-container { display: flex; justify-content: space-between; align-items: center; padding: 0.9rem 1.5rem; }
+        .nav-container { display: flex; justify-content: space-between; align-items: center; padding: 0.8rem 1.5rem; gap: 1rem; }
 
         .logo {
-            font-family: 'Fraunces', serif;
-            font-size: 1.3rem;
-            font-weight: 800;
+            font-family: var(--font-script);
+            font-size: 2rem;
             color: var(--cream);
-            letter-spacing: 0.5px;
-            text-transform: uppercase;
             text-decoration: none;
             display: flex;
             align-items: center;
             gap: 6px;
+            line-height: 1;
+            white-space: nowrap;
         }
 
-        .logo span { color: var(--pink); font-style: italic; }
+        .logo span { color: var(--pink); }
 
-        .nav-links { display: none; gap: 2.2rem; list-style: none; align-items: center; }
+        .nav-links { display: none; gap: 2rem; list-style: none; align-items: center; }
 
         .nav-links a {
             text-decoration: none;
             color: var(--cream);
-            font-weight: 500;
-            font-size: 0.95rem;
+            font-weight: 400;
+            font-size: 0.85rem;
+            letter-spacing: 0.06em;
             transition: var(--transition);
+            padding-bottom: 2px;
+            border-bottom: 1px solid transparent;
         }
 
-        .nav-links a:hover { color: var(--yellow); }
+        .nav-links a:hover { border-bottom-color: var(--pink); color: var(--pink); }
 
+        /* Botones de navegación (login / mis cursos / panel) */
         .btn-cta-nav {
-            background: var(--olive);
+            background: transparent;
             color: var(--cream);
-            border: 2px solid var(--ink);
-            padding: 0.6rem 1.4rem;
+            border: 1px solid var(--cream);
+            padding: 0.55rem 1.3rem;
             border-radius: 50px;
             text-decoration: none;
-            font-weight: 700;
-            font-size: 0.82rem;
-            text-transform: uppercase;
-            letter-spacing: 0.8px;
-            box-shadow: var(--hard-sm);
+            font-family: var(--font-body);
+            font-weight: 500;
+            font-size: 0.8rem;
+            letter-spacing: 0.05em;
             transition: var(--transition);
             display: inline-flex;
             align-items: center;
             gap: 8px;
+            white-space: nowrap;
         }
 
-        .btn-cta-nav:hover { transform: translate(-2px, -2px); box-shadow: 5px 5px 0 var(--ink); background: var(--yellow); color: var(--ink); }
+        .btn-cta-nav:hover { background: var(--pink); color: var(--burgundy); border-color: var(--pink); }
+
+        #btn-login { background: var(--pink); color: var(--burgundy); border-color: var(--pink); }
+        #btn-login:hover { background: var(--cream); border-color: var(--cream); }
+        #btn-mis-cursos { background: var(--pink); color: var(--burgundy); border-color: var(--pink); }
+        #btn-panel-admin { background: var(--hot); color: #fff; border-color: var(--hot); }
+        #btn-logout {
+            background: transparent;
+            border: 1px solid var(--cream);
+            color: var(--cream);
+            padding: 0.5rem 1.1rem;
+            border-radius: 50px;
+            cursor: pointer;
+            font-family: var(--font-body);
+            font-weight: 500;
+            font-size: 0.8rem;
+            transition: var(--transition);
+        }
+        #btn-logout:hover { background: var(--cream); color: var(--burgundy); }
 
         .hamburger { display: flex; flex-direction: column; gap: 6px; background: none; border: none; cursor: pointer; padding: 5px; }
-        .hamburger span { width: 28px; height: 3px; background-color: var(--cream); border-radius: 3px; transition: var(--transition); }
+        .hamburger span { width: 26px; height: 2px; background-color: var(--cream); border-radius: 3px; transition: var(--transition); }
 
         .mobile-menu {
             display: none;
             position: absolute;
             top: 100%; left: 0;
             width: 100%;
-            background-color: var(--cream);
+            background-color: var(--blush);
             padding: 1.8rem;
-            box-shadow: 0 15px 30px rgba(0,0,0,0.2);
-            border-bottom: 3px solid var(--ink);
+            box-shadow: 0 15px 30px rgba(42, 18, 32, 0.25);
         }
 
         .mobile-menu.active { display: flex; flex-direction: column; gap: 1.2rem; }
-        .mobile-menu a { text-decoration: none; color: var(--burgundy); font-weight: 700; font-size: 1.1rem; }
-        .mobile-menu a.btn-cta-nav { color: var(--cream); }
+        .mobile-menu a { text-decoration: none; color: var(--burgundy); font-weight: 600; font-size: 1.05rem; }
+        .mobile-menu a.btn-cta-nav { color: var(--burgundy); border-color: var(--burgundy); }
+        .mobile-menu a#mobile-btn-login { background: var(--burgundy); color: var(--cream); }
+        .mobile-menu a#mobile-btn-mis-cursos { background: var(--hot); color: #fff; border-color: var(--hot); }
+        .mobile-menu a#mobile-btn-panel-admin { background: var(--plum); color: #fff; border-color: var(--plum); }
 
         /* ===== HERO ===== */
         .hero {
-            padding: 3.5rem 1.5rem 5.5rem;
-            background: var(--grad-hero);
+            padding: 3.5rem 1.5rem 6rem;
+            background: var(--grad-pink);
             position: relative;
             overflow: hidden;
-        }
-
-        .hero::after {
-            content: '';
-            position: absolute; inset: 0;
-            background-image: var(--grain);
-            mix-blend-mode: multiply;
-            opacity: 0.22;
-            pointer-events: none;
         }
 
         .hero-grid { position: relative; z-index: 1; display: grid; grid-template-columns: 1fr; gap: 3.5rem; align-items: center; }
 
         .hero-badge {
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            background: var(--burgundy);
-            color: var(--cream);
-            border: 2px solid var(--ink);
-            padding: 0.5rem 1.3rem;
-            border-radius: 50%/100%;
-            font-size: 0.78rem;
-            font-weight: 700;
-            letter-spacing: 1px;
-            text-transform: uppercase;
-            margin-bottom: 1.5rem;
-            transform: rotate(-2deg);
-            box-shadow: var(--hard-sm);
+            display: inline-block;
+            background: var(--pearl);
+            color: var(--burgundy);
+            padding: 0.4rem 1.2rem;
+            border-radius: 50px;
+            font-size: 0.85rem;
+            font-weight: 500;
+            letter-spacing: 0.04em;
+            margin-bottom: 1.6rem;
         }
 
-        .hero h1 { font-size: 2.5rem; font-weight: 800; line-height: 1.12; margin-bottom: 1.4rem; color: var(--burgundy); }
-        .hero h1 .highlight { color: var(--cream); font-style: italic; text-shadow: 3px 3px 0 var(--burgundy); }
-        .hero p { font-size: 1.1rem; color: var(--ink); margin-bottom: 2.2rem; font-weight: 500; max-width: 520px; }
-        .hero-buttons { display: flex; flex-direction: column; gap: 1rem; }
+        .hero h1 { color: var(--cream); margin-bottom: 1.6rem; }
+        .hero h1 .script { display: block; font-size: 3.6rem; color: var(--burgundy); line-height: 0.9; position: relative; z-index: 2; margin-bottom: -0.55rem; transform: rotate(-3deg); transform-origin: left; }
+        .hero h1 .chunk { display: block; font-family: var(--font-chunk); font-size: 2.6rem; color: var(--cream); text-shadow: 0 2px 0 rgba(90, 16, 48, 0.25); }
+        .hero h1 .script.alt { margin: 0.6rem 0 0; font-size: 2.6rem; transform: rotate(-2deg); color: var(--burgundy); }
+
+        .hero p { font-size: 1.1rem; color: var(--burgundy); margin-bottom: 2.2rem; font-weight: 500; max-width: 500px; }
+        .hero-buttons { display: flex; flex-direction: column; gap: 1rem; align-items: flex-start; }
 
         .btn-primary {
-            background: var(--yellow);
-            color: var(--ink);
-            border: 2.5px solid var(--ink);
+            background: var(--burgundy);
+            color: var(--cream);
             padding: 1rem 2.4rem;
             border-radius: 50px;
             text-decoration: none;
-            font-weight: 700;
+            font-weight: 500;
             font-size: 0.95rem;
-            text-transform: uppercase;
-            letter-spacing: 1px;
+            letter-spacing: 0.06em;
             text-align: center;
-            box-shadow: var(--hard);
             transition: var(--transition);
+            border: 1px solid var(--burgundy);
         }
 
-        .btn-primary:hover { transform: translate(-3px, -3px); box-shadow: 8px 8px 0 var(--ink); background: var(--olive); color: var(--cream); }
+        .btn-primary:hover { background: var(--cream); color: var(--burgundy); transform: translateY(-3px); }
 
-        .hero-collage { position: relative; display: grid; grid-template-columns: repeat(2, 1fr); gap: 1.2rem; }
+        .hero-collage { position: relative; display: grid; grid-template-columns: repeat(2, 1fr); gap: 1.2rem; padding-bottom: 1.5rem; }
 
+        /* Polaroid con clip (estilo referencia 3) */
         .collage-img {
             width: 100%;
             height: 220px;
             object-fit: cover;
             background: #fff;
             padding: 8px;
-            border-radius: 6px;
-            box-shadow: 6px 8px 0 rgba(38, 27, 43, 0.85);
+            box-shadow: 0 14px 30px rgba(90, 16, 48, 0.25);
             transition: var(--transition);
         }
 
-        .collage-img.tall { grid-row: span 2; height: 100%; min-height: 380px; transform: rotate(-3deg); padding-bottom: 36px; }
+        .collage-img.tall { grid-row: span 2; height: 100%; min-height: 380px; transform: rotate(-3deg); padding-bottom: 40px; }
         .collage-img:nth-of-type(2) { transform: rotate(3deg); }
         .collage-img:nth-of-type(3) { transform: rotate(-2deg); }
-        .collage-img:hover { transform: rotate(0) scale(1.04); z-index: 3; }
+        .collage-img:hover { transform: rotate(0) scale(1.03); z-index: 3; }
 
         .floating-card {
             position: absolute;
-            bottom: -26px;
+            bottom: -30px;
             left: 50%;
             transform: translateX(-50%) rotate(-2deg);
             background: var(--cream);
             padding: 0.9rem 1.5rem;
-            border-radius: 22px;
-            border: 2.5px solid var(--ink);
-            box-shadow: var(--hard);
+            border-radius: 60px;
+            box-shadow: 0 14px 30px rgba(90, 16, 48, 0.3);
             display: flex;
             align-items: center;
             gap: 12px;
-            width: 90%;
-            max-width: 320px;
+            width: 92%;
+            max-width: 330px;
             z-index: 4;
         }
 
-        .floating-card-icon { font-size: 1.8rem; background: var(--yellow); border: 2px solid var(--ink); padding: 6px; border-radius: 50%; }
+        .floating-card-icon { font-size: 1.6rem; background: var(--pink); padding: 8px; border-radius: 50%; line-height: 1; }
 
-        /* CINTA DE TEXTO */
-        .marquee { background: var(--coral); border-block: 3px solid var(--ink); overflow: hidden; white-space: nowrap; padding: 0.7rem 0; }
-        .marquee-track { display: inline-flex; animation: marquee 28s linear infinite; }
-        .marquee span { font-family: 'Fraunces', serif; font-style: italic; font-weight: 600; font-size: 1.3rem; color: var(--cream); padding: 0 1.6rem; }
+        /* CINTA DE TEXTO (referencia 1) */
+        .marquee { background: var(--blush); overflow: hidden; white-space: nowrap; padding: 0.8rem 0; color: var(--burgundy); }
+        .marquee-track { display: inline-flex; animation: marquee 30s linear infinite; }
+        .marquee span { font-family: var(--font-serif-it); font-style: italic; font-weight: 500; font-size: 1.1rem; padding: 0 1.6rem; }
         @keyframes marquee { to { transform: translateX(-50%); } }
 
+        @media (prefers-reduced-motion: reduce) {
+            .marquee-track { animation: none; }
+            * { transition: none !important; scroll-behavior: auto !important; }
+        }
+
+        /* BANDA VINO CON CIFRAS */
+        .numbers { background: var(--burgundy); padding: 2.6rem 1.5rem; }
+        .numbers-grid { display: grid; grid-template-columns: 1fr; gap: 1.6rem; text-align: center; }
+        .numbers-item strong { display: block; font-family: var(--font-chunk); font-weight: 400; font-size: 2.4rem; color: var(--cream); line-height: 1.1; }
+        .numbers-item span { color: var(--pink); font-family: var(--font-serif-it); font-style: italic; font-size: 1.1rem; }
+
         /* BENEFICIOS */
-        .benefits { padding: 6rem 1.5rem; background-color: var(--cream); }
-        .section-header { text-align: center; max-width: 720px; margin: 0 auto 4rem; }
+        .benefits { padding: 6rem 1.5rem; background-color: var(--blush); }
+        .section-header { text-align: center; max-width: 760px; margin: 0 auto 4rem; }
 
         .section-tag {
             display: block;
-            font-family: 'Caveat', cursive;
-            font-size: 1.6rem;
-            font-weight: 700;
-            color: var(--coral);
-            margin-bottom: 0.2rem;
+            font-family: var(--font-script);
+            font-size: 3rem;
+            color: var(--hot);
+            line-height: 1;
+            margin-bottom: -0.3rem;
+            position: relative;
+            z-index: 2;
+            transform: rotate(-2deg);
         }
 
-        .section-title { font-size: 2.3rem; font-weight: 800; color: var(--burgundy); line-height: 1.15; }
-        .benefits-grid { display: grid; grid-template-columns: 1fr; gap: 2.5rem; }
+        .section-title { font-size: 2rem; color: var(--burgundy); }
+        .benefits-grid { display: grid; grid-template-columns: 1fr; gap: 3rem; }
 
-        .benefit-card {
+        .benefit-card { display: flex; flex-direction: column; align-items: center; text-align: center; }
+
+        /* Marco ovalado con perlas (referencia 3) */
+        .benefit-img {
+            width: 230px;
+            height: 270px;
+            object-fit: cover;
+            border-radius: 50%;
+            border: 10px dotted #fff;
+            outline: 3px solid var(--pink);
+            outline-offset: -3px;
+            box-shadow: 0 12px 26px rgba(90, 16, 48, 0.2);
+            margin-bottom: 1.6rem;
             background: #fff;
-            border-radius: 28px;
-            overflow: hidden;
-            border: 2.5px solid var(--ink);
-            box-shadow: var(--hard);
             transition: var(--transition);
-            display: flex;
-            flex-direction: column;
         }
 
-        .benefit-card:nth-child(1) { background: var(--pink-soft); }
-        .benefit-card:nth-child(2) { background: #E6DCFB; }
-        .benefit-card:nth-child(3) { background: #FFE9B8; }
-        .benefit-card:hover { transform: translate(-4px, -4px) rotate(-0.6deg); box-shadow: 9px 9px 0 var(--ink); }
-
-        .benefit-img { width: 100%; height: 200px; object-fit: cover; border-bottom: 2.5px solid var(--ink); }
-        .benefit-body { padding: 2rem; }
-        .benefit-card h3 { font-size: 1.4rem; margin-bottom: 0.8rem; color: var(--burgundy); font-weight: 800; }
+        .benefit-card:hover .benefit-img { transform: rotate(-3deg) scale(1.04); }
+        .benefit-body { max-width: 340px; }
+        .benefit-card h3 { font-size: 1.35rem; margin-bottom: 0.8rem; color: var(--burgundy); }
         .benefit-card p { color: var(--ink); font-size: 1rem; }
 
+        /* BLOQUE "¿ES PARA TI?" (referencia 2) */
+        .foryou { display: grid; grid-template-columns: 1fr; background: var(--pink-soft); }
+        .foryou-text { padding: 4rem 1.5rem; display: flex; flex-direction: column; justify-content: center; gap: 1.4rem; }
+        .foryou-text h2 { font-size: 2.2rem; color: var(--burgundy); }
+        .foryou-text h2 .script { display: block; font-size: 3rem; color: var(--hot); margin-bottom: -0.2rem; transform: rotate(-2deg); }
+        .checklist { list-style: none; display: grid; gap: 0.7rem; max-width: 440px; }
+        .checklist li { display: flex; gap: 0.7rem; align-items: flex-start; font-size: 1rem; color: var(--burgundy); font-weight: 500; }
+        .checklist li::before { content: '\2713'; color: var(--hot); font-weight: 700; }
+        .foryou-text .btn-primary { align-self: flex-start; }
+        .foryou-photo { position: relative; min-height: 360px; background: var(--burgundy) center/cover no-repeat; }
+        .foryou-photo img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+        .foryou-photo .overlay-text { position: absolute; left: 1.5rem; bottom: 1.8rem; color: var(--cream); font-family: var(--font-chunk); font-size: 1.5rem; line-height: 1.1; text-shadow: 0 2px 12px rgba(42, 18, 32, 0.45); }
+        .foryou-photo .overlay-text .script { display: block; font-size: 2.2rem; }
+
         /* CURSOS */
-        .courses { position: relative; padding: 7rem 1.5rem 6rem; background: var(--grad-courses); }
-        .courses::before {
-            content: '';
-            position: absolute;
-            top: -1px; left: 0; right: 0;
-            height: 28px;
-            background: var(--cream);
-            -webkit-mask: var(--wave) repeat-x 0 0 / 80px 28px;
-            mask: var(--wave) repeat-x 0 0 / 80px 28px;
-        }
-
-        .courses::after {
-            content: '';
-            position: absolute; inset: 0;
-            background-image: var(--grain);
-            mix-blend-mode: multiply;
-            opacity: 0.2;
-            pointer-events: none;
-        }
-
-        .courses .container { position: relative; z-index: 1; }
-        .courses .section-tag { color: var(--yellow); }
+        .courses { position: relative; padding: 6rem 1.5rem; background: var(--burgundy); }
+        .courses .section-tag { color: var(--pink); }
         .courses .section-title { color: var(--cream); }
-        .courses-grid { display: grid; grid-template-columns: 1fr; gap: 2.8rem; padding-top: 1rem; }
+        .courses-grid { display: grid; grid-template-columns: 1fr; gap: 2.4rem; }
 
         .course-card {
-            background: var(--cream);
-            border-radius: 26px;
-            border: 2.5px solid var(--ink);
-            box-shadow: var(--hard);
+            background: var(--pink-soft);
+            border-radius: 28px;
             display: flex;
             flex-direction: column;
             transition: var(--transition);
             position: relative;
+            overflow: visible;
+            padding: 1.6rem 1.6rem 1.8rem;
         }
 
-        .course-card:hover { transform: translate(-4px, -8px); box-shadow: 9px 12px 0 var(--ink); }
-        .course-img-wrap { position: relative; height: 230px; width: 100%; overflow: hidden; border-radius: 23px 23px 0 0; border-bottom: 2.5px solid var(--ink); }
+        .course-card:hover { transform: translateY(-6px); }
+
+        .course-img-wrap {
+            position: relative;
+            width: 220px;
+            height: 260px;
+            margin: 0 auto 1.4rem;
+            border-radius: 50%;
+            overflow: hidden;
+            border: 10px dotted #fff;
+            outline: 3px solid var(--pink);
+            outline-offset: -3px;
+            background: #fff;
+            flex-shrink: 0;
+        }
+
         .course-img { width: 100%; height: 100%; object-fit: cover; transition: var(--transition); }
         .course-card:hover .course-img { transform: scale(1.08); }
 
         .price-badge {
-            position: absolute;
-            top: 14px; right: 14px;
-            background: var(--lavender);
-            color: var(--ink);
-            border: 2px solid var(--ink);
-            padding: 0.45rem 1.1rem;
-            border-radius: 12px;
-            font-weight: 800;
-            font-size: 0.9rem;
-            font-family: 'Fraunces', serif;
-            box-shadow: var(--hard-sm);
-            transform: rotate(3deg);
+            align-self: center;
+            background: var(--hot);
+            color: #fff;
+            padding: 0.4rem 1.3rem;
+            border-radius: 50px;
+            font-family: var(--font-chunk);
+            font-size: 0.95rem;
+            margin-bottom: 1rem;
+            transform: rotate(-2deg);
         }
 
-        .course-content { padding: 1.8rem; display: flex; flex-direction: column; flex-grow: 1; justify-content: space-between; }
-        .course-content h3 { font-size: 1.45rem; margin-bottom: 0.7rem; color: var(--burgundy); font-weight: 800; }
-        .course-content p { font-size: 0.97rem; color: var(--muted); margin-bottom: 1.8rem; }
+        .course-content { padding: 0; display: flex; flex-direction: column; flex-grow: 1; justify-content: space-between; text-align: center; }
+        .course-content h3 { font-size: 1.3rem; margin-bottom: 0.7rem; color: var(--burgundy); }
+        .course-content p { font-size: 0.98rem; color: var(--ink); margin-bottom: 1.6rem; }
 
         .btn-course-enroll {
-            background: var(--pink);
-            border: 2.5px solid var(--ink);
-            color: var(--ink);
+            background: var(--burgundy);
+            border: 1px solid var(--burgundy);
+            color: var(--cream);
             padding: 0.85rem;
             border-radius: 50px;
             text-align: center;
             text-decoration: none;
-            font-weight: 700;
-            font-size: 0.8rem;
-            text-transform: uppercase;
-            letter-spacing: 1px;
+            font-weight: 500;
+            font-size: 0.85rem;
+            letter-spacing: 0.06em;
             transition: var(--transition);
             cursor: pointer;
             width: 100%;
             display: inline-block;
         }
 
-        .btn-course-enroll:hover { background: var(--olive); color: var(--cream); box-shadow: var(--hard-sm); transform: translate(-2px, -2px); }
+        .btn-course-enroll:hover { background: transparent; color: var(--burgundy); }
 
         /* GALERÍA / RESULTADOS */
         .gallery { padding: 6rem 1.5rem; background: var(--cream); }
+        .gallery .section-title { display: inline-block; background: var(--hot); color: #fff; padding: 0.5rem 1.4rem; }
         .gallery-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1.6rem; }
 
         .gallery-item {
             position: relative;
             background: #fff;
-            padding: 8px 8px 38px;
+            padding: 8px 8px 40px;
             height: 270px;
-            border-radius: 6px;
-            border: 2px solid var(--ink);
-            box-shadow: var(--hard-sm);
+            box-shadow: 0 12px 26px rgba(90, 16, 48, 0.18);
             transition: var(--transition);
+        }
+
+        .gallery-item::before {
+            content: '';
+            position: absolute;
+            top: -14px; right: 14px;
+            width: 14px; height: 34px;
+            border: 2.5px solid var(--hot);
+            border-radius: 10px;
+            z-index: 2;
         }
 
         .gallery-item:nth-child(odd) { transform: rotate(-2deg); }
         .gallery-item:nth-child(even) { transform: rotate(2deg); }
-        .gallery-item:hover { transform: rotate(0) scale(1.05); box-shadow: var(--hard); z-index: 2; }
+        .gallery-item:hover { transform: rotate(0) scale(1.05); z-index: 2; }
         .gallery-item img { width: 100%; height: 100%; object-fit: cover; display: block; }
 
         .gallery-overlay {
@@ -408,97 +451,90 @@
             width: 100%;
             text-align: center;
             color: var(--burgundy);
-            font-family: 'Caveat', cursive;
-            font-weight: 700;
-            font-size: 1.3rem;
+            font-family: var(--font-script);
+            font-size: 1.6rem;
             line-height: 1.2;
         }
 
         /* SOBRE MÍ */
-        .about { position: relative; padding: 7rem 1.5rem 6rem; background: var(--pink); }
-        .about::before {
-            content: '';
-            position: absolute;
-            top: -1px; left: 0; right: 0;
-            height: 28px;
-            background: var(--cream);
-            -webkit-mask: var(--wave) repeat-x 0 0 / 80px 28px;
-            mask: var(--wave) repeat-x 0 0 / 80px 28px;
-        }
-
+        .about { position: relative; padding: 6rem 1.5rem; background: var(--grad-soft); }
         .about-grid { display: grid; grid-template-columns: 1fr; gap: 3.5rem; align-items: center; }
         .about-img-wrap { position: relative; text-align: center; }
 
         .about-img {
             width: 100%;
-            max-width: 440px;
+            max-width: 420px;
             height: 520px;
             object-fit: cover;
             background: #fff;
-            padding: 12px 12px 56px;
-            border-radius: 6px;
-            border: 2px solid var(--ink);
-            box-shadow: var(--hard);
+            padding: 12px 12px 60px;
+            box-shadow: 0 18px 36px rgba(90, 16, 48, 0.28);
             transform: rotate(-3deg);
+        }
+
+        .about-img-wrap::before {
+            content: '';
+            position: absolute;
+            top: -18px; left: calc(50% + 70px);
+            width: 18px; height: 44px;
+            border: 3px solid var(--hot);
+            border-radius: 12px;
+            z-index: 2;
         }
 
         .about-badge {
             position: absolute;
-            bottom: 14px; left: 50%;
+            bottom: 16px; left: 50%;
             transform: translateX(-50%) rotate(-3deg);
-            background: var(--yellow);
-            color: var(--ink);
-            border: 2px solid var(--ink);
-            padding: 0.4rem 1.2rem;
-            border-radius: 50px;
-            font-family: 'Caveat', cursive;
-            font-weight: 700;
-            font-size: 1.25rem;
+            color: var(--burgundy);
+            font-family: var(--font-script);
+            font-size: 1.9rem;
             white-space: nowrap;
         }
 
         .about .section-tag { color: var(--burgundy); }
-        .about-stats { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1.4rem; margin-top: 2.2rem; }
+        .about .section-title { font-size: 1.8rem; }
+        .about-stats { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1.2rem; margin-top: 2.2rem; }
 
-        .stat-box {
-            background: var(--lavender);
-            padding: 1.4rem;
-            border-radius: 22px;
-            text-align: center;
-            border: 2.5px solid var(--ink);
-            box-shadow: var(--hard-sm);
-            transition: var(--transition);
-        }
+        .stat-box { background: var(--burgundy); padding: 1.4rem; border-radius: 24px; text-align: center; transition: var(--transition); }
+        .stat-box:hover { transform: translateY(-4px); }
+        .stat-number { font-size: 2.2rem; color: var(--cream); font-family: var(--font-chunk); line-height: 1.1; }
+        .stat-label { font-size: 0.9rem; color: var(--pink); font-family: var(--font-serif-it); font-style: italic; }
 
-        .stat-box:hover { transform: translate(-3px, -3px); box-shadow: var(--hard); }
-        .stat-number { font-size: 2.4rem; font-weight: 800; color: var(--ink); font-family: 'Fraunces', serif; line-height: 1.1; }
-        .stat-label { font-size: 0.78rem; color: var(--ink); font-weight: 700; text-transform: uppercase; letter-spacing: 1px; }
-
-        footer { background-color: var(--ink); color: #B9A9C4; padding: 3.5rem 1.5rem 2rem; text-align: center; border-top: 3px solid var(--pink); }
-        .footer-logo { font-size: 1.6rem; font-weight: 800; color: var(--cream); margin-bottom: 1rem; font-family: 'Fraunces', serif; text-transform: uppercase; }
-        .footer-logo span { color: var(--pink); font-style: italic; }
+        footer { background-color: var(--burgundy); color: var(--blush); padding: 3.5rem 1.5rem 2rem; text-align: center; }
+        .footer-logo { font-size: 2.4rem; color: var(--cream); margin-bottom: 0.8rem; font-family: var(--font-script); }
+        .footer-logo span { color: var(--pink); }
 
         @media (min-width: 768px) {
             .hamburger { display: none; }
             .nav-links { display: flex; }
             .hero { padding: 6rem 1.5rem 7rem; }
-            .hero-grid { grid-template-columns: 1fr 1fr; }
-            .hero h1 { font-size: 3.5rem; }
+            .hero-grid { grid-template-columns: 1.05fr 0.95fr; }
+            .hero h1 .script { font-size: 5.2rem; }
+            .hero h1 .chunk { font-size: 3.4rem; }
+            .hero h1 .script.alt { font-size: 3.2rem; }
             .hero-buttons { flex-direction: row; }
+            .numbers-grid { grid-template-columns: repeat(3, 1fr); }
             .benefits-grid, .courses-grid { grid-template-columns: repeat(3, 1fr); }
+            .section-title { font-size: 2.8rem; }
+            .section-tag { font-size: 3.8rem; }
+            .foryou { grid-template-columns: 1fr 1fr; }
+            .foryou-text { padding: 5rem 4rem; }
+            .foryou-photo { min-height: 520px; }
             .gallery-grid { grid-template-columns: repeat(5, 1fr); }
             .about-grid { grid-template-columns: 1fr 1fr; }
+            .about .section-title { font-size: 2.3rem; }
         }
     </style>
 </head>
 <body>
 
-    <div class="topbar">✨ Estrategias digitales hechas para maquillistas ✨</div>
+    <div class="topbar">Estrategias digitales hechas para maquillistas</div>
 
     <!-- HEADER Y NAVEGACIÓN INTELIGENTE -->
     <header>
         <div class="container nav-container">
-            <a href="index.html" class="logo">CREATE YOUR <span>GLOW</span> ✨</a>
+            <a href="index.html" class="logo">Create Your <span>Glow</span> ✨</a>
 
             <ul class="nav-links">
                 <li><a href="#beneficios">Beneficios</a></li>
@@ -510,22 +546,22 @@
             <!-- BOTONES DINÁMICOS DE AUTENTICACIÓN -->
             <div id="auth-buttons" style="display: flex; align-items: center; gap: 10px;">
                 <!-- Estado 1: Invitado -->
-                <a href="auth.html" id="btn-login" class="btn-cta-nav" style="background: var(--yellow); color: var(--ink);">
+                <a href="auth.html" id="btn-login" class="btn-cta-nav">
                     <i class="fa-solid fa-user"></i> Iniciar Sesión / Registro
                 </a>
 
                 <!-- Estado 2: Estudiante -->
-                <a href="mis-cursos.html" id="btn-mis-cursos" class="btn-cta-nav" style="display: none; background: var(--pink); color: var(--ink);">
+                <a href="mis-cursos.html" id="btn-mis-cursos" class="btn-cta-nav" style="display: none;">
                     <i class="fa-solid fa-graduation-cap"></i> Mis Cursos
                 </a>
 
                 <!-- Estado 3: Admin / Tutora -->
-                <a href="panel-tutora.html" id="btn-panel-admin" class="btn-cta-nav" style="display: none; background: var(--coral); color: #fff;">
+                <a href="panel-tutora.html" id="btn-panel-admin" class="btn-cta-nav" style="display: none;">
                     <i class="fa-solid fa-crown"></i> Panel Tutora
                 </a>
 
                 <!-- Botón Salir -->
-                <button id="btn-logout" onclick="cerrarSesion()" style="display: none; background: transparent; border: 1.5px solid var(--cream); color: var(--cream); padding: 0.5rem 1rem; border-radius: 50px; cursor: pointer; font-weight: 700; font-size: 0.8rem;">
+                <button id="btn-logout" onclick="cerrarSesion()" style="display: none;">
                     Salir
                 </button>
             </div>
@@ -542,10 +578,10 @@
             <a href="cursos.html" onclick="toggleMenu()">Cursos Destacados</a>
             <a href="#galeria" onclick="toggleMenu()">Resultados Alumnas</a>
             <a href="#nosotros" onclick="toggleMenu()">Sobre Mí</a>
-            <hr style="border: 0.5px solid var(--ink); opacity: 0.2;">
-            <a href="auth.html" id="mobile-btn-login" class="btn-cta-nav" style="text-align: center; justify-content: center; background: var(--yellow); color: var(--ink);">Iniciar Sesión ✨</a>
-            <a href="mis-cursos.html" id="mobile-btn-mis-cursos" class="btn-cta-nav" style="display: none; text-align: center; justify-content: center; background: var(--pink); color: var(--ink);">Mis Cursos 🎓</a>
-            <a href="panel-tutora.html" id="mobile-btn-panel-admin" class="btn-cta-nav" style="display: none; text-align: center; justify-content: center; background: var(--coral); color: #fff;">Panel Tutora 👑</a>
+            <hr style="border: 0.5px solid var(--burgundy); opacity: 0.2;">
+            <a href="auth.html" id="mobile-btn-login" class="btn-cta-nav" style="text-align: center; justify-content: center;">Iniciar Sesión ✨</a>
+            <a href="mis-cursos.html" id="mobile-btn-mis-cursos" class="btn-cta-nav" style="display: none; text-align: center; justify-content: center;">Mis Cursos 🎓</a>
+            <a href="panel-tutora.html" id="mobile-btn-panel-admin" class="btn-cta-nav" style="display: none; text-align: center; justify-content: center;">Panel Tutora 👑</a>
         </div>
     </header>
 
@@ -604,12 +640,16 @@
     <section class="hero">
         <div class="container hero-grid">
             <div class="hero-text">
-                <div class="hero-badge">💄 Academia Digital para Maquillistas</div>
-                <h1>Tu arte merece ser visto.<br><span class="highlight">Tu negocio merece facturar.</span></h1>
+                <div class="hero-badge">💄 Academia digital para maquillistas</div>
+                <h1>
+                    <span class="script">Tu arte</span>
+                    <span class="chunk">merece ser visto</span>
+                    <span class="script alt">y tu negocio merece facturar</span>
+                </h1>
                 <p>Aprende a crear contenido de alto impacto con iluminación deslumbrante, posiciona tu marca personal y atrae clientas dispuestas a pagar lo que realmente vales.</p>
 
                 <div class="hero-buttons">
-                    <a href="cursos.html" class="btn-primary">Ver Cursos Disponibles ✨</a>
+                    <a href="cursos.html" class="btn-primary">Ver cursos disponibles ✨</a>
                 </div>
             </div>
 
@@ -622,8 +662,8 @@
                 <div class="floating-card">
                     <div class="floating-card-icon">👑</div>
                     <div>
-                        <strong style="display: block; font-size: 1.1rem; color: var(--text-dark);">+500 Alumnas</strong>
-                        <span style="font-size: 0.8rem; color: var(--text-muted); font-weight: 600;">Llenando sus agendas este mes</span>
+                        <strong style="display: block; font-size: 1.1rem; color: var(--burgundy);">+500 Alumnas</strong>
+                        <span style="font-size: 0.82rem; color: var(--text-muted); font-weight: 500;">Llenando sus agendas este mes</span>
                     </div>
                 </div>
             </div>
@@ -633,10 +673,19 @@
     <!-- CINTA EN MOVIMIENTO -->
     <div class="marquee" aria-hidden="true">
         <div class="marquee-track">
-            <span>Marca personal ✦</span><span>Contenido que vende ✦</span><span>Agenda llena ✦</span><span>Create your glow ✦</span>
-            <span>Marca personal ✦</span><span>Contenido que vende ✦</span><span>Agenda llena ✦</span><span>Create your glow ✦</span>
+            <span>✱ Marca personal</span><span>✱ Contenido que vende</span><span>✱ Agenda llena</span><span>✱ Create your glow</span>
+            <span>✱ Marca personal</span><span>✱ Contenido que vende</span><span>✱ Agenda llena</span><span>✱ Create your glow</span>
         </div>
     </div>
+
+    <!-- CIFRAS -->
+    <section class="numbers">
+        <div class="container numbers-grid">
+            <div class="numbers-item"><strong>+500</strong><span>alumnas</span></div>
+            <div class="numbers-item"><strong>100%</strong><span>online y práctico</span></div>
+            <div class="numbers-item"><strong>3</strong><span>cursos para crecer</span></div>
+        </div>
+    </section>
 
     <!-- BENEFICIOS -->
     <section class="benefits" id="beneficios">
@@ -650,7 +699,7 @@
                 <div class="benefit-card">
                     <img src="img/descarga (61).jpg" alt="Marca Personal Elegante" class="benefit-img">
                     <div class="benefit-body">
-                        <h3>Marca Personal Inolvidable</h3>
+                        <h3>Marca personal inolvidable</h3>
                         <p>Aprende a diferenciar tu perfil en redes sociales. Muestra la sofisticación y profesionalismo de tu trabajo desde el primer segundo.</p>
                     </div>
                 </div>
@@ -658,7 +707,7 @@
                 <div class="benefit-card">
                     <img src="img/descarga (62).jpg" alt="Creación de Videos" class="benefit-img">
                     <div class="benefit-body">
-                        <h3>Videos Virales y Nítidos</h3>
+                        <h3>Videos virales y nítidos</h3>
                         <p>Domina las luces, ángulos y edición móvil para que las pieles y difuminados de tus videos luzcan impecables como en revista.</p>
                     </div>
                 </div>
@@ -666,7 +715,7 @@
                 <div class="benefit-card">
                     <img src="img/descarga (63).jpg" alt="Clientes y Novias" class="benefit-img">
                     <div class="benefit-body">
-                        <h3>Agenda Siempre Llena</h3>
+                        <h3>Agenda siempre llena</h3>
                         <p>Convierte seguidores curiosos en clientas fieles que pagan tarifas altas sin dudarlo por tus servicios de maquillaje profesional.</p>
                     </div>
                 </div>
@@ -674,54 +723,72 @@
         </div>
     </section>
 
+    <!-- ¿ES PARA TI? -->
+    <section class="foryou">
+        <div class="foryou-text">
+            <h2><span class="script">¿Es esto</span>para ti?</h2>
+            <ul class="checklist">
+                <li>Maquillas increíble pero tu perfil aún no lo refleja</li>
+                <li>Quieres grabar contenido con tu celular que se vea profesional</li>
+                <li>Buscas atraer clientas y novias que valoren tu trabajo</li>
+                <li>Prefieres aprender online, a tu ritmo y con práctica real</li>
+            </ul>
+            <a href="cursos.html" class="btn-primary">Estoy lista para crecer</a>
+        </div>
+        <div class="foryou-photo">
+            <img src="img/Photography.jpg" alt="Maquillista creando contenido" style="object-position: 50% 30%">
+            <div class="overlay-text"><span class="script">¿Es el momento</span>de brillar?</div>
+        </div>
+    </section>
+
     <!-- CURSOS DESTACADOS -->
     <section class="courses" id="cursos">
         <div class="container">
             <div class="section-header">
-                <span class="section-tag">Nuestros Programas</span>
-                <h2 class="section-title">Cursos Destacados para Maquillistas</h2>
+                <span class="section-tag">Nuestros programas</span>
+                <h2 class="section-title">Cursos destacados para maquillistas</h2>
             </div>
 
             <div class="courses-grid">
                 <div class="course-card">
                     <div class="course-img-wrap">
                         <img src="img/descarga (64).jpg" alt="Marca Personal" class="course-img">
-                        <div class="price-badge">$50.000 COP</div>
                     </div>
+                    <div class="price-badge">$50.000 COP</div>
                     <div class="course-content">
                         <div>
-                            <h3>Marca Personal para Artistas</h3>
+                            <h3>Marca personal para artistas</h3>
                             <p>Estrategias digitales paso a paso para posicionarte como la referente de belleza número uno en tu ciudad.</p>
                         </div>
-                        <a href="cursos.html" class="btn-course-enroll">Inscribirme Ahora ✨</a>
+                        <a href="cursos.html" class="btn-course-enroll">Inscribirme ahora ✨</a>
                     </div>
                 </div>
 
                 <div class="course-card">
                     <div class="course-img-wrap">
                         <img src="img/descarga (65).jpg" alt="Iluminación y Video" class="course-img">
-                        <div class="price-badge">$75.000 COP</div>
                     </div>
+                    <div class="price-badge">$75.000 COP</div>
                     <div class="course-content">
                         <div>
-                            <h3>Iluminación y Contenido HD</h3>
+                            <h3>Iluminación y contenido HD</h3>
                             <p>Aprende a grabar con tu celular y lograr acabados profesionales con luz perfecta para destacar tus maquillajes.</p>
                         </div>
-                        <a href="cursos.html" class="btn-course-enroll">Inscribirme Ahora ✨</a>
+                        <a href="cursos.html" class="btn-course-enroll">Inscribirme ahora ✨</a>
                     </div>
                 </div>
 
                 <div class="course-card">
                     <div class="course-img-wrap">
                         <img src="img/942519028278826069.jpg" alt="Atracción de Clientes" class="course-img">
-                        <div class="price-badge">$90.000 COP</div>
                     </div>
+                    <div class="price-badge">$90.000 COP</div>
                     <div class="course-content">
                         <div>
-                            <h3>Agenda Llena para Maquillistas</h3>
+                            <h3>Agenda llena para maquillistas</h3>
                             <p>Técnicas de ventas, paquetes para novias y estrategias de retención para multiplicar tus ingresos mensuales.</p>
                         </div>
-                        <a href="cursos.html" class="btn-course-enroll">Inscribirme Ahora ✨</a>
+                        <a href="cursos.html" class="btn-course-enroll">Inscribirme ahora ✨</a>
                     </div>
                 </div>
             </div>
@@ -732,30 +799,30 @@
     <section class="gallery" id="galeria">
         <div class="container">
             <div class="section-header">
-                <span class="section-tag">Casos de Éxito</span>
-                <h2 class="section-title">Transformaciones de Nuestras Alumnas</h2>
+                <span class="section-tag">Casos de éxito</span>
+                <h2 class="section-title">Transformaciones de nuestras alumnas</h2>
             </div>
 
             <div class="gallery-grid">
                 <div class="gallery-item">
                     <img src="img/326088829290995302.jpg" alt="Resultado Maquillaje Glow">
-                    <div class="gallery-overlay">Glow Insuperable ✨</div>
+                    <div class="gallery-overlay">Glow insuperable ✨</div>
                 </div>
                 <div class="gallery-item">
                     <img src="img/1109785533255600116.jpg" alt="Resultado Maquillaje 1">
-                    <div class="gallery-overlay">Piel Blindada ✨</div>
+                    <div class="gallery-overlay">Piel blindada ✨</div>
                 </div>
                 <div class="gallery-item">
                     <img src="img/Ensaio profissional - harmonização facial - cirurgiã dentista - boss - branding.jpg" alt="Resultado Maquillaje 2">
-                    <div class="gallery-overlay">Marca Personal 👑</div>
+                    <div class="gallery-overlay">Marca personal 👑</div>
                 </div>
                 <div class="gallery-item">
                     <img src="img/Королевский парфюм с нотой туберозы и амбры 👑.jpg" alt="Resultado Maquillaje 3">
-                    <div class="gallery-overlay">Glamour Total 💄</div>
+                    <div class="gallery-overlay">Glamour total 💄</div>
                 </div>
                 <div class="gallery-item">
                     <img src="img/makeup.jpg" alt="Resultado Maquillaje 4">
-                    <div class="gallery-overlay">Smokey Eye Pro 🔥</div>
+                    <div class="gallery-overlay">Smokey eye pro 🔥</div>
                 </div>
             </div>
         </div>
@@ -766,13 +833,13 @@
         <div class="container about-grid">
             <div class="about-img-wrap">
                 <img src="img/hailey bieber.jpg" alt="Creadora Create Your Glow" class="about-img">
-                <div class="about-badge">Fundadora & Mentora ✨</div>
+                <div class="about-badge">Fundadora & mentora ✨</div>
             </div>
 
             <div class="about-text">
                 <span class="section-tag">Hola, soy tu mentora</span>
                 <h2 class="section-title">Te enseño a convertir tu talento en un negocio rentable</h2>
-                <p style="margin-top: 1rem; font-size: 1.05rem;">
+                <p style="margin-top: 1.2rem; font-size: 1.05rem; color: var(--burgundy);">
                     Creé <strong>Create Your Glow</strong> para ayudar a maquillistas talentosas a salir del anonimato digital. No se trata solo de saber maquillar bien, sino de saber mostrarlo al mundo para atraer a las clientas ideales.
                 </p>
 
@@ -783,7 +850,7 @@
                     </div>
                     <div class="stat-box">
                         <div class="stat-number">100%</div>
-                        <div class="stat-label">Online & Práctico</div>
+                        <div class="stat-label">Online & práctico</div>
                     </div>
                 </div>
             </div>
@@ -792,7 +859,7 @@
 
     <!-- FOOTER -->
     <footer>
-        <div class="footer-logo">CREATE YOUR <span>GLOW</span> ✨</div>
+        <div class="footer-logo">Create Your <span>Glow</span> ✨</div>
         <p>&copy; 2026 Create Your Glow. Todos los derechos reservados.</p>
     </footer>
 
@@ -814,4 +881,3 @@
     </script>
 </body>
 </html>
-```
