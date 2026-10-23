@@ -757,9 +757,7 @@
                 console.error("Error al cargar comentarios:", error);
             }
         }
-    </script>
-    <!-- LÓGICA JAVASCRIPT -->
-    <script>
+   <script>
         const urlParams = new URLSearchParams(window.location.search);
         const courseName = urlParams.get('nombre');
 
@@ -778,7 +776,6 @@
             }
             currentUser = user;
 
-            // Obtener nombre del usuario
             try {
                 const userDoc = await db.collection("users").doc(user.uid).get();
                 if(userDoc.exists && userDoc.data().name) {
@@ -792,6 +789,7 @@
                 await cargarEstructuraCurso(courseName);
             } else {
                 document.getElementById('courseTitleHeader').innerText = "Curso no especificado";
+                document.getElementById('modulesContainer').innerHTML = `<p style="padding: 1rem; color: var(--text-muted); font-size: 0.9rem;">No se indicó ningún curso.</p>`;
             }
         });
 
@@ -803,7 +801,7 @@
 
                 if (coursesSnapshot.empty) {
                     document.getElementById('courseTitleHeader').innerText = "Curso no encontrado";
-                    document.getElementById('modulesContainer').innerHTML = `<p style="padding: 1rem; color: var(--text-muted); font-size: 0.9rem;">No se encontró el curso en el sistema.</p>`;
+                    document.getElementById('modulesContainer').innerHTML = `<p style="padding: 1rem; color: var(--text-muted); font-size: 0.9rem;">El curso no existe en la base de datos.</p>`;
                     return;
                 }
 
@@ -852,35 +850,23 @@
 
             } catch (error) {
                 console.error("Error al cargar estructura:", error);
-                document.getElementById('modulesContainer').innerHTML = `<p style="padding: 1rem; color: var(--pink-primary); font-size: 0.9rem;">Error al sincronizar clases.</p>`;
             }
         }
 
         async function sincronizarInscripcionEstudiante() {
             try {
-                // Buscamos inscripción o creamos respaldo flexible
                 const enrSnap = await db.collection("inscripciones")
-                    .where("uid", "==", currentUser.uid)
-                    .where("courseId", "==", currentCourseId)
+                    .where("userId", "==", currentUser.uid)
+                    .where("courseTitle", "==", courseName)
                     .get();
 
                 if (!enrSnap.empty) {
                     inscripcionDocId = enrSnap.docs[0].id;
                     const data = enrSnap.docs[0].data();
                     leccionesCompletadasIds = data.leccionesCompletadas || [];
-                } else {
-                    // Búsqueda flexible por email si el UID directo no coincide
-                    const enrEmailSnap = await db.collection("inscripciones")
-                        .where("email", "==", currentUser.email)
-                        .get();
-                    if (!enrEmailSnap.empty) {
-                        inscripcionDocId = enrEmailSnap.docs[0].id;
-                        const data = enrEmailSnap.docs[0].data();
-                        leccionesCompletadasIds = data.leccionesCompletadas || [];
-                    }
                 }
             } catch (error) {
-                console.error("Error al sincronizar inscripción (se permite continuar):", error);
+                console.error("Error al sincronizar inscripción:", error);
             }
         }
 
@@ -892,7 +878,7 @@
                     .get();
 
                 if (lessonsSnapshot.empty) {
-                    lessonsContainer.innerHTML = `<li style="font-size: 0.85rem; color: var(--text-muted); padding: 6px 1rem;">Sin lecciones aún</li>`;
+                    lessonsContainer.innerHTML = `<li style="font-size: 0.85rem; color: var(--text-muted); padding: 6px 1rem;">Sin lecciones</li>`;
                     return;
                 }
 
@@ -903,10 +889,10 @@
 
                     const li = document.createElement('li');
                     li.innerHTML = `
-                        <a href="javascript:void(0);" class="lesson-link ${isCompleted ? 'completed' : ''}" id="link-${lessonId}" onclick="reproducirLeccion(this, '${lessonId}', '${encodeURIComponent(lesson.title || 'Clase')}', '${lesson.videoUrl || ''}', '${encodeURIComponent(lesson.content || lesson.description || '')}')">
+                        <a href="javascript:void(0);" class="lesson-link ${isCompleted ? 'completed' : ''}" id="link-${lessonId}" onclick="reproducirLeccion(this, '${lessonId}', '${encodeURIComponent(lesson.title || 'Clase')}', '${lesson.videoUrl || ''}', '${encodeURIComponent(lesson.content || '')}', '${lesson.materialUrl || ''}')">
                             <span style="display: flex; align-items: center; gap: 8px;">
                                 <i class="fa-solid ${isCompleted ? 'fa-circle-check' : 'fa-circle-play'}"></i> 
-                                ${lesson.title || 'Clase sin título'}
+                                ${lesson.title || 'Clase'}
                             </span>
                         </a>
                     `;
@@ -917,7 +903,7 @@
             }
         }
 
-        function reproducirLeccion(element, lessonId, tituloEncoded, videoUrl, descripcionEncoded) {
+        function reproducirLeccion(element, lessonId, tituloEncoded, videoUrl, descripcionEncoded, materialUrl) {
             document.querySelectorAll('.lesson-link').forEach(el => el.classList.remove('active'));
             element.classList.add('active');
 
@@ -927,6 +913,16 @@
 
             document.getElementById('lessonTitle').innerText = titulo;
             document.getElementById('lessonDescription').innerText = descripcion || "Disfruta de esta clase y practica cada técnica paso a paso.";
+
+            const materialLink = document.getElementById('materialLink');
+            if (materialUrl) {
+                materialLink.href = materialUrl;
+                materialLink.innerText = "Descargar material de la lección";
+                materialLink.style.display = "inline";
+            } else {
+                materialLink.href = "#";
+                materialLink.innerText = "No hay materiales adicionales en esta clase";
+            }
 
             const completeBtn = document.getElementById('completeBtn');
             completeBtn.style.display = 'inline-flex';
@@ -961,7 +957,7 @@
         }
 
         async function toggleCompletarLeccion() {
-            if (!leccionActualId) return;
+            if (!leccionActualId || !inscripcionDocId) return;
 
             const completeBtn = document.getElementById('completeBtn');
             const linkElement = document.getElementById(`link-${leccionActualId}`);
@@ -987,17 +983,15 @@
 
             const nuevoProgreso = totalLeccionesCurso > 0 ? Math.round((leccionesCompletadasIds.length / totalLeccionesCurso) * 100) : 0;
 
-            if (inscripcionDocId) {
-                try {
-                    await db.collection("inscripciones").doc(inscripcionDocId).update({
-                        leccionesCompletadas: leccionesCompletadasIds,
-                        progreso: nuevoProgreso
-                    });
-                } catch (error) {
-                    console.error("Error al actualizar progreso:", error);
-                }
+            try {
+                await db.collection("inscripciones").doc(inscripcionDocId).update({
+                    leccionesCompletadas: leccionesCompletadasIds,
+                    progreso: nuevoProgreso
+                });
+                actualizarBarraProgresoVisual();
+            } catch (error) {
+                console.error("Error al actualizar progreso:", error);
             }
-            actualizarBarraProgresoVisual();
         }
 
         function actualizarBarraProgresoVisual() {
