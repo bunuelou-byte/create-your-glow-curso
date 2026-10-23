@@ -123,15 +123,15 @@
                 }
 
                 const urlParams = new URLSearchParams(window.location.search);
-                const ref = urlParams.get('ref'); // Ejemplo: uid_cursoId
+                const ref = urlParams.get('ref');
 
                 if (ref && ref.includes('_')) {
                     const partes = ref.split('_');
                     const courseId = partes[1];
 
                     try {
-                        // Registrar la inscripción en Firestore
-                        await db.collection("enrollments").add({
+                        // Guardar en la colección 'inscripciones' coincidiendo con tus reglas de Firestore
+                        await db.collection("inscripciones").add({
                             userId: user.uid,
                             courseId: courseId,
                             enrolledAt: firebase.firestore.FieldValue.serverTimestamp(),
@@ -142,7 +142,7 @@
                         document.getElementById('btnMisCursos').style.display = "inline-block";
                     } catch (error) {
                         console.error("Error al registrar inscripción:", error);
-                        document.getElementById('mensajeEstado').innerText = "Tu pago fue exitoso, pero hubo un pequeño detalle al sincronizar. Contáctanos si persiste.";
+                        document.getElementById('mensajeEstado').innerText = "Tu pago fue exitoso, pero hubo un detalle de sincronización. Por favor reintenta o contáctanos.";
                         document.getElementById('btnMisCursos').style.display = "inline-block";
                     }
                 } else {
