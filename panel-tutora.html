@@ -1,4 +1,3 @@
-```html
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -6,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Panel de Tutora | CREATE YOUR GLOW</title>
     
-    <!-- SDKs de Firebase (Versión Compat - Idéntica al resto de tus páginas) -->
+    <!-- SDKs de Firebase (Versión Compat) -->
     <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-auth-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
@@ -48,7 +47,6 @@
             --hard: 5px 5px 0 var(--ink);
             --hard-sm: 3px 3px 0 var(--ink);
             --transition: all 0.35s cubic-bezier(0.22, 1, 0.36, 1);
-            --grain: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.55'/%3E%3C/svg%3E");
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; scroll-behavior: smooth; }
@@ -246,8 +244,8 @@
                 <p class="panel-subtitle">Agrega contenido interactivo, videos y materiales para tus alumnas.</p>
 
                 <div class="form-group">
-                    <label class="form-label">ID del Curso (ej. marca-personal o ID de Firestore):</label>
-                    <input type="text" id="courseId" class="form-input" placeholder="Ej. curso-marca-personal" required>
+                    <label class="form-label">ID del Curso (Copia el ID exacto de Firestore, ej: IpBGipzVnbWvUImv6TEf):</label>
+                    <input type="text" id="courseId" class="form-input" placeholder="Ej. IpBGipzVnbWvUImv6TEf" value="IpBGipzVnbWvUImv6TEf" required>
                 </div>
 
                 <div class="form-group">
@@ -299,7 +297,7 @@
         </div>
     </main>
 
-    <!-- SCRIPT DE VALIDACIÓN Y ENVÍO (COMPAT) -->
+    <!-- SCRIPT DE VALIDACIÓN Y ENVÍO -->
     <script>
         const loadingAuth = document.getElementById("loading-auth");
         const formLeccion = document.getElementById("form-leccion");
@@ -309,16 +307,14 @@
         auth.onAuthStateChanged(async (user) => {
             if (user) {
                 try {
-                    // Consultamos el documento de la usuaria en la colección 'users'
                     const userDoc = await db.collection("users").doc(user.uid).get();
 
                     if (userDoc.exists && userDoc.data().role === "admin") {
-                        // ¡Permiso concedido! Mostramos el formulario
                         loadingAuth.style.display = "none";
                         formLeccion.style.display = "block";
                     } else {
-                        // Si no es admin, permitimos acceso temporal o bloqueamos según tu preferencia. 
-                        // (Si estás probando y quieres forzar el acceso mientras configuras tu rol en Firestore, puedes comentar este bloque).
+                        // Si estás probando y no tienes el rol 'admin' asignado en Firestore, 
+                        // puedes cambiar la línea de abajo a: formLeccion.style.display = "block";
                         loadingAuth.style.display = "none";
                         unauthorized.style.display = "block";
                     }
@@ -328,12 +324,11 @@
                     unauthorized.style.display = "block";
                 }
             } else {
-                // Si no hay sesión iniciada, redirigimos al login
                 window.location.href = "auth.html";
             }
         });
 
-        // Enviar formulario a Firestore
+        // Enviar formulario a Firestore (Creando Módulo y Lección de forma sincronizada)
         formLeccion.addEventListener("submit", async (e) => {
             e.preventDefault();
 
@@ -341,26 +336,55 @@
             btnSubmit.innerText = "Publicando clase...";
             btnSubmit.disabled = true;
 
-            const nuevaLeccion = {
-                courseId: document.getElementById("courseId").value,
-                moduleNumber: Number(document.getElementById("moduleNumber").value),
-                moduleName: document.getElementById("moduleName").value,
-                order: Number(document.getElementById("order").value),
-                title: document.getElementById("title").value,
-                videoUrl: document.getElementById("videoUrl").value,
-                materialUrl: document.getElementById("materialUrl").value,
-                content: document.getElementById("content").value,
-                createdAt: firebase.firestore.FieldValue.serverTimestamp()
-            };
+            const courseIdVal = document.getElementById("courseId").value.trim();
+            const moduleNameVal = document.getElementById("moduleName").value.trim();
+            const moduleNumberVal = Number(document.getElementById("moduleNumber").value);
 
             try {
+                // 1. Verificar si ya existe un módulo con ese nombre para este curso
+                const moduleQuery = await db.collection("modules")
+                    .where("courseId", "==", courseIdVal)
+                    .where("title", "==", moduleNameVal)
+                    .get();
+
+                let moduleId = "";
+
+                if (!moduleQuery.empty) {
+                    moduleId = moduleQuery.docs[0].id;
+                } else {
+                    // Si no existe, creamos el nuevo módulo en la colección 'modules'
+                    const nuevoModulo = {
+                        courseId: courseIdVal,
+                        title: moduleNameVal,
+                        moduleNumber: moduleNumberVal,
+                        createdAt: firebase.firestore.FieldValue.serverTimestamp()
+                    };
+                    const modDocRef = await db.collection("modules").add(nuevoModulo);
+                    moduleId = modDocRef.id;
+                }
+
+                // 2. Creamos la lección en la colección 'lessons' vinculada al moduleId
+                const nuevaLeccion = {
+                    moduleId: moduleId,
+                    courseId: courseIdVal,
+                    order: Number(document.getElementById("order").value),
+                    title: document.getElementById("title").value,
+                    videoUrl: document.getElementById("videoUrl").value,
+                    materialUrl: document.getElementById("materialUrl").value,
+                    content: document.getElementById("content").value,
+                    createdAt: firebase.firestore.FieldValue.serverTimestamp()
+                };
+
                 await db.collection("lessons").add(nuevaLeccion);
-                alert("¡Clase subida y publicada con éxito en Firestore! 🎉");
+
+                alert("¡Módulo y clase subidos y vinculados con éxito en Firestore! 🎉");
                 formLeccion.reset();
+                document.getElementById("courseId").value = courseIdVal; // Mantener el ID del curso
                 btnSubmit.innerText = "Publicar Lección Ahora ✨";
                 btnSubmit.disabled = false;
+
             } catch (error) {
-                console.error("Error al guardar la lección:", error);
+                console.error("Error al guardar en la base de datos:", error);
                 alert("Hubo un error al guardar la lección en la base de datos.");
                 btnSubmit.innerText = "Publicar Lección Ahora ✨";
                 btnSubmit.disabled = false;
@@ -369,4 +393,3 @@
     </script>
 </body>
 </html>
-``
