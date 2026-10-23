@@ -557,6 +557,7 @@
                 return;
             }
 
+            // URL del backend en Vercel
             const urlVercel = "https://create-your-glow-curso.vercel.app/api/crear-pago";
 
             const btnComprar = document.querySelector('.btn-buy-now');
@@ -584,17 +585,19 @@
 
                 const resultado = await respuesta.json();
 
-                if (resultado.status === "success") {
+                if (respuesta.ok && (resultado.status === "success" || resultado.init_point)) {
+                    // Redirige al checkout de Mercado Pago
                     window.location.href = resultado.init_point;
                 } else {
-                    alert("No se pudo iniciar el pago: " + (resultado.error || "Error desconocido"));
+                    console.error("Error devuelto por la API:", resultado);
+                    alert("No se pudo iniciar el pago: " + (resultado.error || JSON.stringify(resultado.detalles) || "Error en credenciales"));
                     btnComprar.innerText = "Inscribirme y Pagar 💖";
                     btnComprar.disabled = false;
                 }
 
             } catch (error) {
                 console.error("Error de conexión:", error);
-                alert("Ocurrió un error de conexión con la pasarela de pagos.");
+                alert("Ocurrió un error de conexión con la pasarela de pagos. Por favor verifica que tu función de Vercel esté activa.");
                 btnComprar.innerText = "Inscribirme y Pagar 💖";
                 btnComprar.disabled = false;
             }
