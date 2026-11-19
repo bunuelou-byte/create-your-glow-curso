@@ -31,7 +31,6 @@
 
     <style>
         :root {
-            /* Paleta nueva: vino, rosa chicle, rosa empolvado, crema */
             --burgundy: #5A1030;
             --plum: #7A1F45;
             --hot: #F06BAE;
@@ -43,7 +42,6 @@
             --muted: #7A5A6B;
             --pearl: #FFFFFF;
 
-            /* Variables heredadas (se mantienen por compatibilidad con otras páginas) */
             --lavender: #E6DCFB;
             --coral: #F06BAE;
             --olive: #7A1F45;
@@ -82,7 +80,6 @@
 
         .script { font-family: var(--font-script); font-weight: 400; letter-spacing: 0; text-transform: none; }
 
-        /* ===== BARRA SUPERIOR Y HEADER ===== */
         .topbar {
             background: var(--blush);
             color: var(--burgundy);
@@ -131,7 +128,6 @@
 
         .nav-links a:hover { border-bottom-color: var(--pink); color: var(--pink); }
 
-        /* Botones de navegación (login / mis cursos / panel) */
         .btn-cta-nav {
             background: transparent;
             color: var(--cream);
@@ -190,7 +186,6 @@
         .mobile-menu a#mobile-btn-mis-cursos { background: var(--hot); color: #fff; border-color: var(--hot); }
         .mobile-menu a#mobile-btn-panel-admin { background: var(--plum); color: #fff; border-color: var(--plum); }
 
-        /* ===== HERO ===== */
         .hero {
             padding: 3.5rem 1.5rem 6rem;
             background: var(--grad-pink);
@@ -272,7 +267,6 @@
 
         .floating-card-icon { font-size: 1.6rem; background: var(--pink); padding: 8px; border-radius: 50%; line-height: 1; }
 
-        /* CINTA DE TEXTO */
         .marquee { background: var(--blush); overflow: hidden; white-space: nowrap; padding: 0.8rem 0; color: var(--burgundy); }
         .marquee-track { display: inline-flex; animation: marquee 30s linear infinite; }
         .marquee span { font-family: var(--font-serif-it); font-style: italic; font-weight: 500; font-size: 1.1rem; padding: 0 1.6rem; }
@@ -283,13 +277,11 @@
             * { transition: none !important; scroll-behavior: auto !important; }
         }
 
-        /* BANDA VINO CON CIFRAS */
         .numbers { background: var(--burgundy); padding: 2.6rem 1.5rem; }
         .numbers-grid { display: grid; grid-template-columns: 1fr; gap: 1.6rem; text-align: center; }
         .numbers-item strong { display: block; font-family: var(--font-chunk); font-weight: 400; font-size: 2.4rem; color: var(--cream); line-height: 1.1; }
         .numbers-item span { color: var(--pink); font-family: var(--font-serif-it); font-style: italic; font-size: 1.1rem; }
 
-        /* BENEFICIOS */
         .benefits { padding: 6rem 1.5rem; background-color: var(--blush); }
         .section-header { text-align: center; max-width: 760px; margin: 0 auto 4rem; }
 
@@ -352,7 +344,7 @@
 
         .cyg-cookie-banner {
             width: 100%;
-            max-width: 520px;
+            max-width: 540px;
             background: var(--cream);
             color: var(--ink);
             border: 2.5px solid var(--burgundy);
@@ -372,8 +364,32 @@
         .cyg-cookie-text {
             font-size: 0.96rem;
             color: var(--ink);
-            margin-bottom: 1.35rem;
+            margin-bottom: 0.9rem;
             line-height: 1.55;
+        }
+
+        .cyg-legal-links {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            justify-content: center;
+            margin-bottom: 1.25rem;
+            font-size: 0.88rem;
+        }
+
+        .cyg-legal-link-btn {
+            background: none;
+            border: none;
+            color: var(--burgundy);
+            font-family: var(--font-body);
+            font-weight: 600;
+            text-decoration: underline;
+            cursor: pointer;
+            padding: 0;
+        }
+
+        .cyg-legal-link-btn:hover {
+            color: var(--hot);
         }
 
         .cyg-cookie-notice {
@@ -422,9 +438,100 @@
             border-color: var(--burgundy);
         }
 
+        /* ===== MODAL LEGAL (TÉRMINOS Y TRATAMIENTO DE DATOS) ===== */
+        .cyg-legal-modal-backdrop {
+            position: fixed;
+            inset: 0;
+            background: rgba(42, 18, 32, 0.78);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            padding: 1.25rem;
+            z-index: 3500;
+        }
+
+        .cyg-legal-modal-backdrop.is-visible {
+            display: flex;
+        }
+
+        .cyg-legal-modal {
+            width: 100%;
+            max-width: 680px;
+            max-height: 85vh;
+            overflow-y: auto;
+            background: var(--cream);
+            color: var(--ink);
+            border: 2.5px solid var(--burgundy);
+            border-radius: 24px;
+            padding: 1.75rem;
+            box-shadow: 0 24px 50px rgba(42, 18, 32, 0.45);
+        }
+
+        .cyg-legal-modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1rem;
+            padding-bottom: 0.75rem;
+            border-bottom: 1px solid var(--blush);
+        }
+
+        .cyg-legal-modal-title {
+            font-family: var(--font-chunk);
+            font-size: 1.15rem;
+            color: var(--burgundy);
+        }
+
+        .cyg-legal-close {
+            background: var(--burgundy);
+            color: var(--cream);
+            border: none;
+            border-radius: 50px;
+            padding: 0.45rem 1rem;
+            font-family: var(--font-body);
+            font-size: 0.85rem;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        .cyg-legal-body h4 {
+            color: var(--burgundy);
+            margin: 1rem 0 0.35rem;
+            font-size: 1rem;
+        }
+
+        .cyg-legal-body p {
+            font-size: 0.94rem;
+            margin-bottom: 0.65rem;
+            line-height: 1.55;
+        }
+
         footer { background-color: var(--burgundy); color: var(--blush); padding: 3.5rem 1.5rem 2rem; text-align: center; }
         .footer-logo { font-size: 2.4rem; color: var(--cream); margin-bottom: 0.8rem; font-family: var(--font-script); }
         .footer-logo span { color: var(--pink); }
+
+        .footer-legal {
+            margin-top: 1.25rem;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 1.25rem;
+        }
+
+        .footer-legal button {
+            background: none;
+            border: none;
+            color: var(--pink);
+            font-family: var(--font-body);
+            font-size: 0.9rem;
+            text-decoration: underline;
+            cursor: pointer;
+        }
+
+        .footer-legal button:hover {
+            color: var(--cream);
+        }
 
         @media (min-width: 768px) {
             .hamburger { display: none; }
@@ -446,7 +553,6 @@
 
     <div class="topbar">Estrategias digitales hechas para maquillistas</div>
 
-    <!-- HEADER Y NAVEGACIÓN INTELIGENTE -->
     <header>
         <div class="container nav-container">
             <a href="index.html" class="logo">Create Your <span>Glow</span> ✨</a>
@@ -458,7 +564,6 @@
                 <li><a href="#nosotros">Sobre Mí</a></li>
             </ul>
 
-            <!-- BOTONES DINÁMICOS DE AUTENTICACIÓN -->
             <div id="auth-buttons" style="display: flex; align-items: center; gap: 10px;">
                 <a href="auth.html" id="btn-login" class="btn-cta-nav">
                     <i class="fa-solid fa-user"></i> Iniciar Sesión / Registro
@@ -496,7 +601,6 @@
         </div>
     </header>
 
-    <!-- HERO -->
     <section class="hero">
         <div class="container hero-grid">
             <div class="hero-text">
@@ -513,7 +617,6 @@
                 </div>
             </div>
 
-            <!-- COLLAGE POLAROID -->
             <div class="hero-collage">
                 <img src="img/Photography.jpg" style="object-position: 50% 40%" alt="Maquillista Profesional" class="collage-img tall">
                 <img src="img/1067282812339212742.jpg" style="object-position: 50% 50%" alt="Cámara e iluminación" class="collage-img">
@@ -530,7 +633,6 @@
         </div>
     </section>
 
-    <!-- CINTA EN MOVIMIENTO -->
     <div class="marquee" aria-hidden="true">
         <div class="marquee-track">
             <span>✱ Marca personal</span><span>✱ Contenido que vende</span><span>✱ Agenda llena</span><span>✱ Create your glow</span>
@@ -538,7 +640,6 @@
         </div>
     </div>
 
-    <!-- CIFRAS -->
     <section class="numbers">
         <div class="container numbers-grid">
             <div class="numbers-item"><strong>+500</strong><span>alumnas</span></div>
@@ -547,7 +648,6 @@
         </div>
     </section>
 
-    <!-- BENEFICIOS -->
     <section class="benefits" id="beneficios">
         <div class="container">
             <div class="section-header">
@@ -587,6 +687,10 @@
         <div class="container">
             <div class="footer-logo">Create Your <span>Glow</span> ✨</div>
             <p>Estrategias digitales para maquillistas</p>
+            <div class="footer-legal">
+                <button type="button" data-open-legal="terms">Términos y Condiciones</button>
+                <button type="button" data-open-legal="privacy">Tratamiento de Datos</button>
+            </div>
         </div>
     </footer>
 
@@ -595,8 +699,12 @@
         <div class="cyg-cookie-banner">
             <div id="cygCookieTitle" class="cyg-cookie-title">🍪 Acepta las cookies para continuar</div>
             <p class="cyg-cookie-text">
-                Para navegar por <strong>Create Your Glow</strong> y usar funciones como el inicio de sesión y la experiencia personalizada, debes aceptar el uso de cookies.
+                Para navegar por <strong>Create Your Glow</strong> y usar funciones como el inicio de sesión y la experiencia personalizada, debes aceptar el uso de cookies, nuestros Términos y Condiciones y el Tratamiento de Datos.
             </p>
+            <div class="cyg-legal-links">
+                <button type="button" class="cyg-legal-link-btn" data-open-legal="terms">Leer Términos y Condiciones</button>
+                <button type="button" class="cyg-legal-link-btn" data-open-legal="privacy">Leer Tratamiento de Datos</button>
+            </div>
             <div class="cyg-cookie-actions">
                 <button type="button" id="cygRejectCookies" class="cyg-cookie-btn cyg-cookie-reject">Rechazar</button>
                 <button type="button" id="cygAcceptCookies" class="cyg-cookie-btn cyg-cookie-accept">Aceptar y ver la página</button>
@@ -605,7 +713,17 @@
         </div>
     </div>
 
-    <!-- SCRIPT DE SESIÓN, MENÚ Y COOKIES -->
+    <!-- MODAL PARA TÉRMINOS Y CONDICIONES / TRATAMIENTO DE DATOS -->
+    <div id="cygLegalModalBackdrop" class="cyg-legal-modal-backdrop" role="dialog" aria-modal="true" aria-labelledby="cygLegalModalTitle">
+        <div class="cyg-legal-modal">
+            <div class="cyg-legal-modal-header">
+                <h3 id="cygLegalModalTitle" class="cyg-legal-modal-title">Documento Legal</h3>
+                <button type="button" id="cygCloseLegalModal" class="cyg-legal-close">Cerrar</button>
+            </div>
+            <div id="cygLegalModalBody" class="cyg-legal-body"></div>
+        </div>
+    </div>
+
     <script>
         auth.onAuthStateChanged(async (user) => {
             const btnLogin = document.getElementById('btn-login');
@@ -666,7 +784,71 @@
             hamburgerBtn.addEventListener('click', toggleMenu);
         }
 
-        // Gestión estricta: desbloquea la página solo al aceptar cookies
+        (function initLegalModal() {
+            const backdrop = document.getElementById("cygLegalModalBackdrop");
+            const titleEl = document.getElementById("cygLegalModalTitle");
+            const bodyEl = document.getElementById("cygLegalModalBody");
+            const closeBtn = document.getElementById("cygCloseLegalModal");
+            const openTriggers = document.querySelectorAll("[data-open-legal]");
+
+            if (!backdrop || !titleEl || !bodyEl || !closeBtn) return;
+
+            const documents = {
+                terms: {
+                    title: "Términos y Condiciones de Uso — Create Your Glow",
+                    html: `
+                        <h4>1. Aceptación de los términos</h4>
+                        <p>Al acceder y utilizar la plataforma web de <strong>Create Your Glow</strong>, aceptas cumplir estos Términos y Condiciones y las políticas aquí descritas.</p>
+                        <h4>2. Cuentas y acceso a los cursos</h4>
+                        <p>El acceso a los cursos y contenidos digitales está destinado al uso personal del usuario registrado. Está prohibido compartir credenciales, revender o distribuir el material sin autorización.</p>
+                        <h4>3. Propiedad intelectual</h4>
+                        <p>Todos los videos, guías, diseños, textos y recursos de Create Your Glow pertenecen a la marca o a sus respectivos autores y están protegidos por las normas de propiedad intelectual aplicables.</p>
+                        <h4>4. Disponibilidad del servicio</h4>
+                        <p>Nos esforzamos por mantener la plataforma disponible y actualizada, pudiendo realizar mejoras o mantenimientos técnicos cuando sea necesario.</p>
+                    `
+                },
+                privacy: {
+                    title: "Política de Tratamiento de Datos Personales",
+                    html: `
+                        <h4>1. Responsable y finalidad</h4>
+                        <p>En <strong>Create Your Glow</strong> tratamos los datos personales (como nombre, correo electrónico o información de cuenta) para gestionar el acceso a la plataforma, administrar cursos, prestar soporte y mejorar nuestros servicios.</p>
+                        <h4>2. Cookies y tecnologías similares</h4>
+                        <p>Utilizamos almacenamiento local y cookies para recordar preferencias, mantener la sesión activa y habilitar funciones o mediciones autorizadas por el usuario.</p>
+                        <h4>3. Encargados y seguridad</h4>
+                        <p>La autenticación y el almacenamiento de datos pueden apoyarse en servicios tecnológicos como Firebase bajo medidas razonables de seguridad.</p>
+                        <h4>4. Derechos del titular</h4>
+                        <p>Como titular de tus datos, puedes solicitar su consulta, actualización, rectificación o eliminación a través de los canales de contacto oficiales de Create Your Glow.</p>
+                    `
+                }
+            };
+
+            function openDoc(key) {
+                const doc = documents[key];
+                if (!doc) return;
+                titleEl.textContent = doc.title;
+                bodyEl.innerHTML = doc.html;
+                backdrop.classList.add("is-visible");
+            }
+
+            function closeDoc() {
+                backdrop.classList.remove("is-visible");
+            }
+
+            openTriggers.forEach((btn) => {
+                btn.addEventListener("click", () => {
+                    openDoc(btn.getAttribute("data-open-legal"));
+                });
+            });
+
+            closeBtn.addEventListener("click", closeDoc);
+
+            backdrop.addEventListener("click", (event) => {
+                if (event.target === backdrop) {
+                    closeDoc();
+                }
+            });
+        })();
+
         (function initCookieBanner() {
             const COOKIE_KEY = "cyg_cookies_consent";
             const backdrop = document.getElementById("cygCookieBackdrop");
@@ -710,7 +892,7 @@
             });
 
             function enableOptionalCookies() {
-                // Aquí se activan los scripts analíticos o de seguimiento tras aceptar
+                // Aquí se activan scripts como Google Analytics o Microsoft Clarity tras aceptar
             }
         })();
     </script>
