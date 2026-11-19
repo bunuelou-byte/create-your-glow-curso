@@ -329,60 +329,73 @@
         .benefit-card h3 { font-size: 1.35rem; margin-bottom: 0.8rem; color: var(--burgundy); }
         .benefit-card p { color: var(--ink); font-size: 1rem; }
 
-        /* ===== BANNER DE COOKIES ===== */
-        .cyg-cookie-banner {
-            position: fixed;
-            bottom: 1.25rem;
-            left: 50%;
-            transform: translateX(-50%);
-            width: calc(100% - 2rem);
-            max-width: 680px;
-            background: var(--cream);
-            color: var(--ink);
-            border: 2px solid var(--burgundy);
-            border-radius: 24px;
-            padding: 1.25rem 1.5rem;
-            box-shadow: 0 16px 36px rgba(42, 18, 32, 0.28);
-            z-index: 2000;
-            display: none;
+        /* ===== BLOQUEO OBLIGATORIO DE COOKIES ===== */
+        body.cookies-locked {
+            overflow: hidden;
         }
 
-        .cyg-cookie-banner.is-visible {
-            display: block;
+        .cyg-cookie-backdrop {
+            position: fixed;
+            inset: 0;
+            background: rgba(42, 18, 32, 0.72);
+            backdrop-filter: blur(7px);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            padding: 1.25rem;
+            z-index: 3000;
+        }
+
+        .cyg-cookie-backdrop.is-visible {
+            display: flex;
+        }
+
+        .cyg-cookie-banner {
+            width: 100%;
+            max-width: 520px;
+            background: var(--cream);
+            color: var(--ink);
+            border: 2.5px solid var(--burgundy);
+            border-radius: 26px;
+            padding: 1.75rem 1.5rem;
+            box-shadow: 0 20px 45px rgba(42, 18, 32, 0.4);
+            text-align: center;
         }
 
         .cyg-cookie-title {
             font-family: var(--font-chunk);
-            font-size: 0.95rem;
+            font-size: 1.15rem;
             color: var(--burgundy);
-            margin-bottom: 0.4rem;
+            margin-bottom: 0.65rem;
         }
 
         .cyg-cookie-text {
-            font-size: 0.92rem;
+            font-size: 0.96rem;
             color: var(--ink);
-            margin-bottom: 1rem;
-            line-height: 1.45;
+            margin-bottom: 1.35rem;
+            line-height: 1.55;
         }
 
-        .cyg-cookie-text a {
+        .cyg-cookie-notice {
+            font-size: 0.85rem;
             color: var(--plum);
-            font-weight: 600;
-            text-decoration: underline;
+            margin-top: 0.9rem;
+            min-height: 1.2rem;
+            font-weight: 500;
         }
 
         .cyg-cookie-actions {
             display: flex;
             flex-wrap: wrap;
-            gap: 0.65rem;
-            justify-content: flex-end;
+            gap: 0.75rem;
+            justify-content: center;
         }
 
         .cyg-cookie-btn {
-            padding: 0.55rem 1.2rem;
+            padding: 0.7rem 1.4rem;
             border-radius: 50px;
             font-family: var(--font-body);
-            font-size: 0.85rem;
+            font-size: 0.9rem;
             font-weight: 600;
             cursor: pointer;
             transition: var(--transition);
@@ -570,8 +583,6 @@
         </div>
     </section>
 
-    <!-- AQUÍ PUEDES PEGAR EL RESTO DE TUS SECCIONES (Ej: #galeria, #nosotros y footer) -->
-
     <footer>
         <div class="container">
             <div class="footer-logo">Create Your <span>Glow</span> ✨</div>
@@ -579,15 +590,18 @@
         </div>
     </footer>
 
-    <!-- BANNER DE COOKIES -->
-    <div id="cygCookieBanner" class="cyg-cookie-banner" role="dialog" aria-live="polite" aria-label="Aviso de cookies">
-        <div class="cyg-cookie-title">🍪 Aviso de Cookies</div>
-        <p class="cyg-cookie-text">
-            Usamos cookies esenciales para el funcionamiento del sitio y cookies opcionales para mejorar tu experiencia y medir el rendimiento de la página.
-        </p>
-        <div class="cyg-cookie-actions">
-            <button type="button" id="cygRejectCookies" class="cyg-cookie-btn cyg-cookie-reject">Rechazar</button>
-            <button type="button" id="cygAcceptCookies" class="cyg-cookie-btn cyg-cookie-accept">Aceptar cookies</button>
+    <!-- MODAL BLOQUEANTE DE COOKIES -->
+    <div id="cygCookieBackdrop" class="cyg-cookie-backdrop" role="dialog" aria-modal="true" aria-labelledby="cygCookieTitle">
+        <div class="cyg-cookie-banner">
+            <div id="cygCookieTitle" class="cyg-cookie-title">🍪 Acepta las cookies para continuar</div>
+            <p class="cyg-cookie-text">
+                Para navegar por <strong>Create Your Glow</strong> y usar funciones como el inicio de sesión y la experiencia personalizada, debes aceptar el uso de cookies.
+            </p>
+            <div class="cyg-cookie-actions">
+                <button type="button" id="cygRejectCookies" class="cyg-cookie-btn cyg-cookie-reject">Rechazar</button>
+                <button type="button" id="cygAcceptCookies" class="cyg-cookie-btn cyg-cookie-accept">Aceptar y ver la página</button>
+            </div>
+            <p id="cygCookieNotice" class="cyg-cookie-notice" aria-live="polite"></p>
         </div>
     </div>
 
@@ -652,36 +666,51 @@
             hamburgerBtn.addEventListener('click', toggleMenu);
         }
 
-        // Gestión de Cookies
+        // Gestión estricta: desbloquea la página solo al aceptar cookies
         (function initCookieBanner() {
             const COOKIE_KEY = "cyg_cookies_consent";
-            const banner = document.getElementById("cygCookieBanner");
+            const backdrop = document.getElementById("cygCookieBackdrop");
             const btnAccept = document.getElementById("cygAcceptCookies");
             const btnReject = document.getElementById("cygRejectCookies");
+            const notice = document.getElementById("cygCookieNotice");
 
-            if (!banner || !btnAccept || !btnReject) return;
+            if (!backdrop || !btnAccept || !btnReject) return;
+
+            function unlockSite() {
+                document.body.classList.remove("cookies-locked");
+                backdrop.classList.remove("is-visible");
+                enableOptionalCookies();
+            }
+
+            function lockSite() {
+                document.body.classList.add("cookies-locked");
+                backdrop.classList.add("is-visible");
+            }
 
             const savedChoice = localStorage.getItem(COOKIE_KEY);
 
-            if (!savedChoice) {
-                banner.classList.add("is-visible");
-            } else if (savedChoice === "accepted") {
-                enableOptionalCookies();
+            if (savedChoice === "accepted") {
+                unlockSite();
+            } else {
+                lockSite();
             }
 
             btnAccept.addEventListener("click", () => {
                 localStorage.setItem(COOKIE_KEY, "accepted");
-                banner.classList.remove("is-visible");
-                enableOptionalCookies();
+                if (notice) notice.textContent = "";
+                unlockSite();
             });
 
             btnReject.addEventListener("click", () => {
                 localStorage.setItem(COOKIE_KEY, "rejected");
-                banner.classList.remove("is-visible");
+                lockSite();
+                if (notice) {
+                    notice.textContent = "Debes aceptar las cookies para poder ver y usar la página.";
+                }
             });
 
             function enableOptionalCookies() {
-                // Aquí puedes cargar scripts opcionales cuando el usuario acepte
+                // Aquí se activan los scripts analíticos o de seguimiento tras aceptar
             }
         })();
     </script>
