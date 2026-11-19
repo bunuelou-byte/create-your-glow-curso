@@ -5,23 +5,20 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="google-site-verification" content="IS3LzmGwIbh6qVmmVb1rPrEnMYeTRAFy43yfdw88zX8" />
     <title>GLAMIFY — Estrategias Digitales para Maquillistas</title>
-    
 
     <!-- SDKs de Firebase (Versión Compat) -->
     <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-auth-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
 
-    <!-- Google Analytics 4 (Reemplaza G-XXXXXXXXXX cuando tengas tu ID de medición) -->
-    <!--
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
+    <!-- Google Analytics 4 -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-65CL4G4DK7"></script>
     <script>
         window.dataLayer = window.dataLayer || [];
         function gtag(){dataLayer.push(arguments);}
         gtag('js', new Date());
-        gtag('config', 'G-XXXXXXXXXX', { 'send_page_view': false });
+        gtag('config', 'G-65CL4G4DK7', { 'send_page_view': false });
     </script>
-    -->
 
     <!-- Microsoft Clarity (Reemplaza TU_ID_CLARITY cuando tengas tu ID de proyecto) -->
     <!--
@@ -1126,10 +1123,9 @@
             });
 
             function enableOptionalCookies() {
-                // Activa Google Analytics cuando tengas tu ID G-XXXXXXXXXX:
-                // if (typeof gtag === 'function') {
-                //     gtag('config', 'G-XXXXXXXXXX', { 'send_page_view': true });
-                // }
+                if (typeof gtag === 'function') {
+                    gtag('config', 'G-65CL4G4DK7', { 'send_page_view': true });
+                }
 
                 // Activa consentimiento en Microsoft Clarity cuando tengas tu ID:
                 // if (typeof clarity === 'function') {
