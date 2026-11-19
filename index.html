@@ -3,12 +3,37 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CREATE YOUR GLOW — Estrategias Digitales para Maquillistas</title>
+    <!-- Aquí puedes pegar tu etiqueta de Google Search Console cuando la tengas:
+    <meta name="google-site-verification" content="TU_CODIGO_AQUI" />
+    -->
+    <title>GLAMIFY — Estrategias Digitales para Maquillistas</title>
 
     <!-- SDKs de Firebase (Versión Compat) -->
     <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-auth-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
+
+    <!-- Google Analytics 4 (Reemplaza G-XXXXXXXXXX cuando tengas tu ID de medición) -->
+    <!--
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'G-XXXXXXXXXX', { 'send_page_view': false });
+    </script>
+    -->
+
+    <!-- Microsoft Clarity (Reemplaza TU_ID_CLARITY cuando tengas tu ID de proyecto) -->
+    <!--
+    <script type="text/javascript">
+        (function(c,l,a,r,i,t,y){
+            c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
+            t=l.createElement(r);t.async=1;t.src="https://www.clarity.microsoft.com/tag/"+i;
+            y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
+        })(window, document, "clarity", "script", "TU_ID_CLARITY");
+    </script>
+    -->
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -80,6 +105,19 @@
 
         .script { font-family: var(--font-script); font-weight: 400; letter-spacing: 0; text-transform: none; }
 
+        /* ===== ANIMACIONES SUAVES DE ENTRADA ===== */
+        .reveal {
+            opacity: 0;
+            transform: translateY(22px);
+            transition: opacity 0.7s cubic-bezier(0.22, 1, 0.36, 1), transform 0.7s cubic-bezier(0.22, 1, 0.36, 1);
+        }
+
+        .reveal.is-visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* ===== BARRA SUPERIOR Y HEADER ===== */
         .topbar {
             background: var(--blush);
             color: var(--burgundy);
@@ -101,7 +139,7 @@
 
         .logo {
             font-family: var(--font-script);
-            font-size: 2rem;
+            font-size: 2.1rem;
             color: var(--cream);
             text-decoration: none;
             display: flex;
@@ -186,6 +224,7 @@
         .mobile-menu a#mobile-btn-mis-cursos { background: var(--hot); color: #fff; border-color: var(--hot); }
         .mobile-menu a#mobile-btn-panel-admin { background: var(--plum); color: #fff; border-color: var(--plum); }
 
+        /* ===== HERO ===== */
         .hero {
             padding: 3.5rem 1.5rem 6rem;
             background: var(--grad-pink);
@@ -227,6 +266,10 @@
             text-align: center;
             transition: var(--transition);
             border: 1px solid var(--burgundy);
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
         }
 
         .btn-primary:hover { background: var(--cream); color: var(--burgundy); transform: translateY(-3px); }
@@ -267,6 +310,7 @@
 
         .floating-card-icon { font-size: 1.6rem; background: var(--pink); padding: 8px; border-radius: 50%; line-height: 1; }
 
+        /* CINTA EN MOVIMIENTO */
         .marquee { background: var(--blush); overflow: hidden; white-space: nowrap; padding: 0.8rem 0; color: var(--burgundy); }
         .marquee-track { display: inline-flex; animation: marquee 30s linear infinite; }
         .marquee span { font-family: var(--font-serif-it); font-style: italic; font-weight: 500; font-size: 1.1rem; padding: 0 1.6rem; }
@@ -274,14 +318,17 @@
 
         @media (prefers-reduced-motion: reduce) {
             .marquee-track { animation: none; }
+            .reveal { opacity: 1; transform: none; transition: none; }
             * { transition: none !important; scroll-behavior: auto !important; }
         }
 
+        /* BANDA VINO CON CIFRAS */
         .numbers { background: var(--burgundy); padding: 2.6rem 1.5rem; }
         .numbers-grid { display: grid; grid-template-columns: 1fr; gap: 1.6rem; text-align: center; }
         .numbers-item strong { display: block; font-family: var(--font-chunk); font-weight: 400; font-size: 2.4rem; color: var(--cream); line-height: 1.1; }
         .numbers-item span { color: var(--pink); font-family: var(--font-serif-it); font-style: italic; font-size: 1.1rem; }
 
+        /* BENEFICIOS */
         .benefits { padding: 6rem 1.5rem; background-color: var(--blush); }
         .section-header { text-align: center; max-width: 760px; margin: 0 auto 4rem; }
 
@@ -320,6 +367,105 @@
         .benefit-body { max-width: 340px; }
         .benefit-card h3 { font-size: 1.35rem; margin-bottom: 0.8rem; color: var(--burgundy); }
         .benefit-card p { color: var(--ink); font-size: 1rem; }
+
+        /* ===== TRANSFORMACIÓN / GALERÍA ===== */
+        .gallery-section {
+            padding: 6rem 1.5rem;
+            background: var(--cream);
+        }
+
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 2rem;
+        }
+
+        .gallery-card {
+            background: var(--pearl);
+            border-radius: 24px;
+            padding: 1.25rem;
+            box-shadow: 0 14px 32px rgba(90, 16, 48, 0.12);
+            transition: var(--transition);
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .gallery-card:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 20px 38px rgba(90, 16, 48, 0.18);
+        }
+
+        .gallery-card img {
+            width: 100%;
+            height: 250px;
+            object-fit: cover;
+            border-radius: 18px;
+        }
+
+        .gallery-caption h3 {
+            font-size: 1.15rem;
+            color: var(--burgundy);
+            margin-bottom: 0.35rem;
+        }
+
+        .gallery-caption p {
+            color: var(--muted);
+            font-size: 0.95rem;
+        }
+
+        /* ===== SOBRE MÍ / NOSOTROS ===== */
+        .about-section {
+            padding: 6rem 1.5rem;
+            background: var(--grad-soft);
+        }
+
+        .about-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 3rem;
+            align-items: center;
+        }
+
+        .about-visual {
+            display: flex;
+            justify-content: center;
+        }
+
+        .about-photo {
+            width: 100%;
+            max-width: 400px;
+            height: 430px;
+            object-fit: cover;
+            border-radius: 28px;
+            border: 8px solid var(--pearl);
+            box-shadow: 0 18px 36px rgba(90, 16, 48, 0.2);
+            transition: var(--transition);
+        }
+
+        .about-photo:hover {
+            transform: rotate(-1.5deg) scale(1.02);
+        }
+
+        .about-content .section-header {
+            text-align: left;
+            margin: 0 0 1.5rem;
+        }
+
+        .about-content p {
+            color: var(--ink);
+            font-size: 1.02rem;
+            margin-bottom: 1.1rem;
+        }
+
+        .about-highlights {
+            list-style: none;
+            display: grid;
+            gap: 0.65rem;
+            margin: 1.4rem 0 2rem;
+            color: var(--burgundy);
+            font-weight: 500;
+        }
 
         /* ===== BLOQUEO OBLIGATORIO DE COOKIES ===== */
         body.cookies-locked {
@@ -508,7 +654,7 @@
         }
 
         footer { background-color: var(--burgundy); color: var(--blush); padding: 3.5rem 1.5rem 2rem; text-align: center; }
-        .footer-logo { font-size: 2.4rem; color: var(--cream); margin-bottom: 0.8rem; font-family: var(--font-script); }
+        .footer-logo { font-size: 2.5rem; color: var(--cream); margin-bottom: 0.8rem; font-family: var(--font-script); }
         .footer-logo span { color: var(--pink); }
 
         .footer-legal {
@@ -544,6 +690,8 @@
             .hero-buttons { flex-direction: row; }
             .numbers-grid { grid-template-columns: repeat(3, 1fr); }
             .benefits-grid { grid-template-columns: repeat(3, 1fr); }
+            .gallery-grid { grid-template-columns: repeat(3, 1fr); }
+            .about-grid { grid-template-columns: 0.9fr 1.1fr; }
             .section-title { font-size: 2.8rem; }
             .section-tag { font-size: 3.8rem; }
         }
@@ -555,7 +703,7 @@
 
     <header>
         <div class="container nav-container">
-            <a href="index.html" class="logo">Create Your <span>Glow</span> ✨</a>
+            <a href="index.html" class="logo">Glam<span>ify</span> ✨</a>
 
             <ul class="nav-links">
                 <li><a href="#beneficios">Beneficios</a></li>
@@ -635,8 +783,8 @@
 
     <div class="marquee" aria-hidden="true">
         <div class="marquee-track">
-            <span>✱ Marca personal</span><span>✱ Contenido que vende</span><span>✱ Agenda llena</span><span>✱ Create your glow</span>
-            <span>✱ Marca personal</span><span>✱ Contenido que vende</span><span>✱ Agenda llena</span><span>✱ Create your glow</span>
+            <span>✱ Marca personal</span><span>✱ Contenido que vende</span><span>✱ Agenda llena</span><span>✱ Glamify</span>
+            <span>✱ Marca personal</span><span>✱ Contenido que vende</span><span>✱ Agenda llena</span><span>✱ Glamify</span>
         </div>
     </div>
 
@@ -650,13 +798,13 @@
 
     <section class="benefits" id="beneficios">
         <div class="container">
-            <div class="section-header">
+            <div class="section-header reveal">
                 <span class="section-tag">¿Por qué este programa?</span>
                 <h2 class="section-title">El impulso definitivo para tu carrera de belleza</h2>
             </div>
 
             <div class="benefits-grid">
-                <div class="benefit-card">
+                <div class="benefit-card reveal">
                     <img src="img/descarga (61).jpg" alt="Marca Personal Elegante" class="benefit-img">
                     <div class="benefit-body">
                         <h3>Marca personal inolvidable</h3>
@@ -664,7 +812,7 @@
                     </div>
                 </div>
 
-                <div class="benefit-card">
+                <div class="benefit-card reveal">
                     <img src="img/descarga (62).jpg" alt="Creación de Videos" class="benefit-img">
                     <div class="benefit-body">
                         <h3>Videos virales y nítidos</h3>
@@ -672,7 +820,7 @@
                     </div>
                 </div>
 
-                <div class="benefit-card">
+                <div class="benefit-card reveal">
                     <img src="img/descarga (63).jpg" alt="Agenda Llena y Rentable" class="benefit-img">
                     <div class="benefit-body">
                         <h3>Agenda llena y rentable</h3>
@@ -683,9 +831,72 @@
         </div>
     </section>
 
+    <!-- TRANSFORMACIÓN Y RESULTADOS -->
+    <section class="gallery-section" id="galeria">
+        <div class="container">
+            <div class="section-header reveal">
+                <span class="section-tag">Transformación real</span>
+                <h2 class="section-title">Del contenido invisible a una marca que enamora</h2>
+            </div>
+
+            <div class="gallery-grid">
+                <article class="gallery-card reveal">
+                    <img src="img/1067282812339212742.jpg" alt="Iluminación y grabación de maquillaje">
+                    <div class="gallery-caption">
+                        <h3>Luz y textura sin filtros engañosos</h3>
+                        <p>Configura encuadres e iluminación que resalten la piel real y el trabajo de difuminado de tus maquillajes.</p>
+                    </div>
+                </article>
+
+                <article class="gallery-card reveal">
+                    <img src="img/425942077281145684.jpg" alt="Dirección estética de marca de belleza">
+                    <div class="gallery-caption">
+                        <h3>Identidad visual coherente</h3>
+                        <p>Construye un feed con estética definida para que nuevas clientas reconozcan tu estilo y confíen en tu tarifa.</p>
+                    </div>
+                </article>
+
+                <article class="gallery-card reveal">
+                    <img src="img/Photography.jpg" alt="Estrategia y crecimiento para maquillistas">
+                    <div class="gallery-caption">
+                        <h3>De vistas a reservas constantes</h3>
+                        <p>Aplica mensajes claros y llamados a la acción pensados para convertir seguidores en citas agendadas.</p>
+                    </div>
+                </article>
+            </div>
+        </div>
+    </section>
+
+    <!-- SOBRE MÍ -->
+    <section class="about-section" id="nosotros">
+        <div class="container about-grid">
+            <div class="about-visual reveal">
+                <img src="img/Photography.jpg" alt="Fundadora de Glamify" class="about-photo">
+            </div>
+
+            <div class="about-content reveal">
+                <div class="section-header">
+                    <span class="section-tag">Sobre mí</span>
+                    <h2 class="section-title">Hecho para maquillistas que quieren vivir de su talento</h2>
+                </div>
+
+                <p>En <strong>Glamify</strong> creamos rutas prácticas y directas para artistas del maquillaje que dominan la técnica pero necesitan que su presencia digital refleje el mismo nivel de calidad.</p>
+                <p>Aquí no hay fórmulas vacías: trabajamos en cómo presentas tu trabajo, cómo comunicas tu valor y cómo conviertes tu perfil en un imán de clientas ideales.</p>
+
+                <ul class="about-highlights">
+                    <li>✨ Metodología paso a paso aplicada a casos reales de belleza.</li>
+                    <li>🎥 Enfoque práctico en video, estética y comunicación estratégica.</li>
+                    <li>💼 Acceso a tus cursos desde tu cuenta personal en cualquier momento.</li>
+                </ul>
+
+                <a href="cursos.html" class="btn-primary">Explorar los cursos ✨</a>
+            </div>
+        </div>
+    </section>
+
     <footer>
         <div class="container">
-            <div class="footer-logo">Create Your <span>Glow</span> ✨</div>
+            <div class="footer-logo">Glam<span>ify</span> ✨</div>
             <p>Estrategias digitales para maquillistas</p>
             <div class="footer-legal">
                 <button type="button" data-open-legal="terms">Términos y Condiciones</button>
@@ -699,7 +910,7 @@
         <div class="cyg-cookie-banner">
             <div id="cygCookieTitle" class="cyg-cookie-title">🍪 Acepta las cookies para continuar</div>
             <p class="cyg-cookie-text">
-                Para navegar por <strong>Create Your Glow</strong> y usar funciones como el inicio de sesión y la experiencia personalizada, debes aceptar el uso de cookies, nuestros Términos y Condiciones y el Tratamiento de Datos.
+                Para navegar por <strong>Glamify</strong> y usar funciones como el inicio de sesión y la experiencia personalizada, debes aceptar el uso de cookies, nuestros Términos y Condiciones y el Tratamiento de Datos.
             </p>
             <div class="cyg-legal-links">
                 <button type="button" class="cyg-legal-link-btn" data-open-legal="terms">Leer Términos y Condiciones</button>
@@ -784,6 +995,29 @@
             hamburgerBtn.addEventListener('click', toggleMenu);
         }
 
+        // Animación sutil al hacer scroll
+        (function initScrollReveal() {
+            const items = document.querySelectorAll(".reveal");
+            if (!items.length) return;
+
+            if (window.matchMedia("(prefers-reduced-motion: reduce)").matches || !("IntersectionObserver" in window)) {
+                items.forEach((el) => el.classList.add("is-visible"));
+                return;
+            }
+
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach((entry) => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add("is-visible");
+                        observer.unobserve(entry.target);
+                    }
+                });
+            }, { threshold: 0.14 });
+
+            items.forEach((el) => observer.observe(el));
+        })();
+
+        // Modal de Términos y Condiciones y Tratamiento de Datos
         (function initLegalModal() {
             const backdrop = document.getElementById("cygLegalModalBackdrop");
             const titleEl = document.getElementById("cygLegalModalTitle");
@@ -795,14 +1029,14 @@
 
             const documents = {
                 terms: {
-                    title: "Términos y Condiciones de Uso — Create Your Glow",
+                    title: "Términos y Condiciones de Uso — Glamify",
                     html: `
                         <h4>1. Aceptación de los términos</h4>
-                        <p>Al acceder y utilizar la plataforma web de <strong>Create Your Glow</strong>, aceptas cumplir estos Términos y Condiciones y las políticas aquí descritas.</p>
+                        <p>Al acceder y utilizar la plataforma web de <strong>Glamify</strong>, aceptas cumplir estos Términos y Condiciones y las políticas aquí descritas.</p>
                         <h4>2. Cuentas y acceso a los cursos</h4>
                         <p>El acceso a los cursos y contenidos digitales está destinado al uso personal del usuario registrado. Está prohibido compartir credenciales, revender o distribuir el material sin autorización.</p>
                         <h4>3. Propiedad intelectual</h4>
-                        <p>Todos los videos, guías, diseños, textos y recursos de Create Your Glow pertenecen a la marca o a sus respectivos autores y están protegidos por las normas de propiedad intelectual aplicables.</p>
+                        <p>Todos los videos, guías, diseños, textos y recursos de Glamify pertenecen a la marca o a sus respectivos autores y están protegidos por las normas de propiedad intelectual aplicables.</p>
                         <h4>4. Disponibilidad del servicio</h4>
                         <p>Nos esforzamos por mantener la plataforma disponible y actualizada, pudiendo realizar mejoras o mantenimientos técnicos cuando sea necesario.</p>
                     `
@@ -811,13 +1045,13 @@
                     title: "Política de Tratamiento de Datos Personales",
                     html: `
                         <h4>1. Responsable y finalidad</h4>
-                        <p>En <strong>Create Your Glow</strong> tratamos los datos personales (como nombre, correo electrónico o información de cuenta) para gestionar el acceso a la plataforma, administrar cursos, prestar soporte y mejorar nuestros servicios.</p>
+                        <p>En <strong>Glamify</strong> tratamos los datos personales (como nombre, correo electrónico o información de cuenta) para gestionar el acceso a la plataforma, administrar cursos, prestar soporte y mejorar nuestros servicios.</p>
                         <h4>2. Cookies y tecnologías similares</h4>
                         <p>Utilizamos almacenamiento local y cookies para recordar preferencias, mantener la sesión activa y habilitar funciones o mediciones autorizadas por el usuario.</p>
                         <h4>3. Encargados y seguridad</h4>
                         <p>La autenticación y el almacenamiento de datos pueden apoyarse en servicios tecnológicos como Firebase bajo medidas razonables de seguridad.</p>
                         <h4>4. Derechos del titular</h4>
-                        <p>Como titular de tus datos, puedes solicitar su consulta, actualización, rectificación o eliminación a través de los canales de contacto oficiales de Create Your Glow.</p>
+                        <p>Como titular de tus datos, puedes solicitar su consulta, actualización, rectificación o eliminación a través de los canales de contacto oficiales de Glamify.</p>
                     `
                 }
             };
@@ -849,8 +1083,9 @@
             });
         })();
 
+        // Gestión estricta: desbloquea la página solo al aceptar cookies
         (function initCookieBanner() {
-            const COOKIE_KEY = "cyg_cookies_consent";
+            const COOKIE_KEY = "glamify_cookies_consent";
             const backdrop = document.getElementById("cygCookieBackdrop");
             const btnAccept = document.getElementById("cygAcceptCookies");
             const btnReject = document.getElementById("cygRejectCookies");
@@ -892,7 +1127,15 @@
             });
 
             function enableOptionalCookies() {
-                // Aquí se activan scripts como Google Analytics o Microsoft Clarity tras aceptar
+                // Activa Google Analytics cuando tengas tu ID G-XXXXXXXXXX:
+                // if (typeof gtag === 'function') {
+                //     gtag('config', 'G-XXXXXXXXXX', { 'send_page_view': true });
+                // }
+
+                // Activa consentimiento en Microsoft Clarity cuando tengas tu ID:
+                // if (typeof clarity === 'function') {
+                //     clarity("consent");
+                // }
             }
         })();
     </script>
