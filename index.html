@@ -20,16 +20,14 @@
         gtag('config', 'G-65CL4G4DK7', { 'send_page_view': false });
     </script>
 
-    <!-- Microsoft Clarity (Reemplaza TU_ID_CLARITY cuando tengas tu ID de proyecto) -->
-    <!--
+    <!-- Microsoft Clarity -->
     <script type="text/javascript">
         (function(c,l,a,r,i,t,y){
             c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
             t=l.createElement(r);t.async=1;t.src="https://www.clarity.microsoft.com/tag/"+i;
             y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
-        })(window, document, "clarity", "script", "TU_ID_CLARITY");
+        })(window, document, "clarity", "script", "zg9nopbgwn");
     </script>
-    -->
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -1127,10 +1125,9 @@
                     gtag('config', 'G-65CL4G4DK7', { 'send_page_view': true });
                 }
 
-                // Activa consentimiento en Microsoft Clarity cuando tengas tu ID:
-                // if (typeof clarity === 'function') {
-                //     clarity("consent");
-                // }
+                if (typeof clarity === 'function') {
+                    clarity("consent");
+                }
             }
         })();
     </script>
