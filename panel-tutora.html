@@ -1,4 +1,305 @@
-const loadingAuth = document.getElementById("loading-auth");
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Panel de Tutora | CREATE YOUR GLOW</title>
+
+    <!-- SDKs de Firebase (Versión Compat) -->
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
+
+    <!-- Google Fonts & FontAwesome -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@500;700&family=DM+Sans:wght@400;500;700&family=Fraunces:ital,opsz,wght@0,9..144,600;0,9..144,800;1,9..144,600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <script>
+        const firebaseConfig = {
+            apiKey: "AIzaSyCR724EP9rNkKtETG1xM_CGSQ1ZIHhbOhc",
+            authDomain: "create-your-glow.firebaseapp.com",
+            projectId: "create-your-glow",
+            storageBucket: "create-your-glow.firebasestorage.app",
+            messagingSenderId: "917183846981",
+            appId: "1:917183846981:web:214a14dbefdbdcc017612c"
+        };
+        firebase.initializeApp(firebaseConfig);
+        const auth = firebase.auth();
+        const db = firebase.firestore();
+    </script>
+
+    <style>
+        :root {
+            --lavender: #C5B3F2;
+            --pink: #F7A8D0;
+            --pink-soft: #FBD3E6;
+            --coral: #F7704F;
+            --burgundy: #6B0F2E;
+            --olive: #A7A83B;
+            --yellow: #FFF08A;
+            --cream: #FBF3E8;
+            --ink: #261B2B;
+            --muted: #6A5870;
+
+            --grad-hero: linear-gradient(160deg, #F7A8D0 0%, #E9B4E8 35%, #C5B3F2 65%, #F9B08C 100%);
+            --hard: 5px 5px 0 var(--ink);
+            --hard-sm: 3px 3px 0 var(--ink);
+            --transition: all 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; scroll-behavior: smooth; }
+
+        body {
+            font-family: 'DM Sans', sans-serif;
+            background-color: var(--cream);
+            color: var(--ink);
+            line-height: 1.65;
+            overflow-x: hidden;
+        }
+
+        h1, h2, h3 { font-family: 'Fraunces', serif; letter-spacing: -0.02em; }
+        .container { width: 90%; max-width: 900px; margin: 0 auto; }
+
+        /* HEADER */
+        .topbar {
+            background: var(--pink);
+            color: var(--burgundy);
+            text-align: center;
+            font-size: 0.8rem;
+            font-weight: 700;
+            padding: 0.4rem 1rem;
+            letter-spacing: 0.3px;
+        }
+
+        header {
+            background-color: var(--burgundy);
+            border-bottom: 3px solid var(--ink);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .nav-container { display: flex; justify-content: space-between; align-items: center; padding: 0.9rem 1.5rem; }
+
+        .logo {
+            font-family: 'Fraunces', serif;
+            font-size: 1.3rem;
+            font-weight: 800;
+            color: var(--cream);
+            text-decoration: none;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+        }
+
+        .logo span { color: var(--pink); font-style: italic; }
+
+        .btn-back {
+            background: var(--olive);
+            color: var(--cream);
+            border: 2px solid var(--ink);
+            padding: 0.6rem 1.4rem;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 0.82rem;
+            text-transform: uppercase;
+            letter-spacing: 0.8px;
+            box-shadow: var(--hard-sm);
+            transition: var(--transition);
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn-back:hover { transform: translate(-2px, -2px); box-shadow: 5px 5px 0 var(--ink); background: var(--yellow); color: var(--ink); }
+
+        /* MAIN */
+        .main-panel {
+            padding: 4rem 1.5rem 6rem;
+        }
+
+        .panel-card {
+            background: #FFFFFF;
+            border-radius: 28px;
+            border: 2.5px solid var(--ink);
+            box-shadow: var(--hard);
+            padding: 3rem 2.5rem;
+            position: relative;
+        }
+
+        .panel-title {
+            font-size: 2.2rem;
+            font-weight: 800;
+            color: var(--burgundy);
+            margin-bottom: 0.5rem;
+            text-align: center;
+        }
+
+        .panel-subtitle {
+            text-align: center;
+            color: var(--muted);
+            font-size: 1rem;
+            margin-bottom: 2.5rem;
+            font-weight: 500;
+        }
+
+        /* FORMULARIO */
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-label {
+            display: block;
+            font-size: 0.85rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.8px;
+            color: var(--burgundy);
+            margin-bottom: 0.5rem;
+        }
+
+        .form-input, .form-textarea {
+            width: 100%;
+            padding: 0.9rem 1.2rem;
+            border-radius: 16px;
+            border: 2px solid var(--ink);
+            background: var(--cream);
+            color: var(--ink);
+            font-family: 'DM Sans', sans-serif;
+            font-size: 1rem;
+            outline: none;
+            transition: var(--transition);
+        }
+
+        .form-input:focus, .form-textarea:focus {
+            border-color: var(--coral);
+            box-shadow: 4px 4px 0 var(--ink);
+            background: #FFFFFF;
+        }
+
+        .btn-submit {
+            width: 100%;
+            background: var(--yellow);
+            color: var(--ink);
+            padding: 1.1rem;
+            border: 2.5px solid var(--ink);
+            border-radius: 50px;
+            font-family: 'DM Sans', sans-serif;
+            font-weight: 700;
+            font-size: 0.95rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            cursor: pointer;
+            box-shadow: var(--hard);
+            transition: var(--transition);
+            margin-top: 1rem;
+        }
+
+        .btn-submit:hover {
+            transform: translate(-3px, -3px);
+            box-shadow: 8px 8px 0 var(--ink);
+            background: var(--olive);
+            color: var(--cream);
+        }
+
+        /* ESTADOS DE CARGA / ACCESO */
+        .status-box {
+            text-align: center;
+            padding: 3rem;
+            background: var(--cream);
+            border: 2.5px solid var(--ink);
+            border-radius: 22px;
+            box-shadow: var(--hard-sm);
+            font-weight: 700;
+            font-size: 1.1rem;
+            color: var(--burgundy);
+        }
+    </style>
+</head>
+<body>
+
+    <div class="topbar">✨ Panel Exclusivo para Gestión Académica ✨</div>
+
+    <header>
+        <div class="container nav-container">
+            <a href="index.html" class="logo">CREATE YOUR <span>GLOW</span> ✨</a>
+            <a href="index.html" class="btn-back"><i class="fa-solid fa-arrow-left"></i> Volver al Inicio</a>
+        </div>
+    </header>
+
+    <main class="container main-panel">
+        <div class="panel-card">
+
+            <!-- VERIFICANDO PERMISOS -->
+            <div id="loading-auth" class="status-box">
+                <i class="fa-solid fa-spinner fa-spin" style="font-size: 2rem; margin-bottom: 1rem; display: block;"></i>
+                Verificando permisos de tutora en la plataforma...
+            </div>
+
+            <!-- FORMULARIO DE LECCIÓN (OCULTO HASTA VALIDAR) -->
+            <form id="form-leccion" style="display: none;">
+                <h1 class="panel-title">Subir Nueva Clase 💖</h1>
+                <p class="panel-subtitle">Agrega contenido interactivo, videos y materiales para tus alumnas.</p>
+
+                <div class="form-group">
+                    <label class="form-label">ID del Curso (Copia el ID exacto de Firestore, ej: IpBGipzVnbWvUImv6TEf):</label>
+                    <input type="text" id="courseId" class="form-input" placeholder="Ej. IpBGipzVnbWvUImv6TEf" value="IpBGipzVnbWvUImv6TEf" required>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Número de Módulo:</label>
+                    <input type="number" id="moduleNumber" class="form-input" value="1" required>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Nombre del Módulo:</label>
+                    <input type="text" id="moduleName" class="form-input" placeholder="Ej. Módulo 1: Fundamentos de Marca" required>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Número de Orden de la Lección:</label>
+                    <input type="number" id="order" class="form-input" value="1" required>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Título de la Clase:</label>
+                    <input type="text" id="title" class="form-input" placeholder="Ej. Clase 1: Tu Propuesta Única de Valor" required>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">URL del Video de YouTube:</label>
+                    <input type="url" id="videoUrl" class="form-input" placeholder="https://www.youtube.com/watch?v=..." required>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">URL del Material (Google Drive / PDF Opcional):</label>
+                    <input type="url" id="materialUrl" class="form-input" placeholder="https://drive.google.com/...">
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Contenido o Resumen:</label>
+                    <textarea id="content" class="form-textarea" rows="4" placeholder="Escribe un breve resumen de lo que aprenderán en esta clase..."></textarea>
+                </div>
+
+                <button type="submit" class="btn-submit">Publicar Lección Ahora ✨</button>
+            </form>
+
+            <!-- ACCESO DENEGADO -->
+            <div id="unauthorized" class="status-box" style="display: none; background: var(--pink-soft); color: var(--burgundy);">
+                <i class="fa-solid fa-triangle-exclamation" style="font-size: 2.5rem; margin-bottom: 1rem; display: block;"></i>
+                <h3>Acceso Restringido</h3>
+                <p style="margin-top: 0.5rem; font-weight: 500;">Esta sección es exclusiva para la tutora de Create Your Glow. Por favor inicia sesión con tu cuenta de administradora.</p>
+                <a href="auth.html" class="btn-submit" style="display: inline-block; width: auto; padding: 0.8rem 2rem; margin-top: 1.5rem; text-decoration: none;">Iniciar Sesión ✨</a>
+            </div>
+
+        </div>
+    </main>
+
+    <!-- SCRIPT DE VALIDACIÓN Y ENVÍO -->
+    <script>
+        const loadingAuth = document.getElementById("loading-auth");
         const formLeccion = document.getElementById("form-leccion");
         const unauthorized = document.getElementById("unauthorized");
         const unauthorizedMsg = unauthorized.querySelector("p");
@@ -29,3 +330,65 @@ const loadingAuth = document.getElementById("loading-auth");
                     "No se pudo leer tu perfil en Firestore (" + (error.code || "error") + "). Revisa las reglas de Firestore.";
             }
         });
+
+        formLeccion.addEventListener("submit", async (e) => {
+            e.preventDefault();
+
+            const btnSubmit = document.querySelector('.btn-submit');
+            btnSubmit.innerText = "Publicando clase...";
+            btnSubmit.disabled = true;
+
+            const courseIdVal = document.getElementById("courseId").value.trim();
+            const moduleNameVal = document.getElementById("moduleName").value.trim();
+            const moduleNumberVal = Number(document.getElementById("moduleNumber").value);
+
+            try {
+                const moduleQuery = await db.collection("modules")
+                    .where("courseId", "==", courseIdVal)
+                    .where("title", "==", moduleNameVal)
+                    .get();
+
+                let moduleId = "";
+
+                if (!moduleQuery.empty) {
+                    moduleId = moduleQuery.docs[0].id;
+                } else {
+                    const nuevoModulo = {
+                        courseId: courseIdVal,
+                        title: moduleNameVal,
+                        moduleNumber: moduleNumberVal,
+                        createdAt: firebase.firestore.FieldValue.serverTimestamp()
+                    };
+                    const modDocRef = await db.collection("modules").add(nuevoModulo);
+                    moduleId = modDocRef.id;
+                }
+
+                const nuevaLeccion = {
+                    moduleId: moduleId,
+                    courseId: courseIdVal,
+                    order: Number(document.getElementById("order").value),
+                    title: document.getElementById("title").value,
+                    videoUrl: document.getElementById("videoUrl").value,
+                    materialUrl: document.getElementById("materialUrl").value,
+                    content: document.getElementById("content").value,
+                    createdAt: firebase.firestore.FieldValue.serverTimestamp()
+                };
+
+                await db.collection("lessons").add(nuevaLeccion);
+
+                alert("¡Módulo y clase subidos y vinculados con éxito en Firestore! 🎉");
+                formLeccion.reset();
+                document.getElementById("courseId").value = courseIdVal;
+                btnSubmit.innerText = "Publicar Lección Ahora ✨";
+                btnSubmit.disabled = false;
+
+            } catch (error) {
+                console.error("Error al guardar en la base de datos:", error);
+                alert("Hubo un error al guardar la lección en la base de datos.");
+                btnSubmit.innerText = "Publicar Lección Ahora ✨";
+                btnSubmit.disabled = false;
+            }
+        });
+    </script>
+</body>
+</html>
