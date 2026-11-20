@@ -472,8 +472,9 @@
 
     <!-- LÓGICA JAVASCRIPT UNIFICADA Y ROBUSTA -->
     <script>
-        const urlParams = new URLSearchParams(window.location.search);
-        const courseName = urlParams.get('nombre');
+               const urlParams = new URLSearchParams(window.location.search);
+        const courseId = urlParams.get('courseId');   // ID del documento en "courses"
+        const courseName = urlParams.get('nombre');   // respaldo por título
 
         let currentUser = null;
         let currentCourseId = null;
@@ -482,6 +483,19 @@
         let totalLeccionesCurso = 0;
         let leccionActualId = null;
         let userNameLocal = "Estudiante";
+        const leccionesMap = {};
+
+        function escapeHtml(str) {
+            return String(str ?? '').replace(/[&<>"']/g, c => ({
+                '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'
+            }[c]));
+        }
+
+        function obtenerEmbedYoutube(url) {
+            if (!url) return null;
+            const m = url.match(/(?:youtube\.com\/(?:watch\?v=|embed\/|shorts\/)|youtu\.be\/)([\w-]{11})/);
+            return m ? `https://www.youtube.com/embed/${m[1]}` : null;
+        }
 
         auth.onAuthStateChanged(async (user) => {
             if (!user) {
@@ -492,36 +506,46 @@
 
             try {
                 const userDoc = await db.collection("users").doc(user.uid).get();
-                if(userDoc.exists && userDoc.data().name) {
+                if (userDoc.exists && userDoc.data().name) {
                     userNameLocal = userDoc.data().name;
                 }
             } catch (e) {
                 console.log("Aviso: No se pudo cargar perfil de usuario", e);
             }
 
-            if (courseName) {
-                await cargarEstructuraCurso(courseName);
-            } else {
-                document.getElementById('courseTitleHeader').innerText = "Curso no especificado";
-                document.getElementById('modulesContainer').innerHTML = `<p style="padding: 1rem; color: var(--text-muted); font-size: 0.9rem;">No se indicó ningún curso.</p>`;
-            }
+            await cargarEstructuraCurso();
         });
 
-        async function cargarEstructuraCurso(nombreCurso) {
-            try {
-                const coursesSnapshot = await db.collection("courses")
-                    .where("title", "==", nombreCurso)
-                    .get();
+        // Busca el curso por ID; si no llega, intenta por título
+        async function buscarCurso() {
+            if (courseId) {
+                const snap = await db.collection("courses").doc(courseId).get();
+                if (snap.exists) return snap;
+            }
+            if (courseName) {
+                const q = await db.collection("courses").where("title", "==", courseName).get();
+                if (!q.empty) return q.docs[0];
+            }
+            return null;
+        }
 
-                if (coursesSnapshot.empty) {
+        function ordenarPorOrden(docs) {
+            return docs.slice().sort((a, b) => (a.data().order ?? 0) - (b.data().order ?? 0));
+        }
+
+        async function cargarEstructuraCurso() {
+            const container = document.getElementById('modulesContainer');
+            try {
+                const courseDoc = await buscarCurso();
+
+                if (!courseDoc) {
                     document.getElementById('courseTitleHeader').innerText = "Curso no encontrado";
-                    document.getElementById('modulesContainer').innerHTML = `<p style="padding: 1rem; color: var(--text-muted); font-size: 0.9rem;">El curso no existe en la base de datos.</p>`;
+                    container.innerHTML = `<p style="padding: 1rem; color: var(--text-muted); font-size: 0.9rem;">El curso no existe en la base de datos.</p>`;
                     return;
                 }
 
-                const courseDoc = coursesSnapshot.docs[0];
                 currentCourseId = courseDoc.id;
-                document.getElementById('courseTitleHeader').innerText = courseDoc.data().title;
+                document.getElementById('courseTitleHeader').innerText = courseDoc.data().title || 'Curso';
 
                 await sincronizarInscripcionEstudiante();
 
@@ -529,109 +553,127 @@
                     .where("courseId", "==", currentCourseId)
                     .get();
 
-                const container = document.getElementById('modulesContainer');
+                // Clases sin moduleId (subidas antes de la corrección): se agrupan por moduleName
+                const lessonsSnapshot = await db.collection("lessons")
+                    .where("courseId", "==", currentCourseId)
+                    .get();
+                const clasesSinModulo = lessonsSnapshot.docs.filter(d => !d.data().moduleId);
+
                 container.innerHTML = '';
+                totalLeccionesCurso = 0;
 
-                if (modulesSnapshot.empty) {
-                    container.innerHTML = `<p style="padding: 1rem; color: var(--text-muted); font-size: 0.9rem;">Próximamente se agregarán módulos.</p>`;
+                const modulos = ordenarPorOrden(modulesSnapshot.docs);
+
+                for (const modDoc of modulos) {
+                    const lessonsSnap = await db.collection("lessons")
+                        .where("moduleId", "==", modDoc.id)
+                        .get();
+                    const lecciones = ordenarPorOrden(lessonsSnap.docs);
+                    totalLeccionesCurso += lecciones.length;
+                    renderModulo(modDoc.data().title || 'Módulo', lecciones, container);
+                }
+
+                // Agrupar clases antiguas por nombre de módulo
+                const grupos = {};
+                clasesSinModulo.forEach(d => {
+                    const nombre = d.data().moduleName || 'Clases generales';
+                    (grupos[nombre] = grupos[nombre] || []).push(d);
+                });
+                Object.keys(grupos).forEach(nombre => {
+                    totalLeccionesCurso += grupos[nombre].length;
+                    renderModulo(nombre, ordenarPorOrden(grupos[nombre]), container);
+                });
+
+                if (totalLeccionesCurso === 0) {
+                    container.innerHTML = `<p style="padding: 1rem; color: var(--text-muted); font-size: 0.9rem;">Próximamente se agregarán clases.</p>`;
                     return;
-                }
-
-                let totalCount = 0;
-                for (const modDoc of modulesSnapshot.docs) {
-                    const lessonsSnap = await db.collection("lessons").where("moduleId", "==", modDoc.id).get();
-                    totalCount += lessonsSnap.size;
-                }
-                totalLeccionesCurso = totalCount;
-
-                for (const modDoc of modulesSnapshot.docs) {
-                    const modData = modDoc.data();
-                    const modElement = document.createElement('div');
-                    modElement.className = 'module-item';
-                    modElement.innerHTML = `
-                        <div class="module-title">
-                            <i class="fa-solid fa-folder-open" style="color: var(--violet-glow);"></i> 
-                            ${modData.title || 'Módulo'}
-                        </div>
-                        <ul class="lessons-list" id="lessons-${modDoc.id}"></ul>
-                    `;
-                    container.appendChild(modElement);
-
-                    await cargarLeccionesDeModulo(modDoc.id, `lessons-${modDoc.id}`);
                 }
 
                 actualizarBarraProgresoVisual();
 
+                // Reproducir automáticamente la primera clase
+                const primera = document.querySelector('.lesson-link');
+                if (primera) primera.click();
+
             } catch (error) {
                 console.error("Error al cargar estructura:", error);
+                container.innerHTML = `<p style="padding: 1rem; color: var(--text-muted); font-size: 0.9rem;">No se pudo cargar el contenido. Intenta de nuevo.</p>`;
             }
+        }
+
+        function renderModulo(titulo, lecciones, container) {
+            const modElement = document.createElement('div');
+            modElement.className = 'module-item';
+            modElement.innerHTML = `
+                <div class="module-title">
+                    <i class="fa-solid fa-folder-open" style="color: var(--violet-glow);"></i>
+                    ${escapeHtml(titulo)}
+                </div>
+                <ul class="lessons-list"></ul>
+            `;
+            container.appendChild(modElement);
+
+            const ul = modElement.querySelector('ul');
+            if (lecciones.length === 0) {
+                ul.innerHTML = `<li style="font-size: 0.85rem; color: var(--text-muted); padding: 6px 1rem;">Sin lecciones</li>`;
+                return;
+            }
+
+            lecciones.forEach(docSnap => {
+                const id = docSnap.id;
+                const data = docSnap.data();
+                leccionesMap[id] = data;
+                const completada = leccionesCompletadasIds.includes(id);
+
+                const li = document.createElement('li');
+                li.innerHTML = `
+                    <a href="#" class="lesson-link ${completada ? 'completed' : ''}" id="link-${id}">
+                        <span style="display: flex; align-items: center; gap: 8px;">
+                            <i class="fa-solid ${completada ? 'fa-circle-check' : 'fa-circle-play'}"></i>
+                            ${escapeHtml(data.title || 'Clase')}
+                        </span>
+                    </a>
+                `;
+                li.querySelector('a').addEventListener('click', (e) => {
+                    e.preventDefault();
+                    reproducirLeccion(id, e.currentTarget);
+                });
+                ul.appendChild(li);
+            });
         }
 
         async function sincronizarInscripcionEstudiante() {
             try {
                 const enrSnap = await db.collection("inscripciones")
                     .where("userId", "==", currentUser.uid)
-                    .where("courseTitle", "==", courseName)
+                    .where("courseId", "==", currentCourseId)
                     .get();
 
                 if (!enrSnap.empty) {
                     inscripcionDocId = enrSnap.docs[0].id;
-                    const data = enrSnap.docs[0].data();
-                    leccionesCompletadasIds = data.leccionesCompletadas || [];
+                    leccionesCompletadasIds = enrSnap.docs[0].data().leccionesCompletadas || [];
                 }
             } catch (error) {
                 console.error("Error al sincronizar inscripción:", error);
             }
         }
 
-        async function cargarLeccionesDeModulo(moduleId, containerId) {
-            const lessonsContainer = document.getElementById(containerId);
-            try {
-                const lessonsSnapshot = await db.collection("lessons")
-                    .where("moduleId", "==", moduleId)
-                    .get();
+        function reproducirLeccion(lessonId, element) {
+            const lesson = leccionesMap[lessonId];
+            if (!lesson) return;
 
-                if (lessonsSnapshot.empty) {
-                    lessonsContainer.innerHTML = `<li style="font-size: 0.85rem; color: var(--text-muted); padding: 6px 1rem;">Sin lecciones</li>`;
-                    return;
-                }
-
-                lessonsSnapshot.forEach((lessonDoc) => {
-                    const lessonId = lessonDoc.id;
-                    const lesson = lessonDoc.data();
-                    const isCompleted = leccionesCompletadasIds.includes(lessonId);
-
-                    const li = document.createElement('li');
-                    li.innerHTML = `
-                        <a href="javascript:void(0);" class="lesson-link ${isCompleted ? 'completed' : ''}" id="link-${lessonId}" onclick="reproducirLeccion(this, '${lessonId}', '${encodeURIComponent(lesson.title || 'Clase')}', '${lesson.videoUrl || ''}', '${encodeURIComponent(lesson.content || '')}', '${lesson.materialUrl || ''}')">
-                            <span style="display: flex; align-items: center; gap: 8px;">
-                                <i class="fa-solid ${isCompleted ? 'fa-circle-check' : 'fa-circle-play'}"></i> 
-                                ${lesson.title || 'Clase'}
-                            </span>
-                        </a>
-                    `;
-                    lessonsContainer.appendChild(li);
-                });
-            } catch (error) {
-                console.error("Error al cargar lecciones:", error);
-            }
-        }
-
-        function reproducirLeccion(element, lessonId, tituloEncoded, videoUrl, descripcionEncoded, materialUrl) {
             document.querySelectorAll('.lesson-link').forEach(el => el.classList.remove('active'));
-            element.classList.add('active');
+            if (element) element.classList.add('active');
 
             leccionActualId = lessonId;
-            const titulo = decodeURIComponent(tituloEncoded);
-            const descripcion = decodeURIComponent(descripcionEncoded);
 
-            document.getElementById('lessonTitle').innerText = titulo;
-            document.getElementById('lessonDescription').innerText = descripcion || "Disfruta de esta clase y practica cada técnica paso a paso.";
+            document.getElementById('lessonTitle').innerText = lesson.title || 'Clase';
+            document.getElementById('lessonDescription').innerText =
+                lesson.content || "Disfruta de esta clase y practica cada técnica paso a paso.";
 
-            // Configurar enlace de recursos
             const materialLink = document.getElementById('materialLink');
-            if (materialUrl) {
-                materialLink.href = materialUrl;
+            if (lesson.materialUrl) {
+                materialLink.href = lesson.materialUrl;
                 materialLink.innerText = "Descargar material de la lección";
                 materialLink.style.display = "inline";
             } else {
@@ -641,7 +683,6 @@
 
             const completeBtn = document.getElementById('completeBtn');
             completeBtn.style.display = 'inline-flex';
-
             if (leccionesCompletadasIds.includes(lessonId)) {
                 completeBtn.className = 'btn-complete done';
                 completeBtn.innerHTML = `<i class="fa-solid fa-check"></i> ¡Lección Completada!`;
@@ -650,15 +691,17 @@
                 completeBtn.innerHTML = `<i class="fa-solid fa-circle-check"></i> Marcar como Completada`;
             }
 
+            // Video
             const videoContainer = document.getElementById('videoContainer');
-            if (videoUrl) {
-                let embedUrl = videoUrl;
-                if (videoUrl.includes("youtube.com/watch?v=")) {
-                    embedUrl = videoUrl.replace("watch?v=", "embed/");
-                } else if (videoUrl.includes("youtu.be/")) {
-                    embedUrl = videoUrl.replace("youtu.be/", "www.youtube.com/embed/");
-                }
-                videoContainer.innerHTML = `<iframe src="${embedUrl}" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>`;
+            const embedUrl = obtenerEmbedYoutube(lesson.videoUrl);
+
+            if (embedUrl) {
+                const iframe = document.createElement('iframe');
+                iframe.src = embedUrl;
+                iframe.allow = "accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture";
+                iframe.allowFullscreen = true;
+                videoContainer.innerHTML = '';
+                videoContainer.appendChild(iframe);
             } else {
                 videoContainer.innerHTML = `
                     <div style="text-align: center; padding: 2rem;">
@@ -696,7 +739,9 @@
                 }
             }
 
-            const nuevoProgreso = totalLeccionesCurso > 0 ? Math.round((leccionesCompletadasIds.length / totalLeccionesCurso) * 100) : 0;
+            const nuevoProgreso = totalLeccionesCurso > 0
+                ? Math.round((leccionesCompletadasIds.length / totalLeccionesCurso) * 100)
+                : 0;
 
             try {
                 await db.collection("inscripciones").doc(inscripcionDocId).update({
@@ -710,7 +755,9 @@
         }
 
         function actualizarBarraProgresoVisual() {
-            const porcentaje = totalLeccionesCurso > 0 ? Math.round((leccionesCompletadasIds.length / totalLeccionesCurso) * 100) : 0;
+            const porcentaje = totalLeccionesCurso > 0
+                ? Math.round((leccionesCompletadasIds.length / totalLeccionesCurso) * 100)
+                : 0;
             document.getElementById('progressPercentageText').innerText = `${porcentaje}%`;
             document.getElementById('progressBarFill').style.width = `${porcentaje}%`;
         }
@@ -724,7 +771,7 @@
 
         async function enviarComentario() {
             const texto = document.getElementById('commentInput').value.trim();
-            if(!texto || !leccionActualId) return;
+            if (!texto || !leccionActualId) return;
 
             try {
                 await db.collection("comments").add({
@@ -751,19 +798,19 @@
                     .where("lessonId", "==", lessonId)
                     .get();
 
-                if(snap.empty) {
+                if (snap.empty) {
                     container.innerHTML = `<p style="font-size: 0.85rem; color: var(--text-muted);">No hay dudas aún. ¡Sé la primera en comentar!</p>`;
                     return;
                 }
 
                 container.innerHTML = '';
-                snap.docs.forEach(doc => {
-                    const com = doc.data();
+                snap.docs.forEach(d => {
+                    const com = d.data();
                     const card = document.createElement('div');
                     card.className = 'comment-card';
                     card.innerHTML = `
-                        <div class="comment-user">${com.userName || 'Estudiante'}</div>
-                        <p style="font-size: 0.9rem; color: var(--text-dark);">${com.text}</p>
+                        <div class="comment-user">${escapeHtml(com.userName || 'Estudiante')}</div>
+                        <p style="font-size: 0.9rem; color: var(--text-dark);">${escapeHtml(com.text)}</p>
                     `;
                     container.appendChild(card);
                 });
