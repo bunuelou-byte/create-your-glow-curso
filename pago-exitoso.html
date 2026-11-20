@@ -114,52 +114,79 @@
     </div>
 
     <script>
-        document.addEventListener('DOMContentLoaded', async () => {
+        document.addEventListener('DOMContentLoaded', () => {
+            const msg = document.getElementById('mensajeEstado');
+            const btn = document.getElementById('btnMisCursos');
+
+            const mostrar = (texto) => {
+                msg.innerText = texto;
+                btn.style.display = 'inline-block';
+            };
+
             auth.onAuthStateChanged(async (user) => {
                 if (!user) {
-                    document.getElementById('mensajeEstado').innerText = "Pago exitoso, por favor inicia sesión en tu cuenta para ver tu curso.";
-                    document.getElementById('btnMisCursos').style.display = "inline-block";
+                    mostrar("Pago exitoso, por favor inicia sesión en tu cuenta para ver tu curso.");
                     return;
                 }
 
-                const urlParams = new URLSearchParams(window.location.search);
-                const ref = urlParams.get('ref');
+                // El ref tiene el formato: uid_courseId
+                const ref = new URLSearchParams(window.location.search).get('ref') || '';
+                const idx = ref.indexOf('_');
 
-                if (ref && ref.includes('_')) {
-                    const partes = ref.split('_');
-                    const courseId = partes[1];
+                if (idx <= 0) {
+                    mostrar("¡Pago exitoso! Ya puedes disfrutar de tus formaciones.");
+                    return;
+                }
 
+                const refUid = ref.slice(0, idx);
+                const courseId = ref.slice(idx + 1);
+
+                if (!courseId) {
+                    mostrar("¡Pago exitoso! Ya puedes disfrutar de tus formaciones.");
+                    return;
+                }
+
+                // Evita registrar el pago a nombre de otra cuenta
+                if (refUid !== user.uid) {
+                    mostrar("Pago recibido, pero esta cuenta no coincide con la que pagó. Inicia sesión con la cuenta correcta.");
+                    return;
+                }
+
+                try {
+                    // Título real del curso desde la colección "courses"
+                    let courseTitle = "Curso Especializado";
                     try {
-                        // Intentar obtener el título real del curso desde Firestore si existe una colección de cursos
-                        let courseTitle = "Curso Especializado";
-                        try {
-                            const courseDoc = await db.collection("cursos").doc(courseId).get();
-                            if (courseDoc.exists && courseDoc.data().title) {
-                                courseTitle = courseDoc.data().title;
-                            }
-                        } catch (e) {
-                            console.log("No se pudo leer el título de la colección cursos, usando valor por defecto.");
+                        const courseDoc = await db.collection("courses").doc(courseId).get();
+                        if (courseDoc.exists && courseDoc.data().title) {
+                            courseTitle = courseDoc.data().title;
                         }
+                    } catch (e) {
+                        console.log("No se pudo leer el título del curso, usando valor por defecto.");
+                    }
 
-                        // Guardar en la colección 'inscripciones' de Firestore incluyendo el courseTitle
+                    // Evita inscripciones duplicadas si el usuario recarga la página
+                    const existente = await db.collection("inscripciones")
+                        .where("userId", "==", user.uid)
+                        .where("courseId", "==", courseId)
+                        .limit(1)
+                        .get();
+
+                    if (existente.empty) {
                         await db.collection("inscripciones").add({
                             userId: user.uid,
                             courseId: courseId,
                             courseTitle: courseTitle,
                             enrolledAt: firebase.firestore.FieldValue.serverTimestamp(),
-                            status: "active"
+                            status: "active",
+                            leccionesCompletadas: [],
+                            progreso: 0
                         });
-
-                        document.getElementById('mensajeEstado').innerText = "¡Inscripción completada con éxito! Ya puedes acceder a tu contenido exclusivo.";
-                        document.getElementById('btnMisCursos').style.display = "inline-block";
-                    } catch (error) {
-                        console.error("Error al registrar inscripción:", error);
-                        document.getElementById('mensajeEstado').innerText = "Tu pago fue exitoso, pero hubo un detalle de sincronización. Por favor reintenta o contáctanos.";
-                        document.getElementById('btnMisCursos').style.display = "inline-block";
                     }
-                } else {
-                    document.getElementById('mensajeEstado').innerText = "¡Pago exitoso! Ya puedes disfrutar de tus formaciones.";
-                    document.getElementById('btnMisCursos').style.display = "inline-block";
+
+                    mostrar("¡Inscripción completada con éxito! Ya puedes acceder a tu contenido exclusivo.");
+                } catch (error) {
+                    console.error("Error al registrar inscripción:", error);
+                    mostrar("Tu pago fue exitoso, pero hubo un detalle de sincronización. Por favor reintenta o contáctanos.");
                 }
             });
         });
