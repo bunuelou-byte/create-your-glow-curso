@@ -7,6 +7,27 @@ import {
 const loadingAuth = document.getElementById("loading-auth");
 const formLeccion = document.getElementById("form-leccion");
 const unauthorized = document.getElementById("unauthorized");
+const selectCurso = document.getElementById("courseId");
+
+// Llena la lista desplegable con todos los cursos de Firestore
+async function cargarCursos() {
+    if (!selectCurso) return;
+
+    try {
+        const snap = await getDocs(collection(db, "courses"));
+        selectCurso.innerHTML = '<option value="">— Selecciona un curso —</option>';
+
+        snap.forEach((courseDoc) => {
+            const option = document.createElement("option");
+            option.value = courseDoc.id;
+            option.textContent = `${courseDoc.data().title || "Sin título"} (${courseDoc.id})`;
+            selectCurso.appendChild(option);
+        });
+    } catch (error) {
+        console.error("Error al cargar cursos:", error);
+        alert("No se pudieron cargar los cursos. Revisa la consola.");
+    }
+}
 
 // 1. Verificar autenticación y rol de administrador
 onAuthStateChanged(auth, async (user) => {
@@ -23,6 +44,7 @@ onAuthStateChanged(auth, async (user) => {
 
         if (esAdmin) {
             if (formLeccion) formLeccion.style.display = "block";
+            await cargarCursos();
         } else if (unauthorized) {
             unauthorized.style.display = "block";
         }
@@ -54,7 +76,8 @@ if (formLeccion) {
     formLeccion.addEventListener("submit", async (e) => {
         e.preventDefault();
 
-        const courseId = document.getElementById("courseId").value.trim();
+        const courseId = selectCurso.value;
+        const cursoTexto = selectCurso.options[selectCurso.selectedIndex]?.textContent || "";
         const moduleNumber = Number(document.getElementById("moduleNumber").value);
         const moduleName = document.getElementById("moduleName").value.trim();
         const order = Number(document.getElementById("order").value);
@@ -64,7 +87,7 @@ if (formLeccion) {
         const content = document.getElementById("content").value.trim();
 
         if (!courseId || !moduleName || !title) {
-            alert("Completa el ID del curso, el nombre del módulo y el título de la clase.");
+            alert("Selecciona un curso, y completa el nombre del módulo y el título de la clase.");
             return;
         }
 
@@ -74,6 +97,7 @@ if (formLeccion) {
             await addDoc(collection(db, "lessons"), {
                 moduleId: moduleId,
                 courseId: courseId,
+                courseTitle: cursoTexto.split(" (")[0],
                 moduleNumber: moduleNumber,
                 moduleName: moduleName,
                 order: order,
@@ -86,6 +110,7 @@ if (formLeccion) {
 
             alert("¡Clase subida y publicada con éxito! 🎉");
             formLeccion.reset();
+            await cargarCursos();
         } catch (error) {
             console.error("Error al guardar la lección:", error);
             alert("Hubo un error al subir la clase. Revisa la consola.");
