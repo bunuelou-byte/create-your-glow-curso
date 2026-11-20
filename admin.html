@@ -2,62 +2,13 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Panel de Administración - Create Your Glow</title>
-    <link rel="stylesheet" href="css/estilos.css">
+    <meta http-equiv="refresh" content="0; url=panel-tutora.html">
+    <title>Redirigiendo al Panel de Tutora...</title>
+    <script>
+        window.location.replace("panel-tutora.html");
+    </script>
 </head>
 <body>
-    <header>
-        <h1>Panel de Tutora - Subir Clase 💖</h1>
-        <nav>
-            <a href="index.html">Volver al Inicio</a>
-        </nav>
-    </header>
-
-    <main style="max-width: 600px; margin: 40px auto; padding: 20px;">
-        <div id="loading-auth" style="text-align: center;">
-            <p>Verificando permisos de tutora...</p>
-        </div>
-
-        <!-- El formulario se oculta inicialmente hasta verificar que eres admin -->
-        <form id="form-leccion" style="display: none; background: #f9f9f9; padding: 20px; border-radius: 8px;">
-            <h2>Agregar Nueva Lección</h2>
-            
-            <label>ID del Curso (ej. curso-arte):</label><br>
-            <input type="text" id="courseId" required style="width: 100%; margin-bottom: 15px; padding: 8px;"><br>
-
-            <label>Número de Módulo:</label><br>
-            <input type="number" id="moduleNumber" value="1" required style="width: 100%; margin-bottom: 15px; padding: 8px;"><br>
-
-            <label>Nombre del Módulo:</label><br>
-            <input type="text" id="moduleName" placeholder="Ej. Fundamentos" required style="width: 100%; margin-bottom: 15px; padding: 8px;"><br>
-
-            <label>Número de Orden de la Lección:</label><br>
-            <input type="number" id="order" value="1" required style="width: 100%; margin-bottom: 15px; padding: 8px;"><br>
-
-            <label>Título de la Clase:</label><br>
-            <input type="text" id="title" placeholder="Ej. Clase 1: Materiales básicos" required style="width: 100%; margin-bottom: 15px; padding: 8px;"><br>
-
-            <label>URL del Video de YouTube (No listado):</label><br>
-            <input type="url" id="videoUrl" placeholder="https://www.youtube.com/watch?v=..." required style="width: 100%; margin-bottom: 15px; padding: 8px;"><br>
-
-            <label>URL del Material (Google Drive opcional):</label><br>
-            <url id="materialUrl" style="width: 100%; margin-bottom: 15px; padding: 8px;"></url>
-            <input type="url" id="materialUrl" placeholder="https://drive.google.com/..." style="width: 100%; margin-bottom: 15px; padding: 8px;"><br>
-
-            <label>Contenido o Descripción:</label><br>
-            <textarea id="content" rows="4" placeholder="Escribe un breve resumen de la clase..." style="width: 100%; margin-bottom: 15px; padding: 8px;"></textarea><br>
-
-            <button type="submit" style="background: #ff4b72; color: white; padding: 10px 20px; border: none; border-radius: 5px; cursor: pointer; font-weight: bold; width: 100%;">Publicar Lección</button>
-        </form>
-
-        <div id="unauthorized" style="display: none; text-align: center; color: red;">
-            <h3>Acceso Denegado</h3>
-            <p>Esta sección es exclusiva para la tutora de la plataforma.</p>
-        </div>
-    </main>
-
-    <!-- Scripts de Firebase y tu lógica -->
-    <script type="module" src="js/admin.js"></script>
+    <p>Redirigiendo a <a href="panel-tutora.html">Panel de Tutora</a>...</p>
 </body>
 </html>
