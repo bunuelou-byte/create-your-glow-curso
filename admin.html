@@ -1,14 +1,94 @@
-<!DOCTYPE html>
-<html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="refresh" content="0; url=panel-tutora.html">
-    <title>Redirigiendo al Panel de Tutora...</title>
-    <script>
-        window.location.replace("panel-tutora.html");
-    </script>
-</head>
-<body>
-    <p>Redirigiendo a <a href="panel-tutora.html">Panel de Tutora</a>...</p>
-</body>
-</html>
+import { auth, db } from "./firebase-config.js";
+import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+import {
+    doc, getDoc, collection, addDoc, query, where, getDocs, serverTimestamp
+} from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+
+const loadingAuth = document.getElementById("loading-auth");
+const formLeccion = document.getElementById("form-leccion");
+const unauthorized = document.getElementById("unauthorized");
+
+// 1. Verificar autenticación y rol de administrador
+onAuthStateChanged(auth, async (user) => {
+    if (!user) {
+        window.location.href = "auth.html";
+        return;
+    }
+
+    try {
+        const userSnap = await getDoc(doc(db, "users", user.uid));
+        const esAdmin = userSnap.exists() && userSnap.data().role === "admin";
+
+        if (loadingAuth) loadingAuth.style.display = "none";
+
+        if (esAdmin) {
+            if (formLeccion) formLeccion.style.display = "block";
+        } else if (unauthorized) {
+            unauthorized.style.display = "block";
+        }
+    } catch (error) {
+        console.error("Error verificando rol:", error);
+    }
+});
+
+// Busca el módulo por curso y número; si no existe, lo crea y devuelve su ID.
+async function obtenerOCrearModulo(courseId, moduleNumber, moduleName) {
+    const q = query(
+        collection(db, "modules"),
+        where("courseId", "==", courseId),
+        where("order", "==", moduleNumber)
+    );
+    const snap = await getDocs(q);
+    if (!snap.empty) return snap.docs[0].id;
+
+    const nuevo = await addDoc(collection(db, "modules"), {
+        courseId: courseId,
+        order: moduleNumber,
+        title: moduleName
+    });
+    return nuevo.id;
+}
+
+// 2. Guardar la lección con el moduleId correcto
+if (formLeccion) {
+    formLeccion.addEventListener("submit", async (e) => {
+        e.preventDefault();
+
+        const courseId = document.getElementById("courseId").value.trim();
+        const moduleNumber = Number(document.getElementById("moduleNumber").value);
+        const moduleName = document.getElementById("moduleName").value.trim();
+        const order = Number(document.getElementById("order").value);
+        const title = document.getElementById("title").value.trim();
+        const videoUrl = document.getElementById("videoUrl").value.trim();
+        const materialUrl = document.getElementById("materialUrl").value.trim();
+        const content = document.getElementById("content").value.trim();
+
+        if (!courseId || !moduleName || !title) {
+            alert("Completa el ID del curso, el nombre del módulo y el título de la clase.");
+            return;
+        }
+
+        try {
+            const moduleId = await obtenerOCrearModulo(courseId, moduleNumber, moduleName);
+
+            await addDoc(collection(db, "lessons"), {
+                moduleId: moduleId,
+                courseId: courseId,
+                moduleNumber: moduleNumber,
+                moduleName: moduleName,
+                order: order,
+                title: title,
+                videoUrl: videoUrl,
+                materialUrl: materialUrl,
+                content: content,
+                createdAt: serverTimestamp()
+            });
+
+            alert("¡Clase subida y publicada con éxito! 🎉");
+            formLeccion.reset();
+        } catch (error) {
+            console.error("Error al guardar la lección:", error);
+            alert("Hubo un error al subir la clase. Revisa la consola.");
+        }
+    });
+}
